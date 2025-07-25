@@ -140,7 +140,7 @@ const Services = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((service, index) => (
-              <Card key={service.title} className={`card-gradient card-shadow transition-cinematic hover:scale-105 ${service.popular ? 'hover:red-glow ring-2 ring-primary/20' : ''}`}>
+              <Card key={service.title} className={`card-gradient card-shadow transition-cinematic hover:scale-105 ${service.popular ? 'hover:gold-glow ring-2 ring-primary/20' : ''}`}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center space-x-3">
@@ -197,7 +197,7 @@ const Services = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {packages.map((pkg, index) => (
-              <Card key={pkg.name} className={`card-gradient card-shadow transition-cinematic hover:scale-105 ${pkg.popular ? 'ring-2 ring-primary red-glow' : ''}`}>
+              <Card key={pkg.name} className={`card-gradient card-shadow transition-cinematic hover:scale-105 ${pkg.popular ? 'ring-2 ring-primary gold-glow' : ''}`}>
                 <CardHeader>
                   <div className="text-center">
                     {pkg.popular && (
@@ -219,7 +219,7 @@ const Services = () => {
                   </ul>
                   <Button 
                     asChild 
-                    className={`w-full transition-cinematic hover:scale-105 ${pkg.popular ? 'red-glow' : ''}`}
+                    className={`w-full transition-cinematic hover:scale-105 ${pkg.popular ? 'gold-glow' : ''}`}
                     variant={pkg.popular ? 'default' : 'outline'}
                   >
                     <Link to="/contact">
@@ -252,7 +252,7 @@ const Services = () => {
               { step: "04", title: "Delivery", description: "Final review, revisions, and project delivery" }
             ].map((phase, index) => (
               <div key={phase.step} className="text-center">
-                <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold red-glow">
+                <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold gold-glow">
                   {phase.step}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{phase.title}</h3>
@@ -273,7 +273,7 @@ const Services = () => {
             Let's discuss your vision and create something amazing together. 
             Get in touch for a free consultation.
           </p>
-          <Button asChild size="lg" className="red-glow transition-cinematic hover:scale-105">
+          <Button asChild size="lg" className="gold-glow transition-cinematic hover:scale-105">
             <Link to="/contact">
               Start Your Project
               <ArrowRight className="w-5 h-5 ml-2" />

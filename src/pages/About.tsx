@@ -68,7 +68,7 @@ const About = () => {
                   alt="JEEM - Creative Professional"
                   className="w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-2xl card-shadow"
                 />
-                <div className="absolute -bottom-6 -right-6 bg-primary text-primary-foreground p-4 rounded-xl red-glow">
+                <div className="absolute -bottom-6 -right-6 bg-primary text-primary-foreground p-4 rounded-xl gold-glow">
                   <Heart className="w-8 h-8" />
                 </div>
               </div>

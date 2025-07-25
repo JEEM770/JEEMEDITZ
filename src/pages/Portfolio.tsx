@@ -123,7 +123,7 @@ const Portfolio = () => {
                 variant={selectedCategory === category.id ? "default" : "outline"}
                 onClick={() => setSelectedCategory(category.id)}
                 className={`transition-cinematic ${
-                  selectedCategory === category.id ? 'red-glow' : ''
+                  selectedCategory === category.id ? 'gold-glow' : ''
                 }`}
               >
                 {category.name}
@@ -138,7 +138,7 @@ const Portfolio = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project) => (
-              <Card key={project.id} className="card-gradient card-shadow transition-cinematic hover:scale-105 hover:red-glow overflow-hidden">
+              <Card key={project.id} className="card-gradient card-shadow transition-cinematic hover:scale-105 hover:gold-glow overflow-hidden">
                 <div className="relative group">
                   <img
                     src={project.thumbnail}
@@ -149,7 +149,7 @@ const Portfolio = () => {
                     {project.youtubeId ? (
                       <Button
                         size="sm"
-                        className="red-glow"
+                        className="gold-glow"
                         onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}
                       >
                         <Play className="w-4 h-4 mr-2" />
@@ -158,7 +158,7 @@ const Portfolio = () => {
                     ) : (
                       <Button
                         size="sm"
-                        className="red-glow"
+                        className="gold-glow"
                         onClick={() => window.open(project.driveLink, '_blank')}
                       >
                         <FolderOpen className="w-4 h-4 mr-2" />
@@ -238,7 +238,7 @@ const Portfolio = () => {
           <p className="text-xl text-muted-foreground mb-8">
             Visit my YouTube channel for more videos, tutorials, and behind-the-scenes content.
           </p>
-          <Button size="lg" className="red-glow transition-cinematic hover:scale-105">
+          <Button size="lg" className="gold-glow transition-cinematic hover:scale-105">
             <Play className="w-5 h-5 mr-2" />
             Visit YouTube Channel
           </Button>

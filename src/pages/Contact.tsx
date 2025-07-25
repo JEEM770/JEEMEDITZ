@@ -194,7 +194,7 @@ const Contact = () => {
 
                   <Button 
                     type="submit" 
-                    className="w-full red-glow transition-cinematic hover:scale-105"
+                    className="w-full gold-glow transition-cinematic hover:scale-105"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (

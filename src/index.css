@@ -18,10 +18,10 @@ All colors MUST be HSL.
     --popover: 0 0% 10%;
     --popover-foreground: 0 0% 95%;
 
-    /* Cinematic red primary */
-    --primary: 0 75% 45%;
-    --primary-foreground: 0 0% 98%;
-    --primary-glow: 0 80% 55%;
+    /* Golden yellow primary */
+    --primary: 43 90% 56%;
+    --primary-foreground: 0 0% 8%;
+    --primary-glow: 43 85% 65%;
 
     /* Dark secondary */
     --secondary: 0 0% 18%;
@@ -30,7 +30,7 @@ All colors MUST be HSL.
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
 
-    --accent: 0 60% 25%;
+    --accent: 43 70% 35%;
     --accent-foreground: 0 0% 90%;
 
     --destructive: 0 84.2% 60.2%;
@@ -38,13 +38,13 @@ All colors MUST be HSL.
 
     --border: 0 0% 20%;
     --input: 0 0% 16%;
-    --ring: 0 75% 45%;
+    --ring: 43 90% 56%;
 
     --radius: 0.75rem;
 
     /* Custom cinematic colors */
-    --cinematic-red: 0 75% 45%;
-    --cinematic-red-dark: 0 65% 35%;
+    --cinematic-gold: 43 90% 56%;
+    --cinematic-gold-dark: 43 80% 45%;
     --cinematic-black: 0 0% 8%;
     --cinematic-gray: 0 0% 15%;
     --cinematic-light: 0 0% 95%;
@@ -52,11 +52,11 @@ All colors MUST be HSL.
     /* Gradients */
     --gradient-hero: linear-gradient(135deg, hsl(0 0% 8%) 0%, hsl(0 30% 12%) 50%, hsl(0 0% 8%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(0 0% 12%) 0%, hsl(0 0% 8%) 100%);
-    --gradient-primary: linear-gradient(135deg, hsl(0 75% 45%) 0%, hsl(0 65% 35%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(43 90% 56%) 0%, hsl(43 80% 45%) 100%);
 
     /* Shadows */
     --shadow-cinematic: 0 25px 50px -12px hsl(0 0% 0% / 0.5);
-    --shadow-red-glow: 0 10px 30px hsl(0 75% 45% / 0.3);
+    --shadow-gold-glow: 0 10px 30px hsl(43 90% 56% / 0.3);
     --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.4);
 
     /* Animations */
@@ -147,8 +147,8 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-cinematic);
   }
 
-  .red-glow {
-    box-shadow: var(--shadow-red-glow);
+  .gold-glow {
+    box-shadow: var(--shadow-gold-glow);
   }
 
   .card-shadow {
@@ -234,11 +234,11 @@ All colors MUST be HSL.
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(var(--cinematic-red));
+    background: hsl(var(--cinematic-gold));
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--cinematic-red-dark));
+    background: hsl(var(--cinematic-gold-dark));
   }
 }

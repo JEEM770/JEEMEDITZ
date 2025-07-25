@@ -64,8 +64,8 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				cinematic: {
-					red: 'hsl(var(--cinematic-red))',
-					'red-dark': 'hsl(var(--cinematic-red-dark))',
+					gold: 'hsl(var(--cinematic-gold))',
+					'gold-dark': 'hsl(var(--cinematic-gold-dark))',
 					black: 'hsl(var(--cinematic-black))',
 					gray: 'hsl(var(--cinematic-gray))',
 					light: 'hsl(var(--cinematic-light))'

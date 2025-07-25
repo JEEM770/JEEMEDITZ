@@ -10,7 +10,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center red-glow">
+              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center gold-glow">
                 <Camera className="w-6 h-6 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold text-primary">JEEM</span>
@@ -47,13 +47,13 @@ const Footer = () => {
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary hover:red-glow transition-cinematic"
+                className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary hover:gold-glow transition-cinematic"
               >
                 <Youtube className="w-5 h-5" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary hover:red-glow transition-cinematic"
+                className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary hover:gold-glow transition-cinematic"
               >
                 <Facebook className="w-5 h-5" />
               </a>

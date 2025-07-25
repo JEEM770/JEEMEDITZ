@@ -31,7 +31,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button asChild size="lg" className="red-glow transition-cinematic hover:scale-105">
+              <Button asChild size="lg" className="gold-glow transition-cinematic hover:scale-105">
                 <Link to="/portfolio">
                   <Play className="w-5 h-5 mr-2" />
                   View My Work
@@ -88,7 +88,7 @@ const Home = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {skills.map((skill, index) => (
-              <Card key={skill.name} className="card-gradient card-shadow transition-cinematic hover:scale-105 hover:red-glow">
+              <Card key={skill.name} className="card-gradient card-shadow transition-cinematic hover:scale-105 hover:gold-glow">
                 <CardContent className="p-6 text-center">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <skill.icon className="w-8 h-8 text-primary" />
@@ -113,7 +113,7 @@ const Home = () => {
             Let's collaborate to bring your vision to life with professional video editing, 
             cinematography, and visual design.
           </p>
-          <Button asChild size="lg" className="red-glow transition-cinematic hover:scale-105">
+          <Button asChild size="lg" className="gold-glow transition-cinematic hover:scale-105">
             <Link to="/contact">
               Get In Touch
               <ArrowRight className="w-5 h-5 ml-2" />

@@ -23,7 +23,7 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 transition-cinematic hover:scale-105">
-            <div className="w-10 h-10 rounded-full overflow-hidden red-glow">
+            <div className="w-10 h-10 rounded-full overflow-hidden gold-glow">
               <img
                 src="https://i.postimg.cc/ydzd8zDd/IMG-3305.jpg" 
                 alt="JEEM Profile" 
@@ -41,7 +41,7 @@ const Navigation = () => {
                 to={item.path}
                 className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-cinematic ${
                   isActive(item.path)
-                    ? 'bg-primary text-primary-foreground red-glow'
+                    ? 'bg-primary text-primary-foreground gold-glow'
                     : 'text-foreground hover:text-primary hover:bg-secondary'
                 }`}
               >
@@ -72,7 +72,7 @@ const Navigation = () => {
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-cinematic ${
                   isActive(item.path)
-                    ? 'bg-primary text-primary-foreground red-glow'
+                    ? 'bg-primary text-primary-foreground gold-glow'
                     : 'text-foreground hover:text-primary hover:bg-secondary'
                 }`}
               >
