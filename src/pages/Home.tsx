@@ -67,7 +67,7 @@ const Home = () => {
             <div className="relative">
               <div className="absolute inset-0 bg-primary/20 rounded-full blur-3xl"></div>
               <img
-                src={jeemProfile}
+                src="https://i.postimg.cc/ydzd8zDd/IMG-3305.jpg"
                 alt="JEEM - Video Editor & Cinematographer"
                 className="relative w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-full border-4 border-primary/20 cinematic-shadow float"
               />
