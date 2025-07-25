@@ -23,8 +23,12 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 transition-cinematic hover:scale-105">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center red-glow">
-              <Camera className="w-6 h-6 text-primary-foreground" />
+            <div className="w-10 h-10 rounded-lg overflow-hidden red-glow">
+              <img 
+                src="https://i.postimg.cc/ydzd8zDd/IMG-3305.jpg" 
+                alt="JEEM Profile" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="text-xl font-bold text-primary">JEEM</span>
           </Link>
