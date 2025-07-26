@@ -10,8 +10,12 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center gold-glow">
-                <Camera className="w-6 h-6 text-primary-foreground" />
+              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 gold-glow">
+                <img 
+                  src="https://i.postimg.cc/5N3cH1XN/IMG-3305.jpg" 
+                  alt="JEEM" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="text-xl font-bold text-primary">JEEM</span>
             </div>
@@ -46,13 +50,17 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-foreground">Follow Me</h3>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://youtube.com/@jeem_editz?si=8zTx6DRW8Cu-8FIj"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary hover:gold-glow transition-cinematic"
               >
                 <Youtube className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/share/1Aqc1xuJLE/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary hover:gold-glow transition-cinematic"
               >
                 <Facebook className="w-5 h-5" />

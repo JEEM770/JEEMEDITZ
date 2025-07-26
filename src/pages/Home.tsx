@@ -24,14 +24,7 @@ const Home = () => {
                 Visual Storyteller & Creative Director
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                I'm <span className="text-primary font-semibold flex items-center gap-2">
-                  <img 
-                    src="https://i.postimg.cc/5N3cH1XN/IMG-3305.jpg" 
-                    alt="JEEM" 
-                    className="w-8 h-8 rounded-full object-cover border-2 border-primary/20"
-                  />
-                  JEEM
-                </span>, an 18-year-old passionate video editor, 
+                I'm <span className="text-primary font-semibold">JEEM</span>, an 18-year-old passionate video editor,
                 cinematographer, and graphic designer currently pursuing BSc in Computer Science and Engineering. 
                 I transform ideas into compelling visual narratives.
               </p>
