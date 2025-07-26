@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { Mail, Phone, MessageSquare, Youtube, Facebook, MapPin, Send, Clock, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,15 +23,42 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // EmailJS configuration
+      const serviceId = 'service_z87cjxn';
+      const templateId = 'template_lfg8m9i';
+      const publicKey = 'jimVuqoMvBgM3bWHm';
+
+      // Send email using EmailJS
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          phone: formData.phone,
+          service: formData.service,
+          message: formData.message,
+          to_name: 'JEEM'
+        },
+        publicKey
+      );
+
       toast({
         title: "Message Sent!",
         description: "Thank you for reaching out. I'll get back to you within 24 hours.",
       });
       setFormData({ name: '', email: '', phone: '', service: '', message: '' });
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      toast({
+        title: "Error Sending Message",
+        description: "There was an issue sending your message. Please try again or contact me directly.",
+        variant: "destructive"
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
