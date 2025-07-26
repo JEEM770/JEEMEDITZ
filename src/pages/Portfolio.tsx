@@ -25,7 +25,7 @@ const Portfolio = () => {
       duration: "3:45",
       year: "2024",
       thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      youtubeId: "dQw4w9WgXcQ",
+      driveLink: "https://www.facebook.com/share/v/16WP8v61Wq/?mibextid=wwXIfr",
       tags: ["Cinematography", "Color Grading", "Storytelling"],
       views: "2.5K"
     },
@@ -43,14 +43,14 @@ const Portfolio = () => {
     },
     {
       id: 3,
-      title: "Music Video Production",
+      title: "Promotional Ads",
       category: 'video',
       type: "Video Editing",
       description: "Dynamic music video with synchronized editing, effects, and creative transitions.",
       duration: "4:12",
       year: "2024",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      youtubeId: "dQw4w9WgXcQ",
+      thumbnail: "https://img.youtube.com/vi/5HxqRI2_Vnk/maxresdefault.jpg",
+      youtubeId: "5HxqRI2_Vnk",
       tags: ["Music Video", "Sync Editing", "Effects"],
       views: "5.2K"
     },
@@ -75,8 +75,8 @@ const Portfolio = () => {
       description: "Professional documentary-style editing with interviews, b-roll, and narrative structure.",
       duration: "8:45",
       year: "2023",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      youtubeId: "dQw4w9WgXcQ",
+      thumbnail: "https://img.youtube.com/vi/WmRhC3ufoN4/maxresdefault.jpg",
+      youtubeId: "WmRhC3ufoN4",
       tags: ["Documentary", "Interview", "B-Roll"],
       views: "4.7K"
     },
