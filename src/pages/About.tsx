@@ -64,7 +64,7 @@ const About = () => {
             <div className="flex justify-center lg:justify-end slide-up">
               <div className="relative">
                 <img
-                  src={jeemProfile}
+                  src="https://i.postimg.cc/5N3cH1XN/IMG-3305.jpg"
                   alt="JEEM - Creative Professional"
                   className="w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-2xl card-shadow"
                 />

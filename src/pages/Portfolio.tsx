@@ -24,7 +24,7 @@ const Portfolio = () => {
       description: "A compelling narrative showcasing advanced camera work, color grading, and post-production techniques.",
       duration: "3:45",
       year: "2024",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
+      thumbnail: "https://i.postimg.cc/XvXK370G/retouch-2025072610485081.jpg",
       driveLink: "https://www.facebook.com/share/v/16WP8v61Wq/?mibextid=wwXIfr",
       tags: ["Cinematography", "Color Grading", "Storytelling"],
       views: "2.5K"
@@ -62,8 +62,8 @@ const Portfolio = () => {
       description: "Showcase of animated graphics, text animations, and visual effects created in After Effects.",
       duration: "2:30",
       year: "2024",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      youtubeId: "dQw4w9WgXcQ",
+      thumbnail: "https://img.youtube.com/vi/9fwTRlPbitc/maxresdefault.jpg",
+      youtubeId: "9fwTRlPbitc",
       tags: ["After Effects", "Animation", "Typography"],
       views: "3.1K"
     },
@@ -87,8 +87,8 @@ const Portfolio = () => {
       type: "Presentation Design",
       description: "Professional presentation design with custom graphics and cohesive visual theme.",
       year: "2023",
-      thumbnail: "https://i.postimg.cc/CM2RTL6f/",
-      driveLink: "https://i.postimg.cc/CM2RTL6f/",
+      thumbnail: "https://i.postimg.cc/CM2RTL6f/IMG-2834.jpg",
+      driveLink: "https://i.postimg.cc/CM2RTL6f/IMG-2834.jpg",
       tags: ["Presentation", "Corporate", "Graphics"],
       views: "900"
     }
@@ -238,7 +238,11 @@ const Portfolio = () => {
           <p className="text-xl text-muted-foreground mb-8">
             Visit my YouTube channel for more videos, tutorials, and behind-the-scenes content.
           </p>
-          <Button size="lg" className="gold-glow transition-cinematic hover:scale-105">
+          <Button 
+            size="lg" 
+            className="gold-glow transition-cinematic hover:scale-105"
+            onClick={() => window.open("https://youtube.com/@jeem_editz?si=QiEFHzk4CCxMzgcU", '_blank')}
+          >
             <Play className="w-5 h-5 mr-2" />
             Visit YouTube Channel
           </Button>
