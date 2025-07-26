@@ -72,14 +72,14 @@ const Contact = () => {
       icon: Youtube,
       title: "YouTube Channel",
       description: "Watch my latest videos and tutorials",
-      link: "#",
+      link: "https://youtube.com/@jeem_editz?si=8Upzdje8e-FCjuWy",
       color: "text-red-500"
     },
     {
       icon: Facebook,
       title: "Facebook Profile",
       description: "Connect with me on Facebook",
-      link: "#",
+      link: "https://www.facebook.com/share/1JAnRhNMqy/?mibextid=wwXIfr",
       color: "text-blue-500"
     }
   ];
