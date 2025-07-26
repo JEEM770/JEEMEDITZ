@@ -31,13 +31,13 @@ const Portfolio = () => {
     },
     {
       id: 2,
-      title: "Brand Identity Package",
+      title: "YouTube thumbnails",
       category: 'design',
       type: "Graphic Design",
       description: "Complete visual identity design including logo, color palette, and brand guidelines.",
       year: "2024",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      driveLink: "https://drive.google.com/drive/folders/example",
+      thumbnail: "https://i.postimg.cc/9fHXXDGr/Untitled21-20241226182119.jpg",
+      driveLink: "https://i.postimg.cc/9fHXXDGr/Untitled21-20241226182119.jpg",
       tags: ["Branding", "Logo Design", "Visual Identity"],
       views: "1.8K"
     },
@@ -82,13 +82,13 @@ const Portfolio = () => {
     },
     {
       id: 6,
-      title: "Corporate Presentation",
+      title: "product manipulation",
       category: 'design',
       type: "Presentation Design",
       description: "Professional presentation design with custom graphics and cohesive visual theme.",
       year: "2023",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      driveLink: "https://drive.google.com/drive/folders/example",
+      thumbnail: "https://i.postimg.cc/CM2RTL6f/",
+      driveLink: "https://i.postimg.cc/CM2RTL6f/",
       tags: ["Presentation", "Corporate", "Graphics"],
       views: "900"
     }
