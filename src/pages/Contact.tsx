@@ -29,6 +29,9 @@ const Contact = () => {
       const templateId = 'template_lfg8m9i';
       const publicKey = 'jimVuqoMvBgM3bWHm';
 
+      // Initialize EmailJS
+      emailjs.init(publicKey);
+
       // Send email using EmailJS
       await emailjs.send(
         serviceId,
@@ -40,8 +43,7 @@ const Contact = () => {
           service: formData.service,
           message: formData.message,
           to_name: 'JEEM'
-        },
-        publicKey
+        }
       );
 
       toast({
