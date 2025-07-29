@@ -1,8 +1,20 @@
 import { useState } from 'react';
 import { ExternalLink, Play, Calendar, Eye, FolderOpen } from 'lucide-react';
+import { Facebook } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+
+// Custom TikTok Icon Component
+const TikTokIcon = ({ className }: { className?: string }) => (
+  <svg 
+    className={className} 
+    viewBox="0 0 24 24" 
+    fill="currentColor"
+  >
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+  </svg>
+);
 
 const Portfolio = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -254,12 +266,13 @@ const Portfolio = () => {
           {/* TikTok Button */}
           <div className="mb-8">
             <Button 
+              variant="outline"
               size="lg" 
-              className="gold-glow transition-cinematic hover:scale-105 mb-4"
-              onClick={() => window.open("https://tiktok.com/@jeem_editz", '_blank')}
+              className="bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
+              onClick={() => window.open("https://www.tiktok.com/@jeem986?_t=ZS-8yQ477HoT9G&_r=1", '_blank')}
             >
-              <ExternalLink className="w-5 h-5 mr-2" />
-              Follow on TikTok
+              <TikTokIcon className="w-4 h-4 mr-2" />
+              JEEM EDITZ
             </Button>
           </div>
 
@@ -268,28 +281,22 @@ const Portfolio = () => {
             <h3 className="text-xl font-semibold mb-4">Facebook Pages</h3>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
+                variant="outline"
                 size="lg"
-                className="gold-glow transition-cinematic hover:scale-105"
-                onClick={() => window.open("https://facebook.com/jeem.editz.page1", '_blank')}
+                className="bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
+                onClick={() => window.open("https://www.facebook.com/share/179wDk6kDw/?mibextid=wwXIfr", '_blank')}
               >
-                <ExternalLink className="w-5 h-5 mr-2" />
-                JEEM Editz Main
+                <Facebook className="w-4 h-4 mr-2" />
+                JEEMATIC
               </Button>
               <Button 
+                variant="outline"
                 size="lg"
-                className="gold-glow transition-cinematic hover:scale-105"
-                onClick={() => window.open("https://facebook.com/jeem.editz.page2", '_blank')}
+                className="bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
+                onClick={() => window.open("https://www.facebook.com/share/1GEewXiCfm/?mibextid=wwXIfr", '_blank')}
               >
-                <ExternalLink className="w-5 h-5 mr-2" />
-                JEEM Creatives
-              </Button>
-              <Button 
-                size="lg"
-                className="gold-glow transition-cinematic hover:scale-105"
-                onClick={() => window.open("https://facebook.com/jeem.editz.page3", '_blank')}
-              >
-                <ExternalLink className="w-5 h-5 mr-2" />
-                JEEM Studios
+                <Facebook className="w-4 h-4 mr-2" />
+                JEEM EDITZ
               </Button>
             </div>
           </div>
