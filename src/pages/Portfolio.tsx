@@ -251,20 +251,17 @@ const Portfolio = () => {
             Stay connected and explore my content across different platforms.
           </p>
           
-          {/* YouTube Button */}
-          <div className="mb-8">
+          {/* All Social Media Buttons */}
+          <div className="flex flex-wrap justify-center gap-4">
             <Button 
               size="lg" 
-              className="gold-glow transition-cinematic hover:scale-105 mb-4"
+              className="gold-glow transition-cinematic hover:scale-105"
               onClick={() => window.open("https://youtube.com/@jeem_editz?si=QiEFHzk4CCxMzgcU", '_blank')}
             >
-              <Play className="w-5 h-5 mr-2" />
+              <Play className="w-4 h-4 mr-2" />
               Visit YouTube Channel
             </Button>
-          </div>
 
-          {/* TikTok Button */}
-          <div className="mb-8">
             <Button 
               variant="outline"
               size="lg" 
@@ -274,31 +271,26 @@ const Portfolio = () => {
               <TikTokIcon className="w-4 h-4 mr-2" />
               JEEM EDITZ
             </Button>
-          </div>
 
-          {/* Facebook Pages */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold mb-4">Facebook Pages</h3>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                variant="outline"
-                size="lg"
-                className="bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
-                onClick={() => window.open("https://www.facebook.com/share/179wDk6kDw/?mibextid=wwXIfr", '_blank')}
-              >
-                <Facebook className="w-4 h-4 mr-2" />
-                JEEMATIC
-              </Button>
-              <Button 
-                variant="outline"
-                size="lg"
-                className="bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
-                onClick={() => window.open("https://www.facebook.com/share/1GEewXiCfm/?mibextid=wwXIfr", '_blank')}
-              >
-                <Facebook className="w-4 h-4 mr-2" />
-                JEEM EDITZ
-              </Button>
-            </div>
+            <Button 
+              variant="outline"
+              size="lg"
+              className="bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
+              onClick={() => window.open("https://www.facebook.com/share/179wDk6kDw/?mibextid=wwXIfr", '_blank')}
+            >
+              <Facebook className="w-4 h-4 mr-2" />
+              JEEMATIC
+            </Button>
+
+            <Button 
+              variant="outline"
+              size="lg"
+              className="bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
+              onClick={() => window.open("https://www.facebook.com/share/1GEewXiCfm/?mibextid=wwXIfr", '_blank')}
+            >
+              <Facebook className="w-4 h-4 mr-2" />
+              JEEM EDITZ
+            </Button>
           </div>
         </div>
       </section>
