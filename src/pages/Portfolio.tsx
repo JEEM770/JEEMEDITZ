@@ -255,41 +255,41 @@ const Portfolio = () => {
           <div className="flex flex-wrap justify-center gap-4">
             <Button 
               size="lg" 
-              className="gold-glow transition-cinematic hover:scale-105"
+              className="h-12 px-6 gold-glow transition-cinematic hover:scale-105 flex items-center justify-center"
               onClick={() => window.open("https://youtube.com/@jeem_editz?si=QiEFHzk4CCxMzgcU", '_blank')}
             >
-              <Play className="w-4 h-4 mr-2" />
-              Visit YouTube Channel
+              <Play className="w-4 h-4 mr-2 drop-shadow-[0_0_8px_#FF0000] text-red-500" />
+              <span className="leading-none">Visit YouTube Channel</span>
             </Button>
 
             <Button 
               variant="outline"
               size="lg" 
-              className="bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
+              className="h-12 px-6 bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30 flex items-center justify-center"
               onClick={() => window.open("https://www.tiktok.com/@jeem986?_t=ZS-8yQ477HoT9G&_r=1", '_blank')}
             >
-              <TikTokIcon className="w-4 h-4 mr-2" />
-              JEEM EDITZ
+              <TikTokIcon className="w-4 h-4 mr-2 drop-shadow-[0_0_8px_#FF0050] text-pink-500" />
+              <span className="leading-none">JEEM EDITZ</span>
             </Button>
 
             <Button 
               variant="outline"
               size="lg"
-              className="bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
+              className="h-12 px-6 bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30 flex items-center justify-center"
               onClick={() => window.open("https://www.facebook.com/share/179wDk6kDw/?mibextid=wwXIfr", '_blank')}
             >
-              <Facebook className="w-4 h-4 mr-2" />
-              JEEMATIC
+              <Facebook className="w-4 h-4 mr-2 drop-shadow-[0_0_8px_#1877F2] text-blue-500" />
+              <span className="leading-none">JEEMATIC</span>
             </Button>
 
             <Button 
               variant="outline"
               size="lg"
-              className="bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
+              className="h-12 px-6 bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30 flex items-center justify-center"
               onClick={() => window.open("https://www.facebook.com/share/1GEewXiCfm/?mibextid=wwXIfr", '_blank')}
             >
-              <Facebook className="w-4 h-4 mr-2" />
-              JEEM EDITZ
+              <Facebook className="w-4 h-4 mr-2 drop-shadow-[0_0_8px_#1877F2] text-blue-500" />
+              <span className="leading-none">JEEM EDITZ</span>
             </Button>
           </div>
         </div>
