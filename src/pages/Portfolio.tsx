@@ -229,23 +229,74 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* YouTube Channel CTA */}
+      {/* Social Media CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-card">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-            Explore More on YouTube
+            Follow My Work
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Visit my YouTube channel for more videos, tutorials, and behind-the-scenes content.
+            Stay connected and explore my content across different platforms.
           </p>
-          <Button 
-            size="lg" 
-            className="gold-glow transition-cinematic hover:scale-105"
-            onClick={() => window.open("https://youtube.com/@jeem_editz?si=QiEFHzk4CCxMzgcU", '_blank')}
-          >
-            <Play className="w-5 h-5 mr-2" />
-            Visit YouTube Channel
-          </Button>
+          
+          {/* YouTube Button */}
+          <div className="mb-8">
+            <Button 
+              size="lg" 
+              className="gold-glow transition-cinematic hover:scale-105 mb-4"
+              onClick={() => window.open("https://youtube.com/@jeem_editz?si=QiEFHzk4CCxMzgcU", '_blank')}
+            >
+              <Play className="w-5 h-5 mr-2" />
+              Visit YouTube Channel
+            </Button>
+          </div>
+
+          {/* TikTok Button */}
+          <div className="mb-8">
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="transition-cinematic hover:scale-105 hover:gold-glow mb-4"
+              onClick={() => window.open("https://tiktok.com/@jeem_editz", '_blank')}
+            >
+              <ExternalLink className="w-5 h-5 mr-2" />
+              Follow on TikTok
+            </Button>
+          </div>
+
+          {/* Facebook Pages */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold mb-4">Facebook Pages</h3>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg"
+                variant="outline"
+                className="transition-cinematic hover:scale-105 hover:gold-glow"
+                onClick={() => window.open("https://facebook.com/jeem.editz.page1", '_blank')}
+              >
+                <ExternalLink className="w-5 h-5 mr-2" />
+                JEEM Editz Main
+              </Button>
+              <Button 
+                size="lg"
+                variant="outline"
+                className="transition-cinematic hover:scale-105 hover:gold-glow"
+                onClick={() => window.open("https://facebook.com/jeem.editz.page2", '_blank')}
+              >
+                <ExternalLink className="w-5 h-5 mr-2" />
+                JEEM Creatives
+              </Button>
+              <Button 
+                size="lg"
+                variant="outline"
+                className="transition-cinematic hover:scale-105 hover:gold-glow"
+                onClick={() => window.open("https://facebook.com/jeem.editz.page3", '_blank')}
+              >
+                <ExternalLink className="w-5 h-5 mr-2" />
+                JEEM Studios
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
     </div>
