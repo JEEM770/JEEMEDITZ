@@ -255,8 +255,7 @@ const Portfolio = () => {
           <div className="mb-8">
             <Button 
               size="lg" 
-              variant="outline"
-              className="transition-cinematic hover:scale-105 hover:gold-glow mb-4"
+              className="gold-glow transition-cinematic hover:scale-105 mb-4"
               onClick={() => window.open("https://tiktok.com/@jeem_editz", '_blank')}
             >
               <ExternalLink className="w-5 h-5 mr-2" />
@@ -270,8 +269,7 @@ const Portfolio = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg"
-                variant="outline"
-                className="transition-cinematic hover:scale-105 hover:gold-glow"
+                className="gold-glow transition-cinematic hover:scale-105"
                 onClick={() => window.open("https://facebook.com/jeem.editz.page1", '_blank')}
               >
                 <ExternalLink className="w-5 h-5 mr-2" />
@@ -279,8 +277,7 @@ const Portfolio = () => {
               </Button>
               <Button 
                 size="lg"
-                variant="outline"
-                className="transition-cinematic hover:scale-105 hover:gold-glow"
+                className="gold-glow transition-cinematic hover:scale-105"
                 onClick={() => window.open("https://facebook.com/jeem.editz.page2", '_blank')}
               >
                 <ExternalLink className="w-5 h-5 mr-2" />
@@ -288,8 +285,7 @@ const Portfolio = () => {
               </Button>
               <Button 
                 size="lg"
-                variant="outline"
-                className="transition-cinematic hover:scale-105 hover:gold-glow"
+                className="gold-glow transition-cinematic hover:scale-105"
                 onClick={() => window.open("https://facebook.com/jeem.editz.page3", '_blank')}
               >
                 <ExternalLink className="w-5 h-5 mr-2" />
