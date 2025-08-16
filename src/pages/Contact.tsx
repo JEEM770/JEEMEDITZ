@@ -32,7 +32,7 @@ const Contact = () => {
       // Initialize EmailJS
       emailjs.init(publicKey);
 
-      // Send email using EmailJS
+      // Send main email using EmailJS
       await emailjs.send(
         serviceId,
         templateId,
@@ -43,6 +43,18 @@ const Contact = () => {
           service: formData.service,
           message: formData.message,
           to_name: 'JEEM'
+        }
+      );
+
+      // Send auto-reply email to user
+      await emailjs.send(
+        serviceId,
+        'template_h981i0f',
+        {
+          to_name: formData.name,
+          to_email: formData.email,
+          from_name: 'JEEM',
+          service: formData.service
         }
       );
 
