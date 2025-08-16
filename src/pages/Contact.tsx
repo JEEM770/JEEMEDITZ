@@ -163,70 +163,94 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-8 shadow-2xl">
-              <h2 className="text-3xl font-bold text-center text-primary mb-8">
-                Contact JeemEditz
-              </h2>
+          <div>
+            <Card className="card-gradient card-shadow">
+              <CardHeader>
+                <CardTitle className="text-2xl">Send me a message</CardTitle>
+                <p className="text-muted-foreground">
+                  Fill out the form below and I'll get back to you within 24 hours.
+                </p>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Name *</Label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        placeholder="Your full name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        placeholder="your.email@example.com"
+                      />
+                    </div>
+                  </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <Input
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  placeholder="Your Name"
-                  className="w-full p-4 rounded-lg border border-border bg-background/50 focus:border-primary transition-colors"
-                />
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Your phone number"
+                    />
+                  </div>
 
-                <Input
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  placeholder="Your Email"
-                  className="w-full p-4 rounded-lg border border-border bg-background/50 focus:border-primary transition-colors"
-                />
+                  <div className="space-y-2">
+                    <Label htmlFor="service">Service Needed</Label>
+                    <Input
+                      id="service"
+                      name="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      placeholder="e.g., Video editing, Cinematography, Graphic design"
+                    />
+                  </div>
 
-                <Input
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="Your Phone Number"
-                  className="w-full p-4 rounded-lg border border-border bg-background/50 focus:border-primary transition-colors"
-                />
+                  <div className="space-y-2">
+                    <Label htmlFor="message">Project Details *</Label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      rows={5}
+                      placeholder="Tell me about your project, timeline, and any specific requirements..."
+                    />
+                  </div>
 
-                <Input
-                  name="service"
-                  value={formData.service}
-                  onChange={handleChange}
-                  placeholder="Subject/Service Needed"
-                  className="w-full p-4 rounded-lg border border-border bg-background/50 focus:border-primary transition-colors"
-                />
-
-                <Textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  placeholder="Your Message"
-                  rows={6}
-                  className="w-full p-4 rounded-lg border border-border bg-background/50 focus:border-primary transition-colors resize-none"
-                />
-
-                <Button 
-                  type="submit" 
-                  className="w-full p-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-primary/25"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Sending Message..." : "Send Message"}
-                </Button>
-              </form>
-
-              {/* Success message will be shown via toast */}
-            </div>
+                  <Button 
+                    type="submit" 
+                    className="w-full gold-glow transition-cinematic hover:scale-105"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      "Sending..."
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 mr-2" />
+                        Send Message
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Contact Information */}
