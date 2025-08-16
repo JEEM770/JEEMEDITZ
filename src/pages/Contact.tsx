@@ -26,13 +26,13 @@ const Contact = () => {
     try {
       // EmailJS configuration
       const serviceId = 'service_z87cjxn';
-      const templateId = 'template_lfg8m9i';
+      const templateId = 'template_h981i0f';
       const publicKey = 'jimVuqoMvBgM3bWHm';
 
       // Initialize EmailJS
       emailjs.init(publicKey);
 
-      // Send main email using EmailJS
+      // Send email using EmailJS
       await emailjs.send(
         serviceId,
         templateId,
@@ -43,18 +43,6 @@ const Contact = () => {
           service: formData.service,
           message: formData.message,
           to_name: 'JEEM'
-        }
-      );
-
-      // Send auto-reply email to user
-      await emailjs.send(
-        serviceId,
-        'template_h981i0f',
-        {
-          to_name: formData.name,
-          to_email: formData.email,
-          from_name: 'JEEM',
-          service: formData.service
         }
       );
 
