@@ -224,6 +224,23 @@ All colors MUST be HSL.
     }
   }
 
+  @keyframes progressGlow {
+    0%, 100% {
+      box-shadow: 0 0 10px hsl(var(--primary) / 0.5),
+                  0 0 20px hsl(var(--primary) / 0.3),
+                  0 0 30px hsl(var(--primary) / 0.2);
+    }
+    50% {
+      box-shadow: 0 0 20px hsl(var(--primary) / 0.8),
+                  0 0 40px hsl(var(--primary) / 0.5),
+                  0 0 60px hsl(var(--primary) / 0.3);
+    }
+  }
+
+  .progress-glow {
+    animation: progressGlow 1.5s ease-in-out infinite;
+  }
+
   /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
