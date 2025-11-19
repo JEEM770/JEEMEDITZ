@@ -266,7 +266,7 @@ const Portfolio = () => {
               variant="outline"
               size="lg" 
               className="h-12 px-6 bg-background/50 border-muted hover:bg-accent/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30 flex items-center justify-center"
-              onClick={() => window.open("https://www.tiktok.com/@jeem986?_t=ZS-8yQ477HoT9G&_r=1", '_blank')}
+              onClick={() => window.open("https://www.tiktok.com/@jeemeditz_?is_from_webapp=1&sender_device=pc", '_blank')}
             >
               <TikTokIcon className="w-4 h-4 mr-2 drop-shadow-[0_0_8px_#FF0050] text-pink-500" />
               <span className="leading-none">JEEM EDITZ</span>
