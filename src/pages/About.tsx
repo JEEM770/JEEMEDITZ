@@ -80,16 +80,16 @@ const About = () => {
       {/* Education & Background */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-card">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">Education & Journey</h2>
             <p className="text-xl text-muted-foreground">A timeline of growth and learning</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="card-gradient card-shadow">
+            <Card className="card-gradient card-shadow transition-all duration-300 hover:scale-[1.02] hover:shadow-xl animate-fade-in">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-3">
-                  <GraduationCap className="w-6 h-6 text-primary" />
+                  <GraduationCap className="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]" />
                   <span>Current Education</span>
                 </CardTitle>
               </CardHeader>
@@ -103,10 +103,10 @@ const About = () => {
               </CardContent>
             </Card>
 
-            <Card className="card-gradient card-shadow">
+            <Card className="card-gradient card-shadow transition-all duration-300 hover:scale-[1.02] hover:shadow-xl animate-fade-in" style={{ animationDelay: '150ms' }}>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-3">
-                  <Calendar className="w-6 h-6 text-primary" />
+                  <Calendar className="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]" />
                   <span>Creative Journey</span>
                 </CardTitle>
               </CardHeader>
@@ -160,19 +160,23 @@ const About = () => {
       {/* Skills Grid */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-card">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">Technical Skills</h2>
             <p className="text-xl text-muted-foreground">Proficiency across industry-standard tools</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {skills.map((skill, index) => (
-              <div key={skill.name} className="space-y-2">
+              <div 
+                key={skill.name} 
+                className="space-y-2 p-4 rounded-lg transition-all duration-300 hover:bg-accent/50 hover:scale-[1.02] hover:shadow-lg animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
                 <div className="flex justify-between">
-                  <span className="font-medium">{skill.name}</span>
-                  <span className="text-primary">{skill.level}%</span>
+                  <span className="font-medium transition-colors duration-200">{skill.name}</span>
+                  <span className="text-primary font-semibold">{skill.level}%</span>
                 </div>
-                <Progress value={skill.level} className="h-3" />
+                <Progress value={skill.level} className="h-3 transition-all duration-500" />
               </div>
             ))}
           </div>
@@ -181,15 +185,15 @@ const About = () => {
 
       {/* Personal Philosophy */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center animate-fade-in">
           <h2 className="text-3xl lg:text-4xl font-bold mb-8">My Philosophy</h2>
-          <blockquote className="text-xl italic text-muted-foreground leading-relaxed">
+          <blockquote className="text-xl italic text-muted-foreground leading-relaxed transition-all duration-300 hover:scale-[1.02]">
             "Every frame tells a story, every edit shapes emotion, and every design communicates meaning. 
             At 18, I've learned that age doesn't define capability—passion, dedication, and continuous 
             learning do. I believe in creating visuals that don't just look good, but feel authentic 
             and resonate with audiences on a deeper level."
           </blockquote>
-          <div className="mt-8 text-primary font-semibold text-lg">— JEEM</div>
+          <div className="mt-8 text-primary font-semibold text-lg animate-fade-in" style={{ animationDelay: '300ms' }}>— JEEM</div>
         </div>
       </section>
     </div>
