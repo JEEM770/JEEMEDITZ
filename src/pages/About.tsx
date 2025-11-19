@@ -40,27 +40,32 @@ const About = () => {
     Object.keys(isVisible).forEach((key) => {
       if (isVisible[key] && !animatedValues[key]) {
         const targetValue = parseInt(key.split('-')[1]);
-        let currentValue = 0;
-        const duration = 2000; // 2 seconds for smoother animation
-        const startTime = Date.now();
+        const index = parseInt(key.split('-')[2] || '0');
+        const staggerDelay = index * 150; // 150ms delay between each item
         
-        const animate = () => {
-          const elapsed = Date.now() - startTime;
-          const progress = Math.min(elapsed / duration, 1);
+        setTimeout(() => {
+          let currentValue = 0;
+          const duration = 2000; // 2 seconds for smoother animation
+          const startTime = Date.now();
           
-          // Easing function for smooth acceleration and deceleration
-          const easeOutCubic = 1 - Math.pow(1 - progress, 3);
-          currentValue = targetValue * easeOutCubic;
+          const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Easing function for smooth acceleration and deceleration
+            const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+            currentValue = targetValue * easeOutCubic;
+            
+            if (progress < 1) {
+              setAnimatedValues((prev) => ({ ...prev, [key]: Math.floor(currentValue) }));
+              requestAnimationFrame(animate);
+            } else {
+              setAnimatedValues((prev) => ({ ...prev, [key]: targetValue }));
+            }
+          };
           
-          if (progress < 1) {
-            setAnimatedValues((prev) => ({ ...prev, [key]: Math.floor(currentValue) }));
-            requestAnimationFrame(animate);
-          } else {
-            setAnimatedValues((prev) => ({ ...prev, [key]: targetValue }));
-          }
-        };
-        
-        requestAnimationFrame(animate);
+          requestAnimationFrame(animate);
+        }, staggerDelay);
       }
     });
   }, [isVisible]);
