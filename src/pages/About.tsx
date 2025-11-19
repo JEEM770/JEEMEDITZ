@@ -41,17 +41,26 @@ const About = () => {
       if (isVisible[key] && !animatedValues[key]) {
         const targetValue = parseInt(key.split('-')[1]);
         let currentValue = 0;
-        const increment = targetValue / 50;
+        const duration = 2000; // 2 seconds for smoother animation
+        const startTime = Date.now();
         
-        const timer = setInterval(() => {
-          currentValue += increment;
-          if (currentValue >= targetValue) {
-            setAnimatedValues((prev) => ({ ...prev, [key]: targetValue }));
-            clearInterval(timer);
-          } else {
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          // Easing function for smooth acceleration and deceleration
+          const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+          currentValue = targetValue * easeOutCubic;
+          
+          if (progress < 1) {
             setAnimatedValues((prev) => ({ ...prev, [key]: Math.floor(currentValue) }));
+            requestAnimationFrame(animate);
+          } else {
+            setAnimatedValues((prev) => ({ ...prev, [key]: targetValue }));
           }
-        }, 20);
+        };
+        
+        requestAnimationFrame(animate);
       }
     });
   }, [isVisible]);
@@ -210,7 +219,7 @@ const About = () => {
                         <span>Proficiency</span>
                         <span className="text-primary font-semibold">{animatedValues[key] || 0}%</span>
                       </div>
-                      <Progress value={animatedValues[key] || 0} className="h-2 transition-all duration-500" />
+                      <Progress value={animatedValues[key] || 0} className="h-2 transition-all duration-700 ease-out" />
                     </div>
                   </CardContent>
                 </Card>
@@ -242,7 +251,7 @@ const About = () => {
                     <span className="font-medium transition-colors duration-200">{skill.name}</span>
                     <span className="text-primary font-semibold">{animatedValues[key] || 0}%</span>
                   </div>
-                  <Progress value={animatedValues[key] || 0} className="h-3 transition-all duration-500" />
+                  <Progress value={animatedValues[key] || 0} className="h-3 transition-all duration-700 ease-out" />
                 </div>
               );
             })}
