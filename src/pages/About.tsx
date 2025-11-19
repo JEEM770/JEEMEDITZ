@@ -2,8 +2,60 @@ import { Calendar, GraduationCap, Award, Target, Heart, Zap } from 'lucide-react
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import jeemProfile from '@/assets/jeem-profile.jpg';
+import { useState, useEffect, useRef } from 'react';
 
 const About = () => {
+  const [animatedValues, setAnimatedValues] = useState<{ [key: string]: number }>({});
+  const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
+  const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    Object.keys(sectionRefs.current).forEach((key) => {
+      const element = sectionRefs.current[key];
+      if (!element) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !isVisible[key]) {
+              setIsVisible((prev) => ({ ...prev, [key]: true }));
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+
+      observer.observe(element);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, []);
+
+  useEffect(() => {
+    Object.keys(isVisible).forEach((key) => {
+      if (isVisible[key] && !animatedValues[key]) {
+        const targetValue = parseInt(key.split('-')[1]);
+        let currentValue = 0;
+        const increment = targetValue / 50;
+        
+        const timer = setInterval(() => {
+          currentValue += increment;
+          if (currentValue >= targetValue) {
+            setAnimatedValues((prev) => ({ ...prev, [key]: targetValue }));
+            clearInterval(timer);
+          } else {
+            setAnimatedValues((prev) => ({ ...prev, [key]: Math.floor(currentValue) }));
+          }
+        }, 20);
+      }
+    });
+  }, [isVisible]);
+
   const experiences = [
     {
       title: "Graphic Design",
@@ -126,33 +178,44 @@ const About = () => {
       {/* Experience Timeline */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">Experience & Expertise</h2>
-            <p className="text-xl text-muted-foreground">Years of dedicated practice across creative disciplines</p>
+            <p className="text-xl text-muted-foreground">Years of dedicated practice and growth</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {experiences.map((exp, index) => (
-              <Card key={exp.title} className="card-gradient card-shadow transition-cinematic hover:scale-105">
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-3">
-                    <exp.icon className="w-6 h-6 text-primary" />
-                    <span>{exp.title}</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-primary mb-2">{exp.years}</div>
-                  <p className="text-sm text-muted-foreground mb-4">{exp.description}</p>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Proficiency</span>
-                      <span>{exp.progress}%</span>
+            {experiences.map((exp, index) => {
+              const key = `exp-${exp.progress}`;
+              return (
+                <Card 
+                  key={exp.title}
+                  ref={(el) => (sectionRefs.current[key] = el)}
+                  className="card-gradient card-shadow hover-scale transition-all duration-300 animate-fade-in"
+                  style={{ animationDelay: `${index * 150}ms` }}
+                >
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-3">
+                      <exp.icon className="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]" />
+                      <span>{exp.title}</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center space-x-2">
+                      <Calendar className="w-4 h-4 text-primary" />
+                      <span className="text-lg font-semibold text-primary">{exp.years}</span>
                     </div>
-                    <Progress value={exp.progress} className="h-2" />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    <p className="text-muted-foreground">{exp.description}</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Proficiency</span>
+                        <span className="text-primary font-semibold">{animatedValues[key] || 0}%</span>
+                      </div>
+                      <Progress value={animatedValues[key] || 0} className="h-2 transition-all duration-500" />
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -166,19 +229,23 @@ const About = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {skills.map((skill, index) => (
-              <div 
-                key={skill.name} 
-                className="space-y-2 p-4 rounded-lg transition-all duration-300 hover:bg-accent/50 hover:scale-[1.02] hover:shadow-lg animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="flex justify-between">
-                  <span className="font-medium transition-colors duration-200">{skill.name}</span>
-                  <span className="text-primary font-semibold">{skill.level}%</span>
+            {skills.map((skill, index) => {
+              const key = `skill-${skill.level}-${index}`;
+              return (
+                <div 
+                  key={skill.name}
+                  ref={(el) => (sectionRefs.current[key] = el)}
+                  className="space-y-2 p-4 rounded-lg transition-all duration-300 hover:bg-accent/50 hover:scale-[1.02] hover:shadow-lg animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex justify-between">
+                    <span className="font-medium transition-colors duration-200">{skill.name}</span>
+                    <span className="text-primary font-semibold">{animatedValues[key] || 0}%</span>
+                  </div>
+                  <Progress value={animatedValues[key] || 0} className="h-3 transition-all duration-500" />
                 </div>
-                <Progress value={skill.level} className="h-3 transition-all duration-500" />
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
