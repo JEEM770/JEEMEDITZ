@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 const About = () => {
   const [animatedValues, setAnimatedValues] = useState<{ [key: string]: number }>({});
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
+  const [isAnimating, setIsAnimating] = useState<{ [key: string]: boolean }>({});
   const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
@@ -44,6 +45,7 @@ const About = () => {
         const staggerDelay = index * 150; // 150ms delay between each item
         
         setTimeout(() => {
+          setIsAnimating((prev) => ({ ...prev, [key]: true }));
           let currentValue = 0;
           const duration = 2000; // 2 seconds for smoother animation
           const startTime = Date.now();
@@ -61,6 +63,7 @@ const About = () => {
               requestAnimationFrame(animate);
             } else {
               setAnimatedValues((prev) => ({ ...prev, [key]: targetValue }));
+              setIsAnimating((prev) => ({ ...prev, [key]: false }));
             }
           };
           
@@ -224,7 +227,10 @@ const About = () => {
                         <span>Proficiency</span>
                         <span className="text-primary font-semibold">{animatedValues[key] || 0}%</span>
                       </div>
-                      <Progress value={animatedValues[key] || 0} className="h-2 transition-all duration-700 ease-out" />
+                      <Progress 
+                        value={animatedValues[key] || 0} 
+                        className={`h-2 transition-all duration-700 ease-out ${isAnimating[key] ? 'progress-glow' : ''}`} 
+                      />
                     </div>
                   </CardContent>
                 </Card>
@@ -256,7 +262,10 @@ const About = () => {
                     <span className="font-medium transition-colors duration-200">{skill.name}</span>
                     <span className="text-primary font-semibold">{animatedValues[key] || 0}%</span>
                   </div>
-                  <Progress value={animatedValues[key] || 0} className="h-3 transition-all duration-700 ease-out" />
+                  <Progress 
+                    value={animatedValues[key] || 0} 
+                    className={`h-3 transition-all duration-700 ease-out ${isAnimating[key] ? 'progress-glow' : ''}`}
+                  />
                 </div>
               );
             })}
