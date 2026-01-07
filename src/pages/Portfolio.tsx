@@ -87,6 +87,8 @@ const ReelCard = ({ reel }: { reel: { id: number; thumbnail: string; videoUrl: s
 const Portfolio = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const carouselRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
 
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -95,6 +97,27 @@ const Portfolio = () => {
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
       });
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const swipeThreshold = 50;
+    const diff = touchStartX.current - touchEndX.current;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        scrollCarousel('right');
+      } else {
+        scrollCarousel('left');
+      }
     }
   };
 
@@ -357,8 +380,11 @@ const Portfolio = () => {
             {/* Carousel */}
             <div 
               ref={carouselRef}
-              className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2 snap-x snap-mandatory scroll-smooth"
+              className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2 snap-x snap-mandatory scroll-smooth touch-pan-x"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               {reels.map((reel) => (
                 <div key={reel.id} className="snap-start">
