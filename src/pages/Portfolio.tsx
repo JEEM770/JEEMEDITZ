@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ExternalLink, Play, Calendar, Eye, FolderOpen } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { ExternalLink, Play, Calendar, Eye, FolderOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Facebook } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,8 +16,97 @@ const TikTokIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+// Instagram Icon Component
+const InstagramIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </svg>
+);
+
+// Reel Card Component with video hover
+const ReelCard = ({ reel }: { reel: { id: number; thumbnail: string; videoUrl: string; views: string; platform: string; link: string } }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
+  return (
+    <div 
+      className="relative group cursor-pointer overflow-hidden rounded-xl aspect-[9/16] bg-muted transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20 flex-shrink-0 w-48 sm:w-56 lg:w-64"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={() => window.open(reel.link, '_blank')}
+    >
+      <img
+        src={reel.thumbnail}
+        alt={`Reel ${reel.id}`}
+        className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${isHovering ? 'opacity-0' : 'opacity-100'}`}
+      />
+      <video
+        ref={videoRef}
+        src={reel.videoUrl}
+        className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${isHovering ? 'opacity-100' : 'opacity-0'}`}
+        muted
+        loop
+        playsInline
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+      <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+        <div className="flex items-center justify-between text-white text-sm">
+          <div className="flex items-center gap-1">
+            <Eye className="w-3.5 h-3.5" />
+            <span>{reel.views}</span>
+          </div>
+          {reel.platform === 'tiktok' && <TikTokIcon className="w-4 h-4" />}
+          {reel.platform === 'youtube' && <Play className="w-4 h-4" />}
+          {reel.platform === 'instagram' && <InstagramIcon className="w-4 h-4" />}
+        </div>
+      </div>
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center gold-glow">
+          <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Portfolio = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const scrollAmount = 300;
+      carouselRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const reels = [
+    { id: 1, thumbnail: "https://img.youtube.com/vi/5HxqRI2_Vnk/maxresdefault.jpg", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", views: "12.5K", platform: "tiktok", link: "https://www.tiktok.com/@jeemeditz_" },
+    { id: 2, thumbnail: "https://img.youtube.com/vi/9fwTRlPbitc/maxresdefault.jpg", videoUrl: "https://www.w3schools.com/html/movie.mp4", views: "8.2K", platform: "instagram", link: "https://www.instagram.com/jeemeditz_" },
+    { id: 3, thumbnail: "https://img.youtube.com/vi/WmRhC3ufoN4/maxresdefault.jpg", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", views: "15.1K", platform: "tiktok", link: "https://www.tiktok.com/@jeemeditz_" },
+    { id: 4, thumbnail: "https://i.postimg.cc/XvXK370G/retouch-2025072610485081.jpg", videoUrl: "https://www.w3schools.com/html/movie.mp4", views: "6.7K", platform: "youtube", link: "https://youtube.com/@jeem_editz" },
+    { id: 5, thumbnail: "https://i.postimg.cc/CM2RTL6f/IMG-2834.jpg", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", views: "9.3K", platform: "tiktok", link: "https://www.tiktok.com/@jeemeditz_" },
+    { id: 6, thumbnail: "https://i.postimg.cc/9fHXXDGr/Untitled21-20241226182119.jpg", videoUrl: "https://www.w3schools.com/html/movie.mp4", views: "11.2K", platform: "instagram", link: "https://www.instagram.com/jeemeditz_" },
+    { id: 7, thumbnail: "https://img.youtube.com/vi/5HxqRI2_Vnk/maxresdefault.jpg", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", views: "7.8K", platform: "tiktok", link: "https://www.tiktok.com/@jeemeditz_" },
+  ];
 
   const categories = [
     { id: 'all', name: 'All Projects' },
@@ -253,46 +342,40 @@ const Portfolio = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {[
-              { id: 1, thumbnail: "https://img.youtube.com/vi/5HxqRI2_Vnk/maxresdefault.jpg", views: "12.5K", platform: "tiktok" },
-              { id: 2, thumbnail: "https://img.youtube.com/vi/9fwTRlPbitc/maxresdefault.jpg", views: "8.2K", platform: "instagram" },
-              { id: 3, thumbnail: "https://img.youtube.com/vi/WmRhC3ufoN4/maxresdefault.jpg", views: "15.1K", platform: "tiktok" },
-              { id: 4, thumbnail: "https://i.postimg.cc/XvXK370G/retouch-2025072610485081.jpg", views: "6.7K", platform: "youtube" },
-              { id: 5, thumbnail: "https://i.postimg.cc/CM2RTL6f/IMG-2834.jpg", views: "9.3K", platform: "tiktok" },
-            ].map((reel) => (
-              <div 
-                key={reel.id} 
-                className="relative group cursor-pointer overflow-hidden rounded-xl aspect-[9/16] bg-muted transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20"
-              >
-                <img
-                  src={reel.thumbnail}
-                  alt={`Reel ${reel.id}`}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <div className="flex items-center justify-between text-white text-sm">
-                    <div className="flex items-center gap-1">
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>{reel.views}</span>
-                    </div>
-                    {reel.platform === 'tiktok' && <TikTokIcon className="w-4 h-4" />}
-                    {reel.platform === 'youtube' && <Play className="w-4 h-4" />}
-                    {reel.platform === 'instagram' && (
-                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                      </svg>
-                    )}
-                  </div>
+          {/* Carousel Container */}
+          <div className="relative group/carousel">
+            {/* Left Arrow */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-primary/20 -translate-x-4"
+              onClick={() => scrollCarousel('left')}
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Button>
+
+            {/* Carousel */}
+            <div 
+              ref={carouselRef}
+              className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2 snap-x snap-mandatory scroll-smooth"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {reels.map((reel) => (
+                <div key={reel.id} className="snap-start">
+                  <ReelCard reel={reel} />
                 </div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center gold-glow">
-                    <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
-                  </div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Right Arrow */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-primary/20 translate-x-4"
+              onClick={() => scrollCarousel('right')}
+            >
+              <ChevronRight className="w-5 h-5" />
+            </Button>
           </div>
 
           <div className="text-center mt-10">
