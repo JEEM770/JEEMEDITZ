@@ -237,6 +237,71 @@ const Portfolio = () => {
         </div>
       </section>
 
+      {/* Reels Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-card/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+              Featured <span className="text-primary">Reels</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Quick edits, cinematic moments, and creative snippets from my short-form content.
+            </p>
+          </div>
+
+          {/* Carousel Container */}
+          <div className="relative group/carousel">
+            {/* Left Arrow */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-primary/20 -translate-x-4"
+              onClick={() => scrollCarousel('left')}
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Button>
+
+            {/* Carousel */}
+            <div 
+              ref={carouselRef}
+              className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2 snap-x snap-mandatory scroll-smooth touch-pan-x"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {reels.map((reel) => (
+                <div key={reel.id} className="snap-start">
+                  <ReelCard reel={reel} />
+                </div>
+              ))}
+            </div>
+
+            {/* Right Arrow */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-primary/20 translate-x-4"
+              onClick={() => scrollCarousel('right')}
+            >
+              <ChevronRight className="w-5 h-5" />
+            </Button>
+          </div>
+
+          <div className="text-center mt-10">
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="border-primary/50 hover:bg-primary/10 transition-all duration-300 hover:scale-105"
+              onClick={() => window.open("https://www.tiktok.com/@jeemeditz_?is_from_webapp=1&sender_device=pc", '_blank')}
+            >
+              <TikTokIcon className="w-4 h-4 mr-2" />
+              View All Reels
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Category Filter */}
       <section className="px-4 sm:px-6 lg:px-8 mb-12">
         <div className="max-w-7xl mx-auto">
@@ -353,70 +418,6 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Reels Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-card/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-              Featured <span className="text-primary">Reels</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Quick edits, cinematic moments, and creative snippets from my short-form content.
-            </p>
-          </div>
-
-          {/* Carousel Container */}
-          <div className="relative group/carousel">
-            {/* Left Arrow */}
-            <Button
-              variant="outline"
-              size="icon"
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-primary/20 -translate-x-4"
-              onClick={() => scrollCarousel('left')}
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </Button>
-
-            {/* Carousel */}
-            <div 
-              ref={carouselRef}
-              className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2 snap-x snap-mandatory scroll-smooth touch-pan-x"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              {reels.map((reel) => (
-                <div key={reel.id} className="snap-start">
-                  <ReelCard reel={reel} />
-                </div>
-              ))}
-            </div>
-
-            {/* Right Arrow */}
-            <Button
-              variant="outline"
-              size="icon"
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-primary/20 translate-x-4"
-              onClick={() => scrollCarousel('right')}
-            >
-              <ChevronRight className="w-5 h-5" />
-            </Button>
-          </div>
-
-          <div className="text-center mt-10">
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-primary/50 hover:bg-primary/10 transition-all duration-300 hover:scale-105"
-              onClick={() => window.open("https://www.tiktok.com/@jeemeditz_?is_from_webapp=1&sender_device=pc", '_blank')}
-            >
-              <TikTokIcon className="w-4 h-4 mr-2" />
-              View All Reels
-            </Button>
-          </div>
-        </div>
-      </section>
 
       {/* Social Media CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-card">
