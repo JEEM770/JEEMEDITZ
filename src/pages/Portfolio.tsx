@@ -92,10 +92,29 @@ const Portfolio = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [playingReelId, setPlayingReelId] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
   const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Update active index based on scroll position
+  const handleScroll = useCallback(() => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+      const itemWidth = 256 + 16; // w-64 + gap-4
+      const index = Math.round(scrollLeft / itemWidth);
+      setActiveIndex(Math.min(index, 5)); // 6 reels, 0-5 index
+    }
+  }, []);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (carousel) {
+      carousel.addEventListener('scroll', handleScroll);
+      return () => carousel.removeEventListener('scroll', handleScroll);
+    }
+  }, [handleScroll]);
 
   const scrollCarousel = useCallback((direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -325,6 +344,28 @@ const Portfolio = () => {
             >
               <ChevronRight className="w-5 h-5" />
             </Button>
+          </div>
+
+          {/* Progress Dots */}
+          <div className="flex justify-center gap-2 mt-6">
+            {reels.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  if (carouselRef.current) {
+                    const itemWidth = 256 + 16;
+                    carouselRef.current.scrollTo({ left: index * itemWidth, behavior: 'smooth' });
+                    handleCarouselInteraction();
+                  }
+                }}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  activeIndex === index 
+                    ? 'w-6 bg-primary' 
+                    : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                }`}
+                aria-label={`Go to reel ${index + 1}`}
+              />
+            ))}
           </div>
 
           <div className="text-center mt-10">
