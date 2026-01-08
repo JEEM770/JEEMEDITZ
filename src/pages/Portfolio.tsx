@@ -122,13 +122,12 @@ const Portfolio = () => {
   };
 
   const reels = [
-    { id: 1, thumbnail: "https://img.youtube.com/vi/5HxqRI2_Vnk/maxresdefault.jpg", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", views: "12.5K", platform: "tiktok", link: "https://www.tiktok.com/@jeemeditz_" },
-    { id: 2, thumbnail: "https://img.youtube.com/vi/9fwTRlPbitc/maxresdefault.jpg", videoUrl: "https://www.w3schools.com/html/movie.mp4", views: "8.2K", platform: "instagram", link: "https://www.instagram.com/jeemeditz_" },
-    { id: 3, thumbnail: "https://img.youtube.com/vi/WmRhC3ufoN4/maxresdefault.jpg", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", views: "15.1K", platform: "tiktok", link: "https://www.tiktok.com/@jeemeditz_" },
-    { id: 4, thumbnail: "https://i.postimg.cc/XvXK370G/retouch-2025072610485081.jpg", videoUrl: "https://www.w3schools.com/html/movie.mp4", views: "6.7K", platform: "youtube", link: "https://youtube.com/@jeem_editz" },
-    { id: 5, thumbnail: "https://i.postimg.cc/CM2RTL6f/IMG-2834.jpg", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", views: "9.3K", platform: "tiktok", link: "https://www.tiktok.com/@jeemeditz_" },
-    { id: 6, thumbnail: "https://i.postimg.cc/9fHXXDGr/Untitled21-20241226182119.jpg", videoUrl: "https://www.w3schools.com/html/movie.mp4", views: "11.2K", platform: "instagram", link: "https://www.instagram.com/jeemeditz_" },
-    { id: 7, thumbnail: "https://img.youtube.com/vi/5HxqRI2_Vnk/maxresdefault.jpg", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", views: "7.8K", platform: "tiktok", link: "https://www.tiktok.com/@jeemeditz_" },
+    { id: 1, thumbnail: "https://img.youtube.com/vi/kHEgGTLowZg/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/kHEgGTLowZg", views: "12.5K", platform: "youtube", link: "https://youtube.com/shorts/kHEgGTLowZg" },
+    { id: 2, thumbnail: "https://img.youtube.com/vi/y_8dkV-UGpU/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/y_8dkV-UGpU", views: "8.2K", platform: "youtube", link: "https://youtube.com/shorts/y_8dkV-UGpU" },
+    { id: 3, thumbnail: "https://img.youtube.com/vi/bR9pB_uIwgw/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/bR9pB_uIwgw", views: "15.1K", platform: "youtube", link: "https://youtube.com/shorts/bR9pB_uIwgw" },
+    { id: 4, thumbnail: "https://img.youtube.com/vi/ukcBZcfb7kg/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/ukcBZcfb7kg", views: "6.7K", platform: "youtube", link: "https://youtube.com/shorts/ukcBZcfb7kg" },
+    { id: 5, thumbnail: "https://img.youtube.com/vi/Aw1wGTbwk9Q/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/Aw1wGTbwk9Q", views: "9.3K", platform: "youtube", link: "https://youtube.com/shorts/Aw1wGTbwk9Q" },
+    { id: 6, thumbnail: "https://img.youtube.com/vi/zLbw7JxGrhA/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/zLbw7JxGrhA", views: "11.2K", platform: "youtube", link: "https://youtube.com/shorts/zLbw7JxGrhA" },
   ];
 
   const categories = [
