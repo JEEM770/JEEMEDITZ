@@ -29,56 +29,109 @@ const getYouTubeId = (url: string) => {
   return match ? match[1] : null;
 };
 
-// Reel Card Component with hover effect
-const ReelCard = ({ reel }: { 
+// Reel Card Component with embedded YouTube player
+const ReelCard = ({ reel, isPlaying, onPlay, onClose }: { 
   reel: { id: number; thumbnail: string; videoUrl: string; views: string; platform: string; link: string };
+  isPlaying: boolean;
+  onPlay: () => void;
+  onClose: () => void;
 }) => {
+  const videoId = getYouTubeId(reel.videoUrl);
+
   return (
     <div 
       className="relative group cursor-pointer overflow-hidden rounded-xl aspect-[9/16] bg-muted transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20 flex-shrink-0 w-48 sm:w-56 lg:w-64"
-      onClick={() => window.open(reel.link, '_blank')}
+      onClick={() => !isPlaying && onPlay()}
     >
-      <img
-        src={reel.thumbnail}
-        alt={`Reel ${reel.id}`}
-        className="w-full h-full object-cover absolute inset-0 transition-transform duration-500 group-hover:scale-110"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
-      <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <div className="flex items-center justify-between text-white text-sm">
-          <div className="flex items-center gap-1">
-            <Eye className="w-3.5 h-3.5" />
-            <span>{reel.views}</span>
+      {isPlaying && videoId ? (
+        <>
+          <iframe
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=0&controls=1&playsinline=1`}
+            className="w-full h-full absolute inset-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+          <button
+            onClick={(e) => { e.stopPropagation(); onClose(); }}
+            className="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-black/70 flex items-center justify-center text-white hover:bg-black/90 transition-colors"
+          >
+            ✕
+          </button>
+        </>
+      ) : (
+        <>
+          <img
+            src={reel.thumbnail}
+            alt={`Reel ${reel.id}`}
+            className="w-full h-full object-cover absolute inset-0"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+          <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <div className="flex items-center justify-between text-white text-sm">
+              <div className="flex items-center gap-1">
+                <Eye className="w-3.5 h-3.5" />
+                <span>{reel.views}</span>
+              </div>
+              {reel.platform === 'tiktok' && <TikTokIcon className="w-4 h-4" />}
+              {reel.platform === 'youtube' && <Play className="w-4 h-4" />}
+              {reel.platform === 'instagram' && <InstagramIcon className="w-4 h-4" />}
+            </div>
           </div>
-          {reel.platform === 'tiktok' && <TikTokIcon className="w-4 h-4" />}
-          {reel.platform === 'youtube' && <Play className="w-4 h-4" />}
-          {reel.platform === 'instagram' && <InstagramIcon className="w-4 h-4" />}
-        </div>
-      </div>
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center gold-glow animate-pulse">
-          <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
-        </div>
-      </div>
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center gold-glow">
+              <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
 const Portfolio = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [playingReelId, setPlayingReelId] = useState<number | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
+  const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const scrollCarousel = useCallback((direction: 'left' | 'right') => {
     if (carouselRef.current) {
       const scrollAmount = 300;
-      carouselRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+      const maxScroll = scrollWidth - clientWidth;
+      
+      if (direction === 'right' && scrollLeft >= maxScroll - 10) {
+        carouselRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        carouselRef.current.scrollBy({
+          left: direction === 'left' ? -scrollAmount : scrollAmount,
+          behavior: 'smooth'
+        });
+      }
     }
   }, []);
+
+  useEffect(() => {
+    if (isAutoPlaying) {
+      autoplayIntervalRef.current = setInterval(() => {
+        scrollCarousel('right');
+      }, 3000);
+    }
+
+    return () => {
+      if (autoplayIntervalRef.current) {
+        clearInterval(autoplayIntervalRef.current);
+      }
+    };
+  }, [isAutoPlaying, scrollCarousel]);
+
+  const handleCarouselInteraction = () => {
+    setIsAutoPlaying(false);
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -235,7 +288,7 @@ const Portfolio = () => {
               variant="outline"
               size="icon"
               className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-primary/20 -translate-x-4"
-              onClick={() => scrollCarousel('left')}
+              onClick={() => { handleCarouselInteraction(); scrollCarousel('left'); }}
             >
               <ChevronLeft className="w-5 h-5" />
             </Button>
@@ -245,13 +298,20 @@ const Portfolio = () => {
               ref={carouselRef}
               className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2 snap-x snap-mandatory scroll-smooth touch-pan-x"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              onTouchStart={handleTouchStart}
+              onTouchStart={(e) => { handleCarouselInteraction(); handleTouchStart(e); }}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
+              onMouseEnter={() => setIsAutoPlaying(false)}
+              onMouseLeave={() => setIsAutoPlaying(true)}
             >
               {reels.map((reel) => (
                 <div key={reel.id} className="snap-start">
-                  <ReelCard reel={reel} />
+                  <ReelCard 
+                    reel={reel} 
+                    isPlaying={playingReelId === reel.id}
+                    onPlay={() => { setPlayingReelId(reel.id); setIsAutoPlaying(false); }}
+                    onClose={() => { setPlayingReelId(null); setIsAutoPlaying(true); }}
+                  />
                 </div>
               ))}
             </div>
@@ -261,7 +321,7 @@ const Portfolio = () => {
               variant="outline"
               size="icon"
               className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-primary/20 translate-x-4"
-              onClick={() => scrollCarousel('right')}
+              onClick={() => { handleCarouselInteraction(); scrollCarousel('right'); }}
             >
               <ChevronRight className="w-5 h-5" />
             </Button>
