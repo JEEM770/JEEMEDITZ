@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef } from 'react';
 import { ExternalLink, Play, Calendar, Eye, FolderOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Facebook } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -90,47 +90,19 @@ const ReelCard = ({ reel, isPlaying, onPlay, onClose }: {
 
 const Portfolio = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [playingReelId, setPlayingReelId] = useState<number | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
-  const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const scrollCarousel = useCallback((direction: 'left' | 'right') => {
+  const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
       const scrollAmount = 300;
-      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
-      const maxScroll = scrollWidth - clientWidth;
-      
-      if (direction === 'right' && scrollLeft >= maxScroll - 10) {
-        carouselRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        carouselRef.current.scrollBy({
-          left: direction === 'left' ? -scrollAmount : scrollAmount,
-          behavior: 'smooth'
-        });
-      }
+      carouselRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
     }
-  }, []);
-
-  useEffect(() => {
-    if (isAutoPlaying) {
-      autoplayIntervalRef.current = setInterval(() => {
-        scrollCarousel('right');
-      }, 3000);
-    }
-
-    return () => {
-      if (autoplayIntervalRef.current) {
-        clearInterval(autoplayIntervalRef.current);
-      }
-    };
-  }, [isAutoPlaying, scrollCarousel]);
-
-  const handleCarouselInteraction = () => {
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -288,7 +260,7 @@ const Portfolio = () => {
               variant="outline"
               size="icon"
               className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-primary/20 -translate-x-4"
-              onClick={() => { handleCarouselInteraction(); scrollCarousel('left'); }}
+              onClick={() => scrollCarousel('left')}
             >
               <ChevronLeft className="w-5 h-5" />
             </Button>
@@ -298,19 +270,17 @@ const Portfolio = () => {
               ref={carouselRef}
               className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2 snap-x snap-mandatory scroll-smooth touch-pan-x"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              onTouchStart={(e) => { handleCarouselInteraction(); handleTouchStart(e); }}
+              onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
-              onMouseEnter={() => setIsAutoPlaying(false)}
-              onMouseLeave={() => setIsAutoPlaying(true)}
             >
               {reels.map((reel) => (
                 <div key={reel.id} className="snap-start">
                   <ReelCard 
                     reel={reel} 
                     isPlaying={playingReelId === reel.id}
-                    onPlay={() => { setPlayingReelId(reel.id); setIsAutoPlaying(false); }}
-                    onClose={() => { setPlayingReelId(null); setIsAutoPlaying(true); }}
+                    onPlay={() => setPlayingReelId(reel.id)}
+                    onClose={() => setPlayingReelId(null)}
                   />
                 </div>
               ))}
@@ -321,7 +291,7 @@ const Portfolio = () => {
               variant="outline"
               size="icon"
               className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-primary/20 translate-x-4"
-              onClick={() => { handleCarouselInteraction(); scrollCarousel('right'); }}
+              onClick={() => scrollCarousel('right')}
             >
               <ChevronRight className="w-5 h-5" />
             </Button>
