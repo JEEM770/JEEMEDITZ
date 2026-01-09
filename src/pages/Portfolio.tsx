@@ -29,33 +29,20 @@ const getYouTubeId = (url: string) => {
   return match ? match[1] : null;
 };
 
-// Reel Card Component with hover preview
+// Reel Card Component with hover effect
 const ReelCard = ({ reel }: { 
   reel: { id: number; thumbnail: string; videoUrl: string; views: string; platform: string; link: string };
 }) => {
-  const [isHovering, setIsHovering] = useState(false);
-  const videoId = getYouTubeId(reel.videoUrl);
-
   return (
     <div 
       className="relative group cursor-pointer overflow-hidden rounded-xl aspect-[9/16] bg-muted transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20 flex-shrink-0 w-48 sm:w-56 lg:w-64"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
       onClick={() => window.open(reel.link, '_blank')}
     >
-      {isHovering && videoId ? (
-        <iframe
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=1&controls=0&playsinline=1`}
-          className="w-full h-full absolute inset-0 pointer-events-none"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        />
-      ) : (
-        <img
-          src={reel.thumbnail}
-          alt={`Reel ${reel.id}`}
-          className="w-full h-full object-cover absolute inset-0"
-        />
-      )}
+      <img
+        src={reel.thumbnail}
+        alt={`Reel ${reel.id}`}
+        className="w-full h-full object-cover absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+      />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
       <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
         <div className="flex items-center justify-between text-white text-sm">
@@ -69,7 +56,7 @@ const ReelCard = ({ reel }: {
         </div>
       </div>
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center gold-glow">
+        <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center gold-glow animate-pulse">
           <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
         </div>
       </div>
