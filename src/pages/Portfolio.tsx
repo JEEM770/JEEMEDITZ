@@ -346,28 +346,6 @@ const Portfolio = () => {
             </Button>
           </div>
 
-          {/* Progress Dots */}
-          <div className="flex justify-center gap-2 mt-6">
-            {reels.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  if (carouselRef.current) {
-                    const itemWidth = 256 + 16;
-                    carouselRef.current.scrollTo({ left: index * itemWidth, behavior: 'smooth' });
-                    handleCarouselInteraction();
-                  }
-                }}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  activeIndex === index 
-                    ? 'w-6 bg-primary' 
-                    : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
-                }`}
-                aria-label={`Go to reel ${index + 1}`}
-              />
-            ))}
-          </div>
-
           <div className="text-center mt-10">
             <Button 
               variant="outline" 
