@@ -133,6 +133,12 @@ const Portfolio = () => {
     { id: 4, thumbnail: "https://img.youtube.com/vi/ukcBZcfb7kg/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/ukcBZcfb7kg", views: "6.7K", platform: "youtube", link: "https://youtube.com/shorts/ukcBZcfb7kg" },
     { id: 5, thumbnail: "https://img.youtube.com/vi/Aw1wGTbwk9Q/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/Aw1wGTbwk9Q", views: "9.3K", platform: "youtube", link: "https://youtube.com/shorts/Aw1wGTbwk9Q" },
     { id: 6, thumbnail: "https://img.youtube.com/vi/zLbw7JxGrhA/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/zLbw7JxGrhA", views: "11.2K", platform: "youtube", link: "https://youtube.com/shorts/zLbw7JxGrhA" },
+    { id: 7, thumbnail: "https://img.youtube.com/vi/OVqM4TEzFP0/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/OVqM4TEzFP0", views: "7.8K", platform: "youtube", link: "https://youtube.com/shorts/OVqM4TEzFP0" },
+    { id: 8, thumbnail: "https://img.youtube.com/vi/StML8oP_K-U/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/StML8oP_K-U", views: "5.4K", platform: "youtube", link: "https://youtube.com/shorts/StML8oP_K-U" },
+    { id: 9, thumbnail: "https://img.youtube.com/vi/14Mnc7i0Ktk/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/14Mnc7i0Ktk", views: "10.1K", platform: "youtube", link: "https://youtube.com/shorts/14Mnc7i0Ktk" },
+    { id: 10, thumbnail: "https://img.youtube.com/vi/1Y60L3QECgQ/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/1Y60L3QECgQ", views: "8.9K", platform: "youtube", link: "https://youtube.com/shorts/1Y60L3QECgQ" },
+    { id: 11, thumbnail: "https://img.youtube.com/vi/MKsiYm5TA9g/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/MKsiYm5TA9g", views: "6.3K", platform: "youtube", link: "https://youtube.com/shorts/MKsiYm5TA9g" },
+    { id: 12, thumbnail: "https://img.youtube.com/vi/Mwh1l5MHONM/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/Mwh1l5MHONM", views: "9.7K", platform: "youtube", link: "https://youtube.com/shorts/Mwh1l5MHONM" },
   ];
 
   const categories = [
