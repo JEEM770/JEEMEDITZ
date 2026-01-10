@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { X, ChevronUp, ChevronDown, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 interface Reel {
   id: number;
@@ -39,25 +38,24 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(60);
   const [isLoading, setIsLoading] = useState(true);
-  const [playerState, setPlayerState] = useState<number>(-1);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const thumbnailStripRef = useRef<HTMLDivElement>(null);
   const progressInterval = useRef<NodeJS.Timeout | null>(null);
   const touchStartY = useRef<number>(0);
+  const startTimeRef = useRef<number>(0);
 
   const currentReel = reels[currentIndex];
   const videoId = getYouTubeId(currentReel?.videoUrl || '');
 
-  // Reset state when viewer opens
+  // Reset state when reel changes or viewer opens
   useEffect(() => {
     if (isOpen) {
       setCurrentIndex(initialIndex);
       setProgress(0);
       setCurrentTime(0);
       setIsLoading(true);
-      setPlayerState(-1);
+      startTimeRef.current = Date.now();
     }
   }, [isOpen, initialIndex]);
 
@@ -66,98 +64,45 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
     setProgress(0);
     setCurrentTime(0);
     setIsLoading(true);
-    setPlayerState(-1);
-    setDuration(60);
-    
-    // Scroll thumbnail strip to show current reel
-    if (thumbnailStripRef.current) {
-      const thumbnail = thumbnailStripRef.current.querySelector(`[data-index="${currentIndex}"]`);
-      thumbnail?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
+    startTimeRef.current = Date.now();
+    setDuration(60); // Reset to default, will be updated when video loads
   }, [currentIndex]);
 
-  // Listen for YouTube postMessage events
+  // Simulate progress (YouTube iframe doesn't expose real-time progress)
   useEffect(() => {
     if (!isOpen) return;
 
-    const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== 'https://www.youtube.com') return;
-      
-      try {
-        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        
-        if (data.event === 'infoDelivery' && data.info) {
-          // Update current time and duration
-          if (typeof data.info.currentTime === 'number') {
-            setCurrentTime(data.info.currentTime);
-            setIsLoading(false);
-          }
-          if (typeof data.info.duration === 'number' && data.info.duration > 0) {
-            setDuration(data.info.duration);
-          }
-          if (typeof data.info.playerState === 'number') {
-            setPlayerState(data.info.playerState);
-            // playerState 0 = ended, auto-advance
-            if (data.info.playerState === 0) {
-              setCurrentIndex((prev) => (prev + 1) % reels.length);
-            }
-            // playerState 1 = playing
-            if (data.info.playerState === 1) {
-              setIsLoading(false);
-            }
-          }
-        }
-        
-        if (data.event === 'onReady') {
-          setIsLoading(false);
-        }
-      } catch (e) {
-        // Ignore parse errors from non-YouTube messages
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [isOpen, reels.length]);
-
-  // Update progress based on currentTime and duration
-  useEffect(() => {
-    if (duration > 0) {
-      setProgress((currentTime / duration) * 100);
+    // Clear previous interval
+    if (progressInterval.current) {
+      clearInterval(progressInterval.current);
     }
-  }, [currentTime, duration]);
 
-  // Fallback progress simulation if YouTube doesn't send events
-  useEffect(() => {
-    if (!isOpen || playerState === 1) return; // Don't use fallback if playing state detected
-
-    const fallbackTimeout = setTimeout(() => {
-      if (isLoading) {
-        setIsLoading(false);
-      }
-    }, 2000);
-
-    // Fallback progress if no YouTube events received
-    const startTime = Date.now();
-    progressInterval.current = setInterval(() => {
-      if (playerState === -1) { // No YouTube events received
-        const elapsed = (Date.now() - startTime) / 1000;
-        if (elapsed >= duration) {
+    // Start progress simulation after a short delay for loading
+    const loadTimeout = setTimeout(() => {
+      setIsLoading(false);
+      startTimeRef.current = Date.now();
+      
+      progressInterval.current = setInterval(() => {
+        const elapsed = (Date.now() - startTimeRef.current) / 1000;
+        const videoDuration = duration;
+        
+        if (elapsed >= videoDuration) {
+          // Auto-advance to next reel
           setCurrentIndex((prev) => (prev + 1) % reels.length);
         } else {
           setCurrentTime(elapsed);
-          setProgress((elapsed / duration) * 100);
+          setProgress((elapsed / videoDuration) * 100);
         }
-      }
-    }, 100);
+      }, 100);
+    }, 1500);
 
     return () => {
-      clearTimeout(fallbackTimeout);
+      clearTimeout(loadTimeout);
       if (progressInterval.current) {
         clearInterval(progressInterval.current);
       }
     };
-  }, [isOpen, currentIndex, duration, reels.length, playerState, isLoading]);
+  }, [isOpen, currentIndex, duration, reels.length]);
 
   const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % reels.length);
@@ -166,10 +111,6 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
   const goToPrev = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + reels.length) % reels.length);
   }, [reels.length]);
-
-  const goToIndex = useCallback((index: number) => {
-    setCurrentIndex(index);
-  }, []);
 
   // Keyboard navigation
   useEffect(() => {
@@ -182,14 +123,6 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
           goToPrev();
           break;
         case 'ArrowDown':
-          e.preventDefault();
-          goToNext();
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          goToPrev();
-          break;
-        case 'ArrowRight':
           e.preventDefault();
           goToNext();
           break;
@@ -258,13 +191,12 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
 
   if (!isOpen || !videoId) return null;
 
-  // Enable JS API with enablejsapi=1 and origin for postMessage
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=${isMuted ? 1 : 0}&controls=0&modestbranding=1&rel=0&showinfo=0&playsinline=1&enablejsapi=1&origin=${window.location.origin}`;
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=${isMuted ? 1 : 0}&controls=0&modestbranding=1&rel=0&showinfo=0&playsinline=1`;
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center"
+      className="fixed inset-0 z-50 bg-black flex items-center justify-center"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -325,64 +257,35 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
       </div>
 
       {/* Reel Counter */}
-      <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-20 text-white/80 text-sm">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 text-white/80 text-sm">
         {currentIndex + 1} / {reels.length}
       </div>
 
       {/* Keyboard Hints */}
-      <div className="absolute bottom-28 right-4 z-20 text-white/40 text-xs hidden md:block">
-        ←→↑↓ Navigate • M Mute • Esc Close
+      <div className="absolute bottom-4 right-4 z-20 text-white/40 text-xs hidden md:block">
+        ↑↓ Navigate • M Mute • Esc Close
+      </div>
+
+      {/* Mobile Swipe Hint */}
+      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 text-white/40 text-xs md:hidden animate-pulse">
+        Swipe up/down to navigate
       </div>
 
       {/* Video Container */}
-      <div className="relative w-full max-w-md flex-1 max-h-[70vh] aspect-[9/16] mx-auto mb-24">
+      <div className="relative w-full max-w-md h-full max-h-[90vh] aspect-[9/16] mx-auto">
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black z-10 rounded-lg">
+          <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
             <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
           </div>
         )}
         <iframe
           ref={iframeRef}
-          key={`${videoId}-${currentIndex}-${isMuted}`}
+          key={`${videoId}-${currentIndex}`}
           src={embedUrl}
           className="w-full h-full rounded-lg"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         />
-      </div>
-
-      {/* Thumbnail Strip */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black via-black/80 to-transparent pt-8 pb-4">
-        <div 
-          ref={thumbnailStripRef}
-          className="flex gap-2 px-4 overflow-x-auto scrollbar-hide"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {reels.map((reel, index) => {
-            const isActive = index === currentIndex;
-            return (
-              <button
-                key={reel.id}
-                data-index={index}
-                onClick={() => goToIndex(index)}
-                className={`relative flex-shrink-0 w-14 h-20 rounded-lg overflow-hidden transition-all duration-300 ${
-                  isActive 
-                    ? 'ring-2 ring-primary scale-110 z-10' 
-                    : 'opacity-60 hover:opacity-100 hover:scale-105'
-                }`}
-              >
-                <img
-                  src={reel.thumbnail}
-                  alt={`Reel ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                {isActive && (
-                  <div className="absolute inset-0 bg-primary/20" />
-                )}
-              </button>
-            );
-          })}
-        </div>
       </div>
     </div>
   );
