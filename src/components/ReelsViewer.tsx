@@ -31,143 +31,78 @@ const formatTime = (seconds: number) => {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
 
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
-
 const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(60); // Default duration
+  const [duration, setDuration] = useState(60);
   const [isLoading, setIsLoading] = useState(true);
-  const [apiReady, setApiReady] = useState(false);
   
-  const playerRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const progressInterval = useRef<NodeJS.Timeout | null>(null);
   const touchStartY = useRef<number>(0);
+  const startTimeRef = useRef<number>(0);
 
   const currentReel = reels[currentIndex];
   const videoId = getYouTubeId(currentReel?.videoUrl || '');
 
-  // Load YouTube API
-  useEffect(() => {
-    if (window.YT && window.YT.Player) {
-      setApiReady(true);
-      return;
-    }
-
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-
-    window.onYouTubeIframeAPIReady = () => {
-      setApiReady(true);
-    };
-
-    return () => {
-      window.onYouTubeIframeAPIReady = () => {};
-    };
-  }, []);
-
-  // Initialize player when API is ready
-  useEffect(() => {
-    if (!apiReady || !isOpen || !videoId) return;
-
-    setIsLoading(true);
-    setProgress(0);
-    setCurrentTime(0);
-
-    // Destroy previous player
-    if (playerRef.current) {
-      playerRef.current.destroy();
-      playerRef.current = null;
-    }
-
-    // Create new player
-    playerRef.current = new window.YT.Player('youtube-player', {
-      videoId: videoId,
-      playerVars: {
-        autoplay: 1,
-        controls: 0,
-        modestbranding: 1,
-        rel: 0,
-        showinfo: 0,
-        loop: 0,
-        playsinline: 1,
-      },
-      events: {
-        onReady: (event: any) => {
-          setIsLoading(false);
-          const videoDuration = event.target.getDuration();
-          setDuration(videoDuration || 60);
-          if (!isMuted) {
-            event.target.unMute();
-          } else {
-            event.target.mute();
-          }
-          event.target.playVideo();
-        },
-        onStateChange: (event: any) => {
-          // Video ended - auto advance
-          if (event.data === window.YT.PlayerState.ENDED) {
-            goToNext();
-          }
-        },
-      },
-    });
-
-    return () => {
-      if (progressInterval.current) {
-        clearInterval(progressInterval.current);
-      }
-    };
-  }, [apiReady, isOpen, videoId, currentIndex]);
-
-  // Update progress bar
-  useEffect(() => {
-    if (!isOpen || !playerRef.current) return;
-
-    progressInterval.current = setInterval(() => {
-      if (playerRef.current?.getCurrentTime && playerRef.current?.getDuration) {
-        const current = playerRef.current.getCurrentTime() || 0;
-        const total = playerRef.current.getDuration() || duration;
-        setCurrentTime(current);
-        setDuration(total);
-        setProgress((current / total) * 100);
-      }
-    }, 100);
-
-    return () => {
-      if (progressInterval.current) {
-        clearInterval(progressInterval.current);
-      }
-    };
-  }, [isOpen, currentIndex, duration]);
-
-  // Reset index when opened
+  // Reset state when reel changes or viewer opens
   useEffect(() => {
     if (isOpen) {
       setCurrentIndex(initialIndex);
+      setProgress(0);
+      setCurrentTime(0);
+      setIsLoading(true);
+      startTimeRef.current = Date.now();
     }
   }, [isOpen, initialIndex]);
 
-  // Mute/unmute
+  // Reset progress when switching reels
   useEffect(() => {
-    if (playerRef.current?.mute && playerRef.current?.unMute) {
-      if (isMuted) {
-        playerRef.current.mute();
-      } else {
-        playerRef.current.unMute();
-      }
+    setProgress(0);
+    setCurrentTime(0);
+    setIsLoading(true);
+    startTimeRef.current = Date.now();
+    setDuration(60); // Reset to default, will be updated when video loads
+  }, [currentIndex]);
+
+  // Simulate progress (YouTube iframe doesn't expose real-time progress)
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Clear previous interval
+    if (progressInterval.current) {
+      clearInterval(progressInterval.current);
     }
-  }, [isMuted]);
+
+    // Start progress simulation after a short delay for loading
+    const loadTimeout = setTimeout(() => {
+      setIsLoading(false);
+      startTimeRef.current = Date.now();
+      
+      progressInterval.current = setInterval(() => {
+        const elapsed = (Date.now() - startTimeRef.current) / 1000;
+        const videoDuration = duration;
+        
+        if (elapsed >= videoDuration) {
+          // Auto-advance to next reel
+          setCurrentIndex((prev) => (prev + 1) % reels.length);
+        } else {
+          setCurrentTime(elapsed);
+          setProgress((elapsed / videoDuration) * 100);
+        }
+      }, 100);
+    }, 1500);
+
+    return () => {
+      clearTimeout(loadTimeout);
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
+    };
+  }, [isOpen, currentIndex, duration, reels.length]);
 
   const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % reels.length);
@@ -217,9 +152,9 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
 
     if (Math.abs(diff) > threshold) {
       if (diff > 0) {
-        goToNext(); // Swipe up = next
+        goToNext();
       } else {
-        goToPrev(); // Swipe down = prev
+        goToPrev();
       }
     }
   };
@@ -254,7 +189,9 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !videoId) return null;
+
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=${isMuted ? 1 : 0}&controls=0&modestbranding=1&rel=0&showinfo=0&playsinline=1`;
 
   return (
     <div
@@ -337,11 +274,18 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
       {/* Video Container */}
       <div className="relative w-full max-w-md h-full max-h-[90vh] aspect-[9/16] mx-auto">
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black">
+          <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
             <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
           </div>
         )}
-        <div id="youtube-player" className="w-full h-full" />
+        <iframe
+          ref={iframeRef}
+          key={`${videoId}-${currentIndex}`}
+          src={embedUrl}
+          className="w-full h-full rounded-lg"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
       </div>
     </div>
   );
