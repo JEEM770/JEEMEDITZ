@@ -38,12 +38,11 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(60);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const progressInterval = useRef<NodeJS.Timeout | null>(null);
   const touchStartY = useRef<number>(0);
-  const startTimeRef = useRef<number>(0);
 
   const currentReel = reels[currentIndex];
   const videoId = getYouTubeId(currentReel?.videoUrl || '');
@@ -55,7 +54,7 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
       setProgress(0);
       setCurrentTime(0);
       setIsLoading(true);
-      startTimeRef.current = Date.now();
+      setIsPlaying(false);
     }
   }, [isOpen, initialIndex]);
 
@@ -64,45 +63,109 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
     setProgress(0);
     setCurrentTime(0);
     setIsLoading(true);
-    startTimeRef.current = Date.now();
-    setDuration(60); // Reset to default, will be updated when video loads
+    setIsPlaying(false);
+    setDuration(60); // Reset to default
   }, [currentIndex]);
 
-  // Simulate progress (YouTube iframe doesn't expose real-time progress)
+  // Listen for YouTube postMessage events for real-time progress
   useEffect(() => {
     if (!isOpen) return;
 
-    // Clear previous interval
-    if (progressInterval.current) {
-      clearInterval(progressInterval.current);
-    }
-
-    // Start progress simulation after a short delay for loading
-    const loadTimeout = setTimeout(() => {
-      setIsLoading(false);
-      startTimeRef.current = Date.now();
+    const handleMessage = (event: MessageEvent) => {
+      // Only accept messages from YouTube
+      if (event.origin !== 'https://www.youtube.com') return;
       
-      progressInterval.current = setInterval(() => {
-        const elapsed = (Date.now() - startTimeRef.current) / 1000;
-        const videoDuration = duration;
+      try {
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
         
-        if (elapsed >= videoDuration) {
-          // Auto-advance to next reel
-          setCurrentIndex((prev) => (prev + 1) % reels.length);
-        } else {
-          setCurrentTime(elapsed);
-          setProgress((elapsed / videoDuration) * 100);
+        if (data.event === 'infoDelivery' && data.info) {
+          // Update current time
+          if (typeof data.info.currentTime === 'number') {
+            setCurrentTime(data.info.currentTime);
+            setIsLoading(false);
+          }
+          
+          // Update duration
+          if (typeof data.info.duration === 'number' && data.info.duration > 0) {
+            setDuration(data.info.duration);
+          }
+          
+          // Calculate progress
+          if (typeof data.info.currentTime === 'number' && typeof data.info.duration === 'number' && data.info.duration > 0) {
+            const progressPercent = (data.info.currentTime / data.info.duration) * 100;
+            setProgress(progressPercent);
+            
+            // Auto-advance when video ends (within 0.5 seconds of end)
+            if (data.info.duration - data.info.currentTime < 0.5 && data.info.currentTime > 1) {
+              setCurrentIndex((prev) => (prev + 1) % reels.length);
+            }
+          }
+          
+          // Check player state
+          if (typeof data.info.playerState === 'number') {
+            // 1 = playing, 2 = paused, 0 = ended
+            setIsPlaying(data.info.playerState === 1);
+            if (data.info.playerState === 0) {
+              // Video ended, go to next
+              setCurrentIndex((prev) => (prev + 1) % reels.length);
+            }
+          }
         }
-      }, 100);
-    }, 1500);
-
-    return () => {
-      clearTimeout(loadTimeout);
-      if (progressInterval.current) {
-        clearInterval(progressInterval.current);
+        
+        // Handle onStateChange event
+        if (data.event === 'onStateChange') {
+          setIsLoading(false);
+        }
+        
+        // Initial ready event
+        if (data.event === 'onReady') {
+          setIsLoading(false);
+        }
+      } catch {
+        // Ignore parsing errors from non-YouTube messages
       }
     };
-  }, [isOpen, currentIndex, duration, reels.length]);
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [isOpen, reels.length]);
+
+  // Request video info periodically to ensure we get updates
+  useEffect(() => {
+    if (!isOpen || !iframeRef.current) return;
+
+    const requestInfo = () => {
+      if (iframeRef.current?.contentWindow) {
+        // Request current time and duration info
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: 'listening' }),
+          'https://www.youtube.com'
+        );
+      }
+    };
+
+    // Initial request after iframe loads
+    const initialTimeout = setTimeout(requestInfo, 1000);
+    
+    // Request periodically for updates
+    const interval = setInterval(requestInfo, 500);
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(interval);
+    };
+  }, [isOpen, currentIndex]);
+
+  // Fallback loading timeout
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, [isOpen, currentIndex]);
 
   const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % reels.length);
@@ -191,7 +254,8 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
 
   if (!isOpen || !videoId) return null;
 
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=${isMuted ? 1 : 0}&controls=0&modestbranding=1&rel=0&showinfo=0&playsinline=1`;
+  // Enable JS API for postMessage communication
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=${isMuted ? 1 : 0}&controls=0&modestbranding=1&rel=0&showinfo=0&playsinline=1&enablejsapi=1&origin=${window.location.origin}`;
 
   return (
     <div
