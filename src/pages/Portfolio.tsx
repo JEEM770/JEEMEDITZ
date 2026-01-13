@@ -183,6 +183,13 @@ const Portfolio = () => {
     views: "9.7K",
     platform: "youtube",
     link: "https://youtube.com/shorts/Mwh1l5MHONM"
+  }, {
+    id: 13,
+    thumbnail: "https://img.youtube.com/vi/EElW9wBtseY/maxresdefault.jpg",
+    videoUrl: "https://youtube.com/shorts/EElW9wBtseY",
+    views: "7.2K",
+    platform: "youtube",
+    link: "https://youtube.com/shorts/EElW9wBtseY"
   }];
   const categories = [{
     id: 'all',
