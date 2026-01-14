@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import ReelsViewer from '@/components/ReelsViewer';
+import ScrollReveal from '@/components/ScrollReveal';
 
 // Custom TikTok Icon Component
 const TikTokIcon = ({
@@ -45,26 +46,47 @@ const ReelCard = ({
   };
   onPlay: () => void;
 }) => {
-  return <div className="relative group cursor-pointer overflow-hidden rounded-xl aspect-[9/16] bg-muted transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20 flex-shrink-0 w-48 sm:w-56 lg:w-64" onClick={onPlay}>
-      <img src={reel.thumbnail} alt={`Reel ${reel.id}`} className="w-full h-full object-cover absolute inset-0" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
-      <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+  return (
+    <div 
+      className="relative group cursor-pointer overflow-hidden rounded-xl aspect-[9/16] bg-muted flex-shrink-0 w-48 sm:w-56 lg:w-64 transition-all duration-500 ease-smooth hover:scale-[1.08] hover:z-10" 
+      onClick={onPlay}
+    >
+      {/* Glow effect on hover */}
+      <div className="absolute -inset-1 bg-gradient-to-r from-primary via-glow-secondary to-primary rounded-xl opacity-0 group-hover:opacity-75 blur-lg transition-all duration-500 -z-10" />
+      
+      <img src={reel.thumbnail} alt={`Reel ${reel.id}`} className="w-full h-full object-cover absolute inset-0 transition-transform duration-500 group-hover:scale-110" />
+      
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-100 transition-all duration-300" />
+      
+      {/* Play button with pulse */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-300 glow">
+          <Play className="w-6 h-6 text-primary-foreground ml-0.5" />
+        </div>
+      </div>
+      
+      {/* Bottom info */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
         <div className="flex items-center justify-between text-white text-sm">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5 bg-black/50 rounded-full px-2 py-1 backdrop-blur-sm">
             <Eye className="w-3.5 h-3.5" />
-            <span>{reel.views}</span>
+            <span className="font-medium">{reel.views}</span>
           </div>
-          {reel.platform === 'tiktok' && <TikTokIcon className="w-4 h-4" />}
-          {reel.platform === 'youtube' && <Play className="w-4 h-4" />}
-          {reel.platform === 'instagram' && <InstagramIcon className="w-4 h-4" />}
+          <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
+            {reel.platform === 'tiktok' && <TikTokIcon className="w-4 h-4" />}
+            {reel.platform === 'youtube' && <Play className="w-4 h-4 text-red-500" />}
+            {reel.platform === 'instagram' && <InstagramIcon className="w-4 h-4" />}
+          </div>
         </div>
       </div>
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center gold-glow">
-          <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
-        </div>
+      
+      {/* Top shimmer effect */}
+      <div className="absolute inset-0 overflow-hidden rounded-xl pointer-events-none">
+        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       </div>
-    </div>;
+    </div>
+  );
 };
 const Portfolio = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -345,60 +367,76 @@ const Portfolio = () => {
       <section className="px-4 sm:px-6 lg:px-8 pb-20">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map(project => <Card key={project.id} className="card-gradient card-shadow transition-cinematic hover:scale-105 hover:gold-glow overflow-hidden">
-                <div className="relative group">
-                  <img src={project.thumbnail} alt={project.title} className="w-full h-48 object-cover" />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-smooth flex items-center justify-center">
-                    {project.youtubeId ? <Button size="sm" className="gold-glow" onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}>
-                        <Play className="w-4 h-4 mr-2" />
-                        Watch
-                      </Button> : <Button size="sm" className="gold-glow" onClick={() => window.open(project.driveLink, '_blank')}>
-                        <FolderOpen className="w-4 h-4 mr-2" />
-                        View Files
-                      </Button>}
-                  </div>
-                  {project.duration && <Badge className="absolute bottom-2 right-2 bg-black/70 text-white">
-                      {project.duration}
-                    </Badge>}
-                </div>
-
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <CardTitle className="text-lg">{project.title}</CardTitle>
-                    <Badge variant="outline">{project.type}</Badge>
-                  </div>
-                </CardHeader>
-
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {project.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {project.tags.map(tag => <Badge key={tag} variant="secondary" className="text-xs">
-                        {tag}
-                      </Badge>)}
-                  </div>
-
-                  <div className="flex justify-between items-center text-sm text-muted-foreground">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="w-4 h-4" />
-                        <span>{project.year}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Eye className="w-4 h-4" />
-                        <span>{project.views}</span>
-                      </div>
+            {filteredProjects.map((project, index) => (
+              <ScrollReveal key={project.id} delay={index * 100}>
+                <Card className="card-gradient card-shadow transition-all duration-500 ease-smooth hover:scale-[1.03] hover:-translate-y-2 overflow-hidden group hover:shadow-[0_20px_50px_hsl(var(--primary)/0.15)]">
+                  <div className="relative overflow-hidden">
+                    <img src={project.thumbnail} alt={project.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                      {project.youtubeId ? (
+                        <Button size="sm" className="glow scale-90 group-hover:scale-100 transition-transform duration-300" onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}>
+                          <Play className="w-4 h-4 mr-2" />
+                          Watch
+                        </Button>
+                      ) : (
+                        <Button size="sm" className="glow scale-90 group-hover:scale-100 transition-transform duration-300" onClick={() => window.open(project.driveLink, '_blank')}>
+                          <FolderOpen className="w-4 h-4 mr-2" />
+                          View Files
+                        </Button>
+                      )}
                     </div>
-                    {project.youtubeId ? <Button size="sm" variant="ghost" onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}>
-                        <ExternalLink className="w-4 h-4" />
-                      </Button> : <Button size="sm" variant="ghost" onClick={() => window.open(project.driveLink, '_blank')}>
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>}
+                    {project.duration && (
+                      <Badge className="absolute bottom-2 right-2 bg-black/70 text-white backdrop-blur-sm">
+                        {project.duration}
+                      </Badge>
+                    )}
                   </div>
-                </CardContent>
-              </Card>)}
+
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-lg group-hover:text-primary transition-colors duration-300">{project.title}</CardTitle>
+                      <Badge variant="outline" className="group-hover:border-primary group-hover:text-primary transition-colors duration-300">{project.type}</Badge>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {project.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {project.tags.map(tag => (
+                        <Badge key={tag} variant="secondary" className="text-xs hover:bg-primary/20 transition-colors duration-200">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <div className="flex justify-between items-center text-sm text-muted-foreground">
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="w-4 h-4" />
+                          <span>{project.year}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Eye className="w-4 h-4" />
+                          <span>{project.views}</span>
+                        </div>
+                      </div>
+                      {project.youtubeId ? (
+                        <Button size="sm" variant="ghost" className="hover:text-primary transition-colors" onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}>
+                          <ExternalLink className="w-4 h-4" />
+                        </Button>
+                      ) : (
+                        <Button size="sm" variant="ghost" className="hover:text-primary transition-colors" onClick={() => window.open(project.driveLink, '_blank')}>
+                          <ExternalLink className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </ScrollReveal>
+            ))}
           </div>
         </div>
       </section>
