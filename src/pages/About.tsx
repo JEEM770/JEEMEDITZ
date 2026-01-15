@@ -210,7 +210,7 @@ const About = () => {
               animate="visible"
             >
               <motion.h1 
-                className="text-hero"
+                className="text-hero leading-display"
                 variants={itemVariants}
               >
                 <span className="text-foreground">About</span>{" "}
@@ -219,30 +219,32 @@ const About = () => {
                   className="text-gradient"
                   delay={0.3}
                   staggerDelay={0.08}
+                  withRotation={true}
+                  withScale={true}
                 />
               </motion.h1>
               
               <motion.p 
-                className="text-xl text-muted-foreground leading-relaxed"
+                className="text-body-lg text-muted-foreground/80 leading-relaxed"
                 variants={itemVariants}
               >
                 <AnimatedText 
                   text="At just 18 years old, I've dedicated nearly half my life to mastering the art of visual storytelling. What started as curiosity has evolved into a passionate career spanning video editing, cinematography, and graphic design."
                   delay={0.4}
                   staggerDelay={0.02}
-                  animation="word"
+                  animation="blurSharp"
                 />
               </motion.p>
               
               <motion.p 
-                className="text-lg text-muted-foreground leading-relaxed"
+                className="text-body text-muted-foreground/60 leading-relaxed"
                 variants={itemVariants}
               >
                 <AnimatedText 
                   text="Currently pursuing a BSc in Computer Science and Engineering, I blend technical expertise with creative vision to deliver exceptional results."
                   delay={0.6}
                   staggerDelay={0.02}
-                  animation="word"
+                  animation="blurSharp"
                 />
               </motion.p>
             </motion.div>
@@ -372,11 +374,11 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+            <h2 className="text-display-lg tracking-heading mb-6">
               <span className="text-foreground">Education &</span>{" "}
               <span className="text-gradient">Journey</span>
             </h2>
-            <p className="text-xl text-muted-foreground">A timeline of growth and learning</p>
+            <p className="text-body text-muted-foreground">A timeline of growth and learning</p>
           </motion.div>
 
           <motion.div 
@@ -404,7 +406,7 @@ const About = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <h3 className="text-xl font-semibold mb-3 group-hover:text-gradient transition-all duration-300">BSc in Computer Science and Engineering</h3>
+                    <h3 className="text-display-sm font-medium mb-3 group-hover:text-gradient transition-all duration-300">BSc in Computer Science and Engineering</h3>
                     <p className="text-muted-foreground mb-4">Currently pursuing degree</p>
                     <p className="text-sm text-muted-foreground">
                       Combining technical knowledge with creative skills to bridge the gap between 
@@ -433,7 +435,7 @@ const About = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <h3 className="text-xl font-semibold mb-3 group-hover:text-gradient transition-all duration-300">Started at Age 10</h3>
+                    <h3 className="text-display-sm font-medium mb-3 group-hover:text-gradient transition-all duration-300">Started at Age 10</h3>
                     <p className="text-muted-foreground mb-4">8 years of continuous learning</p>
                     <p className="text-sm text-muted-foreground">
                       Began with simple photo edits and basic videos, gradually developing expertise 
@@ -459,11 +461,11 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+            <h2 className="text-display-lg tracking-heading mb-6">
               <span className="text-foreground">Experience &</span>{" "}
               <span className="text-gradient">Expertise</span>
             </h2>
-            <p className="text-xl text-muted-foreground">Years of dedicated practice and growth</p>
+            <p className="text-body text-muted-foreground">Years of dedicated practice and growth</p>
           </motion.div>
 
           <motion.div 
@@ -557,11 +559,11 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+            <h2 className="text-display-lg tracking-heading mb-6">
               <span className="text-foreground">Technical</span>{" "}
               <span className="text-gradient">Skills</span>
             </h2>
-            <p className="text-xl text-muted-foreground">Proficiency across industry-standard tools</p>
+            <p className="text-body text-muted-foreground">Proficiency across industry-standard tools</p>
           </motion.div>
 
           <motion.div 
@@ -688,7 +690,7 @@ const About = () => {
           transition={{ duration: 0.8 }}
         >
           <motion.h2 
-            className="text-4xl lg:text-6xl font-bold mb-12"
+            className="text-display-lg tracking-heading mb-12"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
