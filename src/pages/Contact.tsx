@@ -2,7 +2,7 @@ import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { Mail, Phone, MessageSquare, Youtube, Facebook, MapPin, Send, Clock, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { GlowButton } from '@/components/ui/glow-button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -130,11 +130,11 @@ const Contact = () => {
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-30" />
-        <div className="absolute inset-0 bg-gradient-glow" />
+        <div className="absolute inset-0 bg-mesh" />
         
         <div className="relative max-w-7xl mx-auto text-center">
           <h1 className="text-hero animate-slide-up">
-            <span className="text-foreground glow-text">Let's</span>{" "}
+            <span className="text-foreground">Let's</span>{" "}
             <span className="text-gradient">Connect</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
@@ -167,7 +167,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         placeholder="Your full name"
-                        className="bg-secondary/30 border-border/50 focus:border-primary/50 focus:shadow-[0_0_10px_hsl(var(--primary)/0.2)]"
+                        className="bg-secondary/30 border-border/50 focus:border-primary/50"
                       />
                     </div>
                     <div className="space-y-2">
@@ -180,7 +180,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         placeholder="your.email@example.com"
-                        className="bg-secondary/30 border-border/50 focus:border-primary/50 focus:shadow-[0_0_10px_hsl(var(--primary)/0.2)]"
+                        className="bg-secondary/30 border-border/50 focus:border-primary/50"
                       />
                     </div>
                   </div>
@@ -193,7 +193,7 @@ const Contact = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="Your phone number"
-                      className="bg-secondary/30 border-border/50 focus:border-primary/50 focus:shadow-[0_0_10px_hsl(var(--primary)/0.2)]"
+                      className="bg-secondary/30 border-border/50 focus:border-primary/50"
                     />
                   </div>
 
@@ -205,7 +205,7 @@ const Contact = () => {
                       value={formData.service}
                       onChange={handleChange}
                       placeholder="e.g., Video editing, Cinematography, Graphic design"
-                      className="bg-secondary/30 border-border/50 focus:border-primary/50 focus:shadow-[0_0_10px_hsl(var(--primary)/0.2)]"
+                      className="bg-secondary/30 border-border/50 focus:border-primary/50"
                     />
                   </div>
 
@@ -219,13 +219,13 @@ const Contact = () => {
                       required
                       rows={5}
                       placeholder="Tell me about your project, timeline, and any specific requirements..."
-                      className="bg-secondary/30 border-border/50 focus:border-primary/50 focus:shadow-[0_0_10px_hsl(var(--primary)/0.2)]"
+                      className="bg-secondary/30 border-border/50 focus:border-primary/50"
                     />
                   </div>
 
-                  <Button 
+                  <GlowButton 
                     type="submit" 
-                    className="w-full btn-glow bg-primary text-primary-foreground hover:bg-primary/90"
+                    className="w-full"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -236,7 +236,7 @@ const Contact = () => {
                         Send Message
                       </>
                     )}
-                  </Button>
+                  </GlowButton>
                 </form>
               </CardContent>
             </Card>
@@ -254,9 +254,9 @@ const Contact = () => {
                   <a
                     key={method.title}
                     href={method.link}
-                    className="flex items-center space-x-4 p-4 rounded-xl hover:bg-primary/5 border border-transparent hover:border-primary/20 hover:shadow-[0_0_15px_hsl(var(--primary)/0.1)] transition-all duration-300 group"
+                    className="flex items-center space-x-4 p-4 rounded-xl hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all duration-300 group"
                   >
-                    <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] transition-all duration-300">
+                    <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
                       <method.icon className="w-5 h-5 text-primary" />
                     </span>
                     <div>
@@ -281,9 +281,9 @@ const Contact = () => {
                     href={social.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-4 p-4 rounded-xl hover:bg-primary/5 border border-transparent hover:border-primary/20 hover:shadow-[0_0_15px_hsl(var(--primary)/0.1)] transition-all duration-300 group"
+                    className="flex items-center space-x-4 p-4 rounded-xl hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all duration-300 group"
                   >
-                    <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] transition-all duration-300">
+                    <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
                       <social.icon className="w-5 h-5 text-primary" />
                     </span>
                     <div>
@@ -324,7 +324,7 @@ const Contact = () => {
           <h2 className="text-4xl lg:text-5xl font-bold text-center mb-12 text-gradient">Frequently Asked Questions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {faqs.map((faq, index) => (
-              <Card key={index} className="card-glass card-hover border-border/30 border-l-4 border-l-primary/50 group">
+              <Card key={index} className="card-modern border-l-4 border-l-primary/50 group">
                 <CardHeader>
                   <CardTitle className="text-lg group-hover:text-gradient transition-all duration-300">{faq.question}</CardTitle>
                 </CardHeader>

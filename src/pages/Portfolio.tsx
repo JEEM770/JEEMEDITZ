@@ -2,93 +2,51 @@ import { useState, useRef } from 'react';
 import { ExternalLink, Play, Calendar, Eye, FolderOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Facebook } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { GlowButton } from '@/components/ui/glow-button';
 import { Badge } from '@/components/ui/badge';
 import ReelsViewer from '@/components/ReelsViewer';
 
 // Custom TikTok Icon Component
-const TikTokIcon = ({
-  className
-}: {
-  className?: string;
-}) => <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+const TikTokIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
     <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-  </svg>;
+  </svg>
+);
 
 // Instagram Icon Component
-const InstagramIcon = ({
-  className
-}: {
-  className?: string;
-}) => <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+const InstagramIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-  </svg>;
+  </svg>
+);
 
-// Reel Card Component - opens fullscreen viewer
-const ReelCard = ({
-  reel,
-  onPlay
-}: {
-  reel: {
-    id: number;
-    thumbnail: string;
-    videoUrl: string;
-    views: string;
-    platform: string;
-    link: string;
-  };
-  onPlay: () => void;
-}) => {
-  return (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-label={`Play reel ${reel.id}`}
-      onClick={onPlay}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onPlay();
-        }
-      }}
-      className="relative group cursor-pointer overflow-hidden rounded-2xl aspect-[9/16] bg-muted flex-shrink-0 w-48 sm:w-56 lg:w-64 border border-border/30 transition-all duration-500 ease-out hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_18px_50px_-22px_hsl(var(--primary)/0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
-    >
-      {/* Thumbnail */}
-      <img
-        src={reel.thumbnail}
-        alt={`Reel thumbnail ${reel.id}`}
-        className="w-full h-full object-cover absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-110"
-        loading="lazy"
-      />
-
-      {/* Gradient overlay (token-based, theme safe) */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-      {/* Stats at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
-        <div className="flex items-center justify-between text-foreground text-sm">
-          <div className="flex items-center gap-2 font-mono">
-            <Eye className="w-4 h-4" />
-            <span>{reel.views}</span>
-          </div>
-          {reel.platform === 'tiktok' && <TikTokIcon className="w-5 h-5" />}
-          {reel.platform === 'youtube' && <Play className="w-5 h-5" />}
-          {reel.platform === 'instagram' && <InstagramIcon className="w-5 h-5" />}
-        </div>
+// Reel Card Component
+const ReelCard = ({ reel, onPlay }: { reel: { id: number; thumbnail: string; videoUrl: string; views: string; platform: string; link: string }; onPlay: () => void }) => (
+  <div
+    role="button"
+    tabIndex={0}
+    aria-label={`Play reel ${reel.id}`}
+    onClick={onPlay}
+    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPlay(); } }}
+    className="relative group cursor-pointer overflow-hidden rounded-2xl aspect-[9/16] bg-muted flex-shrink-0 w-48 sm:w-56 lg:w-64 border border-border/30 transition-all duration-500 ease-out hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+  >
+    <img src={reel.thumbnail} alt={`Reel thumbnail ${reel.id}`} className="w-full h-full object-cover absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-110" loading="lazy" />
+    <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
+      <div className="flex items-center justify-between text-foreground text-sm">
+        <div className="flex items-center gap-2 font-mono"><Eye className="w-4 h-4" /><span>{reel.views}</span></div>
+        {reel.platform === 'tiktok' && <TikTokIcon className="w-5 h-5" />}
+        {reel.platform === 'youtube' && <Play className="w-5 h-5" />}
+        {reel.platform === 'instagram' && <InstagramIcon className="w-5 h-5" />}
       </div>
-
-      {/* Play button center */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <div className="w-14 h-14 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-[0_0_25px_hsl(var(--primary)/0.45)] transform scale-75 group-hover:scale-100 transition-transform duration-300">
-          <Play className="w-6 h-6 text-primary-foreground ml-1" />
-        </div>
-      </div>
-
-      {/* Glow border effect on hover */}
-      <div className="absolute inset-0 rounded-2xl border-2 border-primary/0 group-hover:border-primary/40 transition-all duration-300 pointer-events-none" />
     </div>
-  );
-};
+    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="w-14 h-14 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-300">
+        <Play className="w-6 h-6 text-primary-foreground ml-1" />
+      </div>
+    </div>
+  </div>
+);
 
 const Portfolio = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -100,32 +58,15 @@ const Portfolio = () => {
 
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
-      const scrollAmount = 300;
-      carouselRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
+      carouselRef.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: 'smooth' });
     }
   };
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
+  const handleTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.touches[0].clientX; };
+  const handleTouchMove = (e: React.TouchEvent) => { touchEndX.current = e.touches[0].clientX; };
   const handleTouchEnd = () => {
-    const swipeThreshold = 50;
     const diff = touchStartX.current - touchEndX.current;
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
-        scrollCarousel('right');
-      } else {
-        scrollCarousel('left');
-      }
-    }
+    if (Math.abs(diff) > 50) scrollCarousel(diff > 0 ? 'right' : 'left');
   };
 
   const reels = [
@@ -168,89 +109,31 @@ const Portfolio = () => {
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-30" />
-        <div className="absolute inset-0 bg-gradient-glow" />
-        
+        <div className="absolute inset-0 bg-mesh" />
         <div className="relative max-w-7xl mx-auto text-center">
-          <h1 className="text-hero animate-slide-up">
-            <span className="text-foreground glow-text">My</span>{" "}
-            <span className="text-gradient">Portfolio</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            Explore my creative journey through video editing, cinematography, and visual design projects.
-          </p>
+          <h1 className="text-hero animate-slide-up"><span className="text-foreground">My</span> <span className="text-gradient">Portfolio</span></h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>Explore my creative journey through video editing, cinematography, and visual design projects.</p>
         </div>
       </section>
 
       {/* Reels Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
         <div className="absolute inset-0 bg-card/30" />
-        <div className="absolute inset-0 bg-gradient-radial opacity-20" />
-        
+        <div className="absolute inset-0 bg-mesh opacity-30" />
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4">
-              Featured <span className="text-gradient">Reels</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Quick edits, cinematic moments, and creative snippets from my short-form content.
-            </p>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-4">Featured <span className="text-gradient">Reels</span></h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Quick edits, cinematic moments, and creative snippets from my short-form content.</p>
           </div>
-
-          {/* Carousel Container */}
           <div className="relative group/carousel">
-            {/* Left Arrow */}
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 hover:bg-primary/10 hover:border-primary hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] -translate-x-4 w-12 h-12" 
-              onClick={() => scrollCarousel('left')}
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </Button>
-
-            {/* Carousel */}
-            <div 
-              ref={carouselRef} 
-              className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2 snap-x snap-mandatory scroll-smooth touch-pan-x" 
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} 
-              onTouchStart={handleTouchStart} 
-              onTouchMove={handleTouchMove} 
-              onTouchEnd={handleTouchEnd}
-            >
-              {reels.map((reel, index) => (
-                <div key={reel.id} className="snap-start">
-                  <ReelCard 
-                    reel={reel} 
-                    onPlay={() => {
-                      setSelectedReelIndex(index);
-                      setReelsViewerOpen(true);
-                    }} 
-                  />
-                </div>
-              ))}
+            <GlowButton variant="outline" size="icon" className="absolute left-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 -translate-x-4 w-12 h-12" onClick={() => scrollCarousel('left')}><ChevronLeft className="w-6 h-6" /></GlowButton>
+            <div ref={carouselRef} className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-2 snap-x snap-mandatory scroll-smooth touch-pan-x" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+              {reels.map((reel, index) => (<div key={reel.id} className="snap-start"><ReelCard reel={reel} onPlay={() => { setSelectedReelIndex(index); setReelsViewerOpen(true); }} /></div>))}
             </div>
-
-            {/* Right Arrow */}
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border-primary/30 opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 hover:bg-primary/10 hover:border-primary hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] translate-x-4 w-12 h-12" 
-              onClick={() => scrollCarousel('right')}
-            >
-              <ChevronRight className="w-6 h-6" />
-            </Button>
+            <GlowButton variant="outline" size="icon" className="absolute right-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 translate-x-4 w-12 h-12" onClick={() => scrollCarousel('right')}><ChevronRight className="w-6 h-6" /></GlowButton>
           </div>
-
           <div className="text-center mt-12">
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="border-primary/30 hover:bg-primary/10 hover:border-primary hover:shadow-[0_0_20px_hsl(var(--primary)/0.2)] transition-all duration-300 group" 
-              onClick={() => window.open("https://www.tiktok.com/@jeemeditz_?is_from_webapp=1&sender_device=pc", '_blank')}
-            >
-              <TikTokIcon className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
-              View All Reels
-            </Button>
+            <GlowButton variant="outline" size="lg" onClick={() => window.open("https://www.tiktok.com/@jeemeditz_?is_from_webapp=1&sender_device=pc", '_blank')} className="group"><TikTokIcon className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />View All Reels</GlowButton>
           </div>
         </div>
       </section>
@@ -259,20 +142,7 @@ const Portfolio = () => {
       <section className="px-4 sm:px-6 lg:px-8 mb-12">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap justify-center gap-3">
-            {categories.map(category => (
-              <Button 
-                key={category.id} 
-                variant={selectedCategory === category.id ? "default" : "outline"} 
-                onClick={() => setSelectedCategory(category.id)} 
-                className={`transition-all duration-300 ${
-                  selectedCategory === category.id 
-                    ? 'bg-primary text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.4)]' 
-                    : 'border-border/50 hover:border-primary/50 hover:bg-primary/5'
-                }`}
-              >
-                {category.name}
-              </Button>
-            ))}
+            {categories.map(category => (<GlowButton key={category.id} variant={selectedCategory === category.id ? "default" : "outline"} onClick={() => setSelectedCategory(category.id)}>{category.name}</GlowButton>))}
           </div>
         </div>
       </section>
@@ -282,95 +152,25 @@ const Portfolio = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project, index) => (
-              <Card 
-                key={project.id} 
-                className="card-glass card-hover border-border/30 overflow-hidden group"
-                style={{ '--i': index } as React.CSSProperties}
-              >
+              <Card key={project.id} className="card-modern overflow-hidden group" style={{ '--i': index } as React.CSSProperties}>
                 <div className="relative overflow-hidden">
-                  <img 
-                    src={project.thumbnail} 
-                    alt={project.title} 
-                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" 
-                  />
+                  <img src={project.thumbnail} alt={project.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
                     {project.youtubeId ? (
-                      <Button 
-                        size="sm" 
-                        className="btn-glow bg-primary text-primary-foreground" 
-                        onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}
-                      >
-                        <Play className="w-4 h-4 mr-2" />
-                        Watch
-                      </Button>
+                      <GlowButton size="sm" onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}><Play className="w-4 h-4 mr-2" />Watch</GlowButton>
                     ) : (
-                      <Button 
-                        size="sm" 
-                        className="btn-glow bg-primary text-primary-foreground" 
-                        onClick={() => window.open(project.driveLink, '_blank')}
-                      >
-                        <FolderOpen className="w-4 h-4 mr-2" />
-                        View Files
-                      </Button>
+                      <GlowButton size="sm" onClick={() => window.open(project.driveLink, '_blank')}><FolderOpen className="w-4 h-4 mr-2" />View Files</GlowButton>
                     )}
                   </div>
-                  {project.duration && (
-                    <Badge className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white border-0 font-mono">
-                      {project.duration}
-                    </Badge>
-                  )}
+                  {project.duration && <Badge className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white border-0 font-mono">{project.duration}</Badge>}
                 </div>
-
-                <CardHeader>
-                  <div className="flex justify-between items-start gap-2">
-                    <CardTitle className="text-lg group-hover:text-gradient transition-all duration-300">{project.title}</CardTitle>
-                    <Badge variant="outline" className="border-primary/30 text-primary shrink-0">{project.type}</Badge>
-                  </div>
-                </CardHeader>
-
+                <CardHeader><div className="flex justify-between items-start gap-2"><CardTitle className="text-lg group-hover:text-gradient transition-all duration-300">{project.title}</CardTitle><Badge variant="outline" className="border-primary/30 text-primary shrink-0">{project.type}</Badge></div></CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {project.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map(tag => (
-                      <Badge key={tag} variant="secondary" className="text-xs bg-secondary/50 hover:bg-primary/10 transition-colors duration-200">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-
+                  <p className="text-sm text-muted-foreground mb-4">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">{project.tags.map(tag => (<Badge key={tag} variant="secondary" className="text-xs bg-secondary/50">{tag}</Badge>))}</div>
                   <div className="flex justify-between items-center text-sm text-muted-foreground pt-4 border-t border-border/30">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="w-4 h-4 text-primary" />
-                        <span className="font-mono">{project.year}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Eye className="w-4 h-4 text-primary" />
-                        <span className="font-mono">{project.views}</span>
-                      </div>
-                    </div>
-                    {project.youtubeId ? (
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="hover:bg-primary/10 hover:text-primary transition-all duration-300"
-                        onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>
-                    ) : (
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="hover:bg-primary/10 hover:text-primary transition-all duration-300"
-                        onClick={() => window.open(project.driveLink, '_blank')}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>
-                    )}
+                    <div className="flex items-center space-x-4"><div className="flex items-center space-x-1"><Calendar className="w-4 h-4 text-primary" /><span className="font-mono">{project.year}</span></div><div className="flex items-center space-x-1"><Eye className="w-4 h-4 text-primary" /><span className="font-mono">{project.views}</span></div></div>
+                    <GlowButton size="icon" variant="ghost" onClick={() => window.open(project.youtubeId ? `https://youtube.com/watch?v=${project.youtubeId}` : project.driveLink, '_blank')}><ExternalLink className="w-4 h-4" /></GlowButton>
                   </div>
                 </CardContent>
               </Card>
@@ -383,67 +183,19 @@ const Portfolio = () => {
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 bg-card/50" />
         <div className="absolute inset-0 bg-grid opacity-20" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        
         <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gradient glow-text">
-            Follow My Work
-          </h2>
-          <p className="text-xl text-muted-foreground mb-10">
-            Stay connected and explore my content across different platforms.
-          </p>
-          
-          {/* All Social Media Buttons */}
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gradient">Follow My Work</h2>
+          <p className="text-xl text-muted-foreground mb-10">Stay connected and explore my content across different platforms.</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button 
-              size="lg" 
-              className="btn-glow bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-6" 
-              onClick={() => window.open("https://youtube.com/@jeem_editz?si=QiEFHzk4CCxMzgcU", '_blank')}
-            >
-              <Play className="w-5 h-5 mr-2" />
-              Visit YouTube Channel
-            </Button>
-
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="h-12 px-6 border-border/50 hover:border-primary/50 hover:bg-primary/5 hover:shadow-[0_0_15px_hsl(var(--primary)/0.2)] transition-all duration-300 group" 
-              onClick={() => window.open("https://www.tiktok.com/@jeemeditz_?is_from_webapp=1&sender_device=pc", '_blank')}
-            >
-              <TikTokIcon className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
-              JEEM EDITZ
-            </Button>
-
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="h-12 px-6 border-border/50 hover:border-primary/50 hover:bg-primary/5 hover:shadow-[0_0_15px_hsl(var(--primary)/0.2)] transition-all duration-300 group" 
-              onClick={() => window.open("https://www.facebook.com/share/179wDk6kDw/?mibextid=wwXIfr", '_blank')}
-            >
-              <Facebook className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
-              JEEMATIC
-            </Button>
-
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="h-12 px-6 border-border/50 hover:border-primary/50 hover:bg-primary/5 hover:shadow-[0_0_15px_hsl(var(--primary)/0.2)] transition-all duration-300 group" 
-              onClick={() => window.open("https://www.facebook.com/share/1GEewXiCfm/?mibextid=wwXIfr", '_blank')}
-            >
-              <Facebook className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
-              JEEM EDITZ
-            </Button>
+            <GlowButton size="lg" onClick={() => window.open("https://youtube.com/@jeem_editz?si=QiEFHzk4CCxMzgcU", '_blank')}><Play className="w-5 h-5 mr-2" />Visit YouTube Channel</GlowButton>
+            <GlowButton variant="outline" size="lg" onClick={() => window.open("https://www.tiktok.com/@jeemeditz_?is_from_webapp=1&sender_device=pc", '_blank')} className="group"><TikTokIcon className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />JEEM EDITZ</GlowButton>
+            <GlowButton variant="outline" size="lg" onClick={() => window.open("https://www.facebook.com/share/179wDk6kDw/?mibextid=wwXIfr", '_blank')} className="group"><Facebook className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />JEEMATIC</GlowButton>
+            <GlowButton variant="outline" size="lg" onClick={() => window.open("https://www.facebook.com/share/1GEewXiCfm/?mibextid=wwXIfr", '_blank')} className="group"><Facebook className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />JEEM EDITZ</GlowButton>
           </div>
         </div>
       </section>
 
-      {/* Fullscreen Reels Viewer */}
-      <ReelsViewer 
-        reels={reels} 
-        initialIndex={selectedReelIndex} 
-        isOpen={reelsViewerOpen} 
-        onClose={() => setReelsViewerOpen(false)} 
-      />
+      <ReelsViewer reels={reels} initialIndex={selectedReelIndex} isOpen={reelsViewerOpen} onClose={() => setReelsViewerOpen(false)} />
     </div>
   );
 };

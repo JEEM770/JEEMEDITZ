@@ -1,7 +1,7 @@
 import { Video, Camera, Palette, Zap, Clock, DollarSign, CheckCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { GlowButton } from '@/components/ui/glow-button';
 import { Badge } from '@/components/ui/badge';
 
 const Services = () => {
@@ -125,11 +125,11 @@ const Services = () => {
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-30" />
-        <div className="absolute inset-0 bg-gradient-glow" />
+        <div className="absolute inset-0 bg-mesh" />
         
         <div className="relative max-w-7xl mx-auto text-center">
           <h1 className="text-hero animate-slide-up">
-            <span className="text-foreground glow-text">Creative</span>{" "}
+            <span className="text-foreground">Creative</span>{" "}
             <span className="text-gradient">Services</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
@@ -141,26 +141,26 @@ const Services = () => {
 
       {/* Services Grid */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute inset-0 bg-gradient-radial opacity-20" />
+        <div className="absolute inset-0 bg-mesh opacity-30" />
         
         <div className="relative max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((service, index) => (
               <Card 
                 key={service.title} 
-                className={`card-glass card-hover border-border/30 group ${service.popular ? 'border-l-4 border-l-primary' : ''}`}
+                className={`card-modern group ${service.popular ? 'border-l-4 border-l-primary' : ''}`}
                 style={{ '--i': index } as React.CSSProperties}
               >
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center space-x-3">
-                      <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_25px_hsl(var(--primary)/0.3)] transition-all duration-300">
+                      <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
                         <service.icon className="w-6 h-6 text-primary" />
                       </span>
                       <span className="text-xl group-hover:text-gradient transition-all duration-300">{service.title}</span>
                     </CardTitle>
                     {service.popular && (
-                      <Badge className="bg-primary/10 text-primary border border-primary/30 shadow-[0_0_10px_hsl(var(--primary)/0.2)]">Popular</Badge>
+                      <Badge className="bg-primary/10 text-primary border border-primary/30">Popular</Badge>
                     )}
                   </div>
                   <p className="text-muted-foreground mt-2">{service.description}</p>
@@ -213,12 +213,12 @@ const Services = () => {
             {packages.map((pkg, index) => (
               <Card 
                 key={pkg.name} 
-                className={`card-glass card-hover border-border/30 group ${pkg.popular ? 'border-2 border-primary/50 shadow-[0_0_40px_hsl(var(--primary)/0.2)]' : ''}`}
+                className={`card-modern group ${pkg.popular ? 'border-2 border-primary/50' : ''}`}
               >
                 <CardHeader>
                   <div className="text-center">
                     {pkg.popular && (
-                      <Badge className="mb-4 bg-primary text-primary-foreground shadow-[0_0_15px_hsl(var(--primary)/0.4)]">Most Popular</Badge>
+                      <Badge className="mb-4 bg-primary text-primary-foreground">Most Popular</Badge>
                     )}
                     <CardTitle className="text-2xl group-hover:text-gradient transition-all duration-300">{pkg.name}</CardTitle>
                     <div className="text-4xl font-bold text-gradient font-mono mt-4">{pkg.price}</div>
@@ -234,16 +234,16 @@ const Services = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button 
+                  <GlowButton 
                     asChild 
-                    className={`w-full btn-glow ${pkg.popular ? 'bg-primary text-primary-foreground' : 'bg-secondary/50 hover:bg-secondary'}`}
+                    className="w-full"
                     variant={pkg.popular ? 'default' : 'outline'}
                   >
                     <Link to="/contact" className="group">
                       Get Started
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                     </Link>
-                  </Button>
+                  </GlowButton>
                 </CardContent>
               </Card>
             ))}
@@ -253,7 +253,7 @@ const Services = () => {
 
       {/* Process */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute inset-0 bg-gradient-radial opacity-20" />
+        <div className="absolute inset-0 bg-mesh opacity-30" />
         
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -271,7 +271,7 @@ const Services = () => {
               { step: "04", title: "Delivery", description: "Final review, revisions, and project delivery" }
             ].map((phase, index) => (
               <div key={phase.step} className="text-center group">
-                <div className="w-20 h-20 bg-primary/10 backdrop-blur-sm border border-primary/30 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-mono font-bold group-hover:bg-primary/20 group-hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] transition-all duration-300">
+                <div className="w-20 h-20 bg-primary/10 backdrop-blur-sm border border-primary/30 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-mono font-bold group-hover:bg-primary/20 transition-all duration-300">
                   {phase.step}
                 </div>
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-gradient transition-all duration-300">{phase.title}</h3>
@@ -286,7 +286,6 @@ const Services = () => {
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 bg-card/50" />
         <div className="absolute inset-0 bg-grid opacity-20" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
         
         <div className="relative max-w-4xl mx-auto text-center">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
@@ -297,12 +296,12 @@ const Services = () => {
             Let's discuss your vision and create something amazing together. 
             Get in touch for a free consultation.
           </p>
-          <Button asChild size="lg" className="btn-glow bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-6">
+          <GlowButton asChild size="lg" className="text-lg px-8 py-6">
             <Link to="/contact" className="group">
               Start Your Project
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
-          </Button>
+          </GlowButton>
         </div>
       </section>
     </div>
