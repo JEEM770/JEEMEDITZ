@@ -38,7 +38,6 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(60);
   const [isLoading, setIsLoading] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -47,14 +46,13 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
   const currentReel = reels[currentIndex];
   const videoId = getYouTubeId(currentReel?.videoUrl || '');
 
-  // Reset state when reel changes or viewer opens
+  // Reset state when viewer opens
   useEffect(() => {
     if (isOpen) {
       setCurrentIndex(initialIndex);
       setProgress(0);
       setCurrentTime(0);
       setIsLoading(true);
-      setIsPlaying(false);
     }
   }, [isOpen, initialIndex]);
 
@@ -63,66 +61,50 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
     setProgress(0);
     setCurrentTime(0);
     setIsLoading(true);
-    setIsPlaying(false);
-    setDuration(60); // Reset to default
+    setDuration(60);
   }, [currentIndex]);
 
-  // Listen for YouTube postMessage events for real-time progress
+  // YouTube postMessage events
   useEffect(() => {
     if (!isOpen) return;
 
     const handleMessage = (event: MessageEvent) => {
-      // Only accept messages from YouTube
       if (event.origin !== 'https://www.youtube.com') return;
       
       try {
         const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
         
         if (data.event === 'infoDelivery' && data.info) {
-          // Update current time
           if (typeof data.info.currentTime === 'number') {
             setCurrentTime(data.info.currentTime);
             setIsLoading(false);
           }
           
-          // Update duration
           if (typeof data.info.duration === 'number' && data.info.duration > 0) {
             setDuration(data.info.duration);
           }
           
-          // Calculate progress
           if (typeof data.info.currentTime === 'number' && typeof data.info.duration === 'number' && data.info.duration > 0) {
             const progressPercent = (data.info.currentTime / data.info.duration) * 100;
             setProgress(progressPercent);
             
-            // Auto-advance when video ends (within 0.5 seconds of end)
             if (data.info.duration - data.info.currentTime < 0.5 && data.info.currentTime > 1) {
               setCurrentIndex((prev) => (prev + 1) % reels.length);
             }
           }
           
-          // Check player state
           if (typeof data.info.playerState === 'number') {
-            // 1 = playing, 2 = paused, 0 = ended
-            setIsPlaying(data.info.playerState === 1);
             if (data.info.playerState === 0) {
-              // Video ended, go to next
               setCurrentIndex((prev) => (prev + 1) % reels.length);
             }
           }
         }
         
-        // Handle onStateChange event
-        if (data.event === 'onStateChange') {
-          setIsLoading(false);
-        }
-        
-        // Initial ready event
-        if (data.event === 'onReady') {
+        if (data.event === 'onStateChange' || data.event === 'onReady') {
           setIsLoading(false);
         }
       } catch {
-        // Ignore parsing errors from non-YouTube messages
+        // Ignore parsing errors
       }
     };
 
@@ -130,40 +112,10 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
     return () => window.removeEventListener('message', handleMessage);
   }, [isOpen, reels.length]);
 
-  // Request video info periodically to ensure we get updates
-  useEffect(() => {
-    if (!isOpen || !iframeRef.current) return;
-
-    const requestInfo = () => {
-      if (iframeRef.current?.contentWindow) {
-        // Request current time and duration info
-        iframeRef.current.contentWindow.postMessage(
-          JSON.stringify({ event: 'listening' }),
-          'https://www.youtube.com'
-        );
-      }
-    };
-
-    // Initial request after iframe loads
-    const initialTimeout = setTimeout(requestInfo, 1000);
-    
-    // Request periodically for updates
-    const interval = setInterval(requestInfo, 500);
-
-    return () => {
-      clearTimeout(initialTimeout);
-      clearInterval(interval);
-    };
-  }, [isOpen, currentIndex]);
-
   // Fallback loading timeout
   useEffect(() => {
     if (!isOpen) return;
-    
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-
+    const timeout = setTimeout(() => setIsLoading(false), 3000);
     return () => clearTimeout(timeout);
   }, [isOpen, currentIndex]);
 
@@ -203,7 +155,7 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, goToNext, goToPrev, onClose]);
 
-  // Touch/swipe gestures
+  // Touch gestures
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
   };
@@ -214,22 +166,16 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
     const threshold = 50;
 
     if (Math.abs(diff) > threshold) {
-      if (diff > 0) {
-        goToNext();
-      } else {
-        goToPrev();
-      }
+      if (diff > 0) goToNext();
+      else goToPrev();
     }
   };
 
   // Mouse wheel navigation
   const handleWheel = useCallback((e: WheelEvent) => {
     e.preventDefault();
-    if (e.deltaY > 0) {
-      goToNext();
-    } else {
-      goToPrev();
-    }
+    if (e.deltaY > 0) goToNext();
+    else goToPrev();
   }, [goToNext, goToPrev]);
 
   useEffect(() => {
@@ -240,7 +186,7 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
     }
   }, [isOpen, handleWheel]);
 
-  // Prevent body scroll when open
+  // Prevent body scroll
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -254,52 +200,26 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
 
   if (!isOpen || !videoId) return null;
 
-  // Enable JS API for postMessage communication
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=${isMuted ? 1 : 0}&controls=0&modestbranding=1&rel=0&showinfo=0&playsinline=1&enablejsapi=1&origin=${window.location.origin}`;
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[100] bg-black"
+      className="fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-black"
+      style={{ zIndex: 9999 }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Video Container - Absolute Center */}
-      <div 
-        className="absolute rounded-xl overflow-hidden border border-white/10"
-        style={{ 
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 'min(90vw, 360px)', 
-          height: 'min(80vh, 640px)',
-        }}
-      >
-        {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/90 z-10">
-            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-          </div>
-        )}
-        <iframe
-          ref={iframeRef}
-          key={`${videoId}-${currentIndex}`}
-          src={embedUrl}
-          className="w-full h-full"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      </div>
-
-      {/* Progress Bar */}
-      <div className="absolute top-0 left-0 right-0 z-20 px-4 pt-4">
-        <div className="max-w-md mx-auto">
+      {/* Progress Bar - Top */}
+      <div className="absolute top-4 left-4 right-4 z-30">
+        <div className="max-w-sm mx-auto">
           <div className="h-1 bg-white/20 rounded-full overflow-hidden">
             <div
-              className="h-full bg-primary transition-all duration-100 ease-linear"
+              className="h-full bg-primary transition-all duration-100"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <div className="flex justify-between text-white/60 text-xs mt-1">
+          <div className="flex justify-between text-white/60 text-xs mt-1 font-mono">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
@@ -310,7 +230,7 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 right-4 z-20 text-white hover:bg-white/20"
+        className="absolute top-4 right-4 z-30 text-white hover:bg-white/20 w-10 h-10"
         onClick={onClose}
       >
         <X className="w-6 h-6" />
@@ -320,18 +240,18 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 left-4 z-20 text-white hover:bg-white/20"
+        className="absolute top-4 left-4 z-30 text-white hover:bg-white/20 w-10 h-10"
         onClick={() => setIsMuted(!isMuted)}
       >
         {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
       </Button>
 
-      {/* Navigation Arrows */}
-      <div className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-2">
+      {/* Navigation Arrows - Right Side */}
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-3">
         <Button
           variant="ghost"
           size="icon"
-          className="text-white hover:bg-white/20"
+          className="text-white hover:bg-white/20 w-10 h-10"
           onClick={goToPrev}
         >
           <ChevronUp className="w-6 h-6" />
@@ -339,26 +259,56 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
         <Button
           variant="ghost"
           size="icon"
-          className="text-white hover:bg-white/20"
+          className="text-white hover:bg-white/20 w-10 h-10"
           onClick={goToNext}
         >
           <ChevronDown className="w-6 h-6" />
         </Button>
       </div>
 
-      {/* Reel Counter */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 text-white/80 text-sm">
+      {/* Counter - Bottom */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 text-white/80 text-sm font-mono">
         {currentIndex + 1} / {reels.length}
       </div>
 
       {/* Keyboard Hints */}
-      <div className="absolute bottom-4 right-4 z-20 text-white/40 text-xs hidden md:block">
+      <div className="absolute bottom-6 right-4 z-30 text-white/40 text-xs hidden md:block">
         ↑↓ Navigate • M Mute • Esc Close
       </div>
 
       {/* Mobile Swipe Hint */}
-      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 text-white/40 text-xs md:hidden animate-pulse">
+      <div className="absolute bottom-14 left-1/2 -translate-x-1/2 z-30 text-white/40 text-xs md:hidden animate-pulse">
         Swipe up/down to navigate
+      </div>
+
+      {/* Video Container - TRUE CENTER */}
+      <div 
+        className="absolute z-10"
+        style={{
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 'min(340px, 85vw)',
+          height: 'min(604px, 75vh)',
+          maxWidth: '340px',
+          maxHeight: '604px',
+        }}
+      >
+        <div className="w-full h-full rounded-2xl overflow-hidden border border-white/20 bg-black shadow-2xl">
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black z-20">
+              <div className="w-10 h-10 border-3 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+          )}
+          <iframe
+            ref={iframeRef}
+            key={`${videoId}-${currentIndex}`}
+            src={embedUrl}
+            className="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
       </div>
     </div>
   );
