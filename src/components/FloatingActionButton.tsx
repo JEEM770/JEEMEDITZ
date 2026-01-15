@@ -82,21 +82,36 @@ const FloatingActionButton = () => {
                 href={link.href}
                 target={link.href.startsWith('http') ? '_blank' : undefined}
                 rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                initial={{ opacity: 0, scale: 0, x: 20 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0, x: 20 }}
+                initial={{ opacity: 0, scale: 0, y: 20 }}
+                animate={{ 
+                  opacity: 1, 
+                  scale: 1, 
+                  y: 0,
+                }}
+                exit={{ opacity: 0, scale: 0, y: 20 }}
+                whileHover={{ 
+                  scale: 1.1, 
+                  x: -5,
+                  transition: { type: 'spring', stiffness: 400, damping: 15 }
+                }}
+                whileTap={{ scale: 0.95 }}
                 transition={{ 
                   delay: link.delay,
                   type: 'spring',
-                  stiffness: 300,
-                  damping: 20
+                  stiffness: 400,
+                  damping: 15
                 }}
-                className={`flex items-center gap-3 px-4 py-3 rounded-full ${link.color} backdrop-blur-sm border border-white/10 shadow-lg hover:scale-105 transition-transform duration-200 group`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-full ${link.color} backdrop-blur-sm border border-white/10 shadow-lg group`}
               >
                 <span className="text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
                   {link.label}
                 </span>
-                <link.icon className="w-5 h-5" />
+                <motion.div
+                  whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <link.icon className="w-5 h-5" />
+                </motion.div>
               </motion.a>
             ))}
           </div>
@@ -107,33 +122,67 @@ const FloatingActionButton = () => {
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         className="relative w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-[0_0_30px_hsl(var(--primary)/0.4)] hover:shadow-[0_0_50px_hsl(var(--primary)/0.6)] transition-shadow duration-300 flex items-center justify-center group"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        animate={{ rotate: isOpen ? 45 : 0 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        animate={isOpen ? { rotate: 45 } : { rotate: 0, y: [0, -8, 0, -4, 0] }}
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.9 }}
+        transition={{ 
+          type: 'spring', 
+          stiffness: 400, 
+          damping: 17,
+          y: {
+            duration: 1.5,
+            repeat: Infinity,
+            repeatDelay: 3,
+            ease: "easeInOut"
+          }
+        }}
       >
-        {/* Pulse animation ring */}
-        <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-20" />
+        {/* Pulse animation rings */}
+        <motion.span 
+          className="absolute inset-0 rounded-full bg-primary"
+          animate={{ 
+            scale: [1, 1.5, 1.8],
+            opacity: [0.3, 0.15, 0]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeOut"
+          }}
+        />
+        <motion.span 
+          className="absolute inset-0 rounded-full bg-primary"
+          animate={{ 
+            scale: [1, 1.3, 1.5],
+            opacity: [0.2, 0.1, 0]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeOut",
+            delay: 0.5
+          }}
+        />
         
         {/* Icon */}
         <AnimatePresence mode="wait">
           {isOpen ? (
             <motion.div
               key="close"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             >
               <X className="w-6 h-6" />
             </motion.div>
           ) : (
             <motion.div
               key="open"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             >
               <Plus className="w-6 h-6" />
             </motion.div>
@@ -141,7 +190,12 @@ const FloatingActionButton = () => {
         </AnimatePresence>
 
         {/* Glow effect on hover */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-300" />
+        <motion.div 
+          className="absolute inset-0 rounded-full bg-gradient-to-r from-primary to-accent blur-xl"
+          initial={{ opacity: 0 }}
+          whileHover={{ opacity: 0.4 }}
+          transition={{ duration: 0.3 }}
+        />
       </motion.button>
     </div>
   );
