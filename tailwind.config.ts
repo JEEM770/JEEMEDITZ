@@ -18,8 +18,9 @@ export default {
 			}
 		},
 		extend: {
-			fontFamily: {
-				sans: ['Space Grotesk', 'sans-serif'],
+		fontFamily: {
+				sans: ['Open Sans', 'sans-serif'],
+				display: ['Raleway', 'sans-serif'],
 				mono: ['JetBrains Mono', 'monospace'],
 			},
 			colors: {
