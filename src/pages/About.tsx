@@ -6,6 +6,7 @@ import { motion, useInView } from 'framer-motion';
 import { CursorGlowCard } from '@/components/ui/cursor-glow-card';
 import { CursorSpotlight } from '@/components/ui/cursor-spotlight';
 import { AnimatedText, AnimatedCharacters } from '@/components/ui/animated-text';
+import { SweepRevealHeading } from '@/components/ui/gradient-reveal-text';
 
 const About = () => {
   const [animatedValues, setAnimatedValues] = useState<{ [key: string]: number }>({});
@@ -367,19 +368,24 @@ const About = () => {
         <div className="absolute inset-0 bg-card/30" />
         
         <div className="relative max-w-7xl mx-auto">
-          <motion.div 
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="text-center mb-20">
             <h2 className="text-display-lg tracking-heading mb-6">
-              <span className="text-foreground">Education &</span>{" "}
-              <span className="text-gradient">Journey</span>
+              <SweepRevealHeading 
+                normalText="Education &" 
+                gradientText="Journey" 
+                delay={0.1}
+              />
             </h2>
-            <p className="text-body text-muted-foreground">A timeline of growth and learning</p>
-          </motion.div>
+            <motion.p 
+              className="text-body text-muted-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              A timeline of growth and learning
+            </motion.p>
+          </div>
 
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-2 gap-8"
@@ -454,19 +460,24 @@ const About = () => {
         <div className="absolute inset-0 bg-gradient-glow" />
         
         <div className="relative max-w-7xl mx-auto">
-          <motion.div 
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="text-center mb-20">
             <h2 className="text-display-lg tracking-heading mb-6">
-              <span className="text-foreground">Experience &</span>{" "}
-              <span className="text-gradient">Expertise</span>
+              <SweepRevealHeading 
+                normalText="Experience &" 
+                gradientText="Expertise" 
+                delay={0.1}
+              />
             </h2>
-            <p className="text-body text-muted-foreground">Years of dedicated practice and growth</p>
-          </motion.div>
+            <motion.p 
+              className="text-body text-muted-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              Years of dedicated practice and growth
+            </motion.p>
+          </div>
 
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
@@ -552,19 +563,24 @@ const About = () => {
         <div className="absolute inset-0 bg-card/30" />
         
         <div className="relative max-w-7xl mx-auto">
-          <motion.div 
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="text-center mb-20">
             <h2 className="text-display-lg tracking-heading mb-6">
-              <span className="text-foreground">Technical</span>{" "}
-              <span className="text-gradient">Skills</span>
+              <SweepRevealHeading 
+                normalText="Technical" 
+                gradientText="Skills" 
+                delay={0.1}
+              />
             </h2>
-            <p className="text-body text-muted-foreground">Proficiency across industry-standard tools</p>
-          </motion.div>
+            <motion.p 
+              className="text-body text-muted-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              Proficiency across industry-standard tools
+            </motion.p>
+          </div>
 
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -689,16 +705,13 @@ const About = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <motion.h2 
-            className="text-display-lg tracking-heading mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-foreground">My</span>{" "}
-            <span className="text-gradient">Philosophy</span>
-          </motion.h2>
+          <h2 className="text-display-lg tracking-heading mb-12">
+            <SweepRevealHeading 
+              normalText="My" 
+              gradientText="Philosophy" 
+              delay={0.1}
+            />
+          </h2>
           
           <motion.div
             initial={{ opacity: 0, y: 40 }}
