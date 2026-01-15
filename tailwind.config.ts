@@ -23,6 +23,16 @@ export default {
 				display: ['Sora', 'sans-serif'],
 				mono: ['JetBrains Mono', 'monospace'],
 			},
+			fontSize: {
+				'display-lg': ['clamp(2rem, 6vw, 4.5rem)', { lineHeight: '1.05', letterSpacing: '-0.04em' }],
+				'display-sm': ['clamp(1.25rem, 3vw, 2rem)', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+				'body-lg': ['1.375rem', { lineHeight: '1.8', letterSpacing: '-0.01em' }],
+				'body': ['1.125rem', { lineHeight: '1.75', letterSpacing: '-0.01em' }],
+			},
+			letterSpacing: {
+				'display': '-0.05em',
+				'heading': '-0.03em',
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
