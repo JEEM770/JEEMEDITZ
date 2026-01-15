@@ -336,10 +336,17 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
       </div>
 
       {/* Video Container - Properly Centered */}
-      <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-sm h-auto aspect-[9/16] max-h-[85vh]">
+      <div className="w-full h-full flex items-center justify-center p-4 pt-16 pb-20">
+        <div 
+          className="relative rounded-xl overflow-hidden border border-white/10"
+          style={{ 
+            width: 'min(100%, 360px)', 
+            height: 'min(85vh, 640px)',
+            aspectRatio: '9/16'
+          }}
+        >
           {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/90 z-10 rounded-xl">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/90 z-10">
               <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
           )}
@@ -347,7 +354,7 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
             ref={iframeRef}
             key={`${videoId}-${currentIndex}`}
             src={embedUrl}
-            className="absolute inset-0 w-full h-full rounded-xl border border-white/10"
+            className="w-full h-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
