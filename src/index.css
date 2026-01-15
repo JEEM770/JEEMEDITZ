@@ -160,6 +160,23 @@
       0 0 40px hsl(var(--primary) / 0.2);
   }
 
+  /* Glow wrapper for gradient text */
+  .glow-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .glow-wrapper::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    color: hsl(var(--primary));
+    filter: blur(20px);
+    opacity: 0.6;
+  }
+
   .text-hero {
     font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 700;

@@ -128,8 +128,9 @@ const Services = () => {
         <div className="absolute inset-0 bg-gradient-glow" />
         
         <div className="relative max-w-7xl mx-auto text-center">
-          <h1 className="text-hero glow-text animate-slide-up">
-            Creative <span className="text-gradient">Services</span>
+          <h1 className="text-hero animate-slide-up">
+            <span className="text-foreground glow-text">Creative</span>{" "}
+            <span className="text-gradient">Services</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Professional video editing, cinematography, and design services tailored to bring your vision to life. 
@@ -288,8 +289,9 @@ const Services = () => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
         
         <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gradient glow-text">
-            Ready to Start Your Project?
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+            <span className="text-foreground">Ready to Start Your</span>{" "}
+            <span className="text-gradient">Project?</span>
           </h2>
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
             Let's discuss your vision and create something amazing together. 
