@@ -3,8 +3,14 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GlowButton } from '@/components/ui/glow-button';
 import { Badge } from '@/components/ui/badge';
+import { motion } from 'framer-motion';
+import { CursorGlowCard } from '@/components/ui/cursor-glow-card';
+import { CursorSpotlight } from '@/components/ui/cursor-spotlight';
+import { useState } from 'react';
 
 const Services = () => {
+  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
+
   const services = [
     {
       icon: Video,
@@ -119,6 +125,31 @@ const Services = () => {
       popular: false
     }
   ];
+
+  const processSteps = [
+    { step: "01", title: "Consultation", description: "Discuss your vision and requirements" },
+    { step: "02", title: "Planning", description: "Create detailed project plan" },
+    { step: "03", title: "Production", description: "Execute with regular updates" },
+    { step: "04", title: "Delivery", description: "Final review and delivery" }
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      filter: 'blur(0px)',
+      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }
+    }
+  };
 
   return (
     <div className="min-h-screen pt-24">
@@ -255,12 +286,23 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Process */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+      {/* Process - Cursor Interactive */}
+      <CursorSpotlight
+        spotlightSize={700}
+        spotlightColor="hsl(var(--primary))"
+        spotlightOpacity={0.12}
+        className="py-24 px-4 sm:px-6 lg:px-8 relative"
+      >
         <div className="absolute inset-0 bg-gradient-glow" />
         
         <div className="relative max-w-7xl mx-auto">
-          <div className="text-center mb-20">
+          <motion.div 
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
             <h2 className="text-4xl lg:text-6xl font-bold mb-6">
               <span className="text-foreground">My</span>{" "}
               <span className="text-gradient">Process</span>
@@ -268,26 +310,122 @@ const Services = () => {
             <p className="text-xl text-muted-foreground">
               A streamlined workflow for exceptional results
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              { step: "01", title: "Consultation", description: "Discuss your vision and requirements" },
-              { step: "02", title: "Planning", description: "Create detailed project plan" },
-              { step: "03", title: "Production", description: "Execute with regular updates" },
-              { step: "04", title: "Delivery", description: "Final review and delivery" }
-            ].map((phase, index) => (
-              <div key={phase.step} className="text-center group">
-                <div className="w-20 h-20 bg-primary/10 backdrop-blur-sm border border-primary/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-mono font-bold text-primary group-hover:bg-primary/20 group-hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] transition-all duration-500">
-                  {phase.step}
-                </div>
-                <h3 className="text-xl font-semibold mb-3 group-hover:text-gradient transition-all duration-300">{phase.title}</h3>
-                <p className="text-muted-foreground">{phase.description}</p>
-              </div>
+          {/* Timeline connector */}
+          <div className="relative">
+            <motion.div 
+              className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-[2px] z-0"
+              style={{
+                background: 'linear-gradient(90deg, transparent 0%, hsl(var(--primary)/0.4) 20%, hsl(var(--primary)/0.4) 80%, transparent 100%)'
+              }}
+              initial={{ scaleX: 0, opacity: 0 }}
+              whileInView={{ scaleX: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+            />
+            
+            {/* Glowing dots on timeline */}
+            {processSteps.map((_, index) => (
+              <motion.div
+                key={index}
+                className="hidden md:block absolute top-[38px] w-2 h-2 rounded-full bg-primary z-10"
+                style={{ 
+                  left: `calc(${12.5 + (index * 25)}% + ${index === 0 ? '40px' : index === 3 ? '-40px' : '0px'})`,
+                  boxShadow: '0 0 10px hsl(var(--primary)), 0 0 20px hsl(var(--primary)/0.5)'
+                }}
+                initial={{ scale: 0, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.5 + index * 0.15 }}
+              />
             ))}
+
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+            >
+              {processSteps.map((phase, index) => (
+                <motion.div
+                  key={phase.step}
+                  variants={itemVariants}
+                  onMouseEnter={() => setHoveredStep(index)}
+                  onMouseLeave={() => setHoveredStep(null)}
+                >
+                  <CursorGlowCard
+                    glowColor="hsl(var(--primary))"
+                    glowIntensity="medium"
+                    tiltEffect={true}
+                    className="h-full"
+                  >
+                    <div 
+                      className={`text-center p-6 rounded-2xl bg-card/50 backdrop-blur-xl border border-white/10 h-full transition-all duration-500 ${
+                        hoveredStep !== null && hoveredStep !== index ? 'opacity-50' : 'opacity-100'
+                      }`}
+                    >
+                      {/* Step Number */}
+                      <motion.div 
+                        className="w-20 h-20 bg-primary/10 backdrop-blur-sm border border-primary/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-mono font-bold text-primary relative overflow-hidden"
+                        whileHover={{ 
+                          scale: 1.1, 
+                          rotate: [0, -5, 5, 0],
+                          boxShadow: '0 0 40px hsl(var(--primary)/0.5)'
+                        }}
+                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        {/* Animated gradient border */}
+                        <motion.div
+                          className="absolute inset-0 rounded-2xl"
+                          style={{
+                            background: 'conic-gradient(from 0deg, transparent, hsl(var(--primary)/0.5), transparent)',
+                          }}
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                        />
+                        <span className="relative z-10 bg-card rounded-xl w-[calc(100%-4px)] h-[calc(100%-4px)] flex items-center justify-center">
+                          {phase.step}
+                        </span>
+                      </motion.div>
+
+                      {/* Title */}
+                      <motion.h3 
+                        className="text-xl font-semibold mb-3"
+                        initial={{ opacity: 0.8 }}
+                        whileHover={{ opacity: 1 }}
+                      >
+                        <span className={hoveredStep === index ? 'text-gradient' : 'text-foreground transition-all duration-300'}>
+                          {phase.title}
+                        </span>
+                      </motion.h3>
+
+                      {/* Description */}
+                      <motion.p 
+                        className="text-muted-foreground text-sm"
+                        initial={{ opacity: 0.7 }}
+                        animate={{ opacity: hoveredStep === index ? 1 : 0.7 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {phase.description}
+                      </motion.p>
+
+                      {/* Decorative elements */}
+                      <motion.div
+                        className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-primary/30"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: hoveredStep === index ? 1 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    </div>
+                  </CursorGlowCard>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </div>
-      </section>
+      </CursorSpotlight>
 
       {/* CTA */}
       <section className="py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
