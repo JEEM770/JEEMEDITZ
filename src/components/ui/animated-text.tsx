@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, type Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 interface AnimatedTextProps {
@@ -7,10 +7,10 @@ interface AnimatedTextProps {
   className?: string;
   delay?: number;
   staggerDelay?: number;
-  animation?: 'fadeUp' | 'fadeIn' | 'blur' | 'word' | 'blurSharp';
+  animation?: 'fadeUp' | 'fadeIn' | 'blur' | 'word';
 }
 
-const easeSmooth: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const easeSmooth = [0.16, 1, 0.3, 1] as const;
 
 export const AnimatedText = ({
   text,
@@ -61,20 +61,6 @@ export const AnimatedText = ({
             transition: { duration: 0.8, ease: easeSmooth },
           },
         };
-      case 'blurSharp':
-        return {
-          hidden: { opacity: 0, y: 20, filter: 'blur(12px)' },
-          visible: {
-            opacity: 1,
-            y: 0,
-            filter: 'blur(0px)',
-            transition: { 
-              duration: 0.7, 
-              ease: easeSmooth,
-              filter: { duration: 0.5 },
-            },
-          },
-        };
       case 'word':
         return {
           hidden: { opacity: 0, y: 20 },
@@ -120,9 +106,6 @@ interface AnimatedCharactersProps {
   className?: string;
   delay?: number;
   staggerDelay?: number;
-  withRotation?: boolean;
-  withScale?: boolean;
-  withColorFade?: boolean;
 }
 
 export const AnimatedCharacters = ({
@@ -130,9 +113,6 @@ export const AnimatedCharacters = ({
   className,
   delay = 0,
   staggerDelay = 0.03,
-  withRotation = true,
-  withScale = true,
-  withColorFade = false,
 }: AnimatedCharactersProps) => {
   const characters = text.split('');
 
@@ -147,24 +127,13 @@ export const AnimatedCharacters = ({
     },
   };
 
-  const childVariants: Variants = {
-    hidden: { 
-      opacity: 0, 
-      y: 20, 
-      filter: 'blur(8px)',
-      rotateX: withRotation ? 45 : 0,
-      scale: withScale ? 0.8 : 1,
-    },
+  const childVariants = {
+    hidden: { opacity: 0, y: 20, filter: 'blur(8px)' },
     visible: {
       opacity: 1,
       y: 0,
       filter: 'blur(0px)',
-      rotateX: 0,
-      scale: 1,
-      transition: { 
-        duration: 0.5, 
-        ease: easeSmooth,
-      },
+      transition: { duration: 0.4, ease: easeSmooth },
     },
   };
 
@@ -175,24 +144,13 @@ export const AnimatedCharacters = ({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
-      style={{ perspective: '1000px' }}
     >
       {characters.map((char, index) => (
         <motion.span
           key={index}
-          className={cn(
-            "inline-block",
-            withColorFade && "text-muted-foreground"
-          )}
+          className="inline-block"
           variants={childVariants}
-          style={{ 
-            whiteSpace: char === ' ' ? 'pre' : 'normal',
-            transformStyle: 'preserve-3d',
-          }}
-          whileInView={withColorFade ? { 
-            color: 'inherit',
-            transition: { delay: index * 0.03 + 0.3 }
-          } : undefined}
+          style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}
         >
           {char}
         </motion.span>
