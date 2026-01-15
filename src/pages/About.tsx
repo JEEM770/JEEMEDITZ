@@ -1,4 +1,4 @@
-import { Calendar, GraduationCap, Award, Target, Heart, Zap } from 'lucide-react';
+import { Calendar, GraduationCap, Award, Target, Zap } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useState, useEffect, useRef } from 'react';
@@ -115,8 +115,9 @@ const About = () => {
         <div className="relative max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h1 className="text-hero glow-text animate-slide-up">
-                About <span className="text-gradient">JEEM</span>
+              <h1 className="text-hero animate-slide-up">
+                <span className="text-foreground glow-text">About</span>{" "}
+                <span className="text-gradient">JEEM</span>
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
                 At just 18 years old, I've dedicated nearly half my life to mastering the art of visual storytelling. 
@@ -138,9 +139,6 @@ const About = () => {
                   alt="JEEM - Creative Professional"
                   className="relative w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-2xl border border-primary/20 shadow-[0_0_40px_hsl(var(--primary)/0.2)]"
                 />
-                <div className="absolute -bottom-4 -right-4 bg-primary/10 backdrop-blur-sm border border-primary/30 text-primary p-4 rounded-xl shadow-[0_0_20px_hsl(var(--primary)/0.3)]">
-                  <Heart className="w-8 h-8" />
-                </div>
               </div>
             </div>
           </div>

@@ -23,9 +23,11 @@ const Home = () => {
           {/* Content */}
           <div className="space-y-8">
             <div className="space-y-6">
-              <h1 className="text-hero glow-text animate-slide-up">
-                Visual Storyteller & Creative Director
-              </h1>
+            <h1 className="text-hero animate-slide-up">
+              <span className="text-foreground glow-text">Visual Storyteller &</span>
+              <br />
+              <span className="text-gradient">Creative Director</span>
+            </h1>
               <p className="text-xl text-muted-foreground leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
                 I'm <span className="text-gradient font-semibold">JEEM</span>, an 18-year-old passionate video editor,
                 cinematographer, and graphic designer currently pursuing BSc in Computer Science and Engineering. 
@@ -125,8 +127,9 @@ const Home = () => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
         
         <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gradient glow-text">
-            Ready to Create Something Amazing?
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+            <span className="text-foreground">Ready to Create Something</span>{" "}
+            <span className="text-gradient">Amazing?</span>
           </h2>
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
             Let's collaborate to bring your vision to life with professional video editing, 

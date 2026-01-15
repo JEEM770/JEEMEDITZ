@@ -133,8 +133,9 @@ const Contact = () => {
         <div className="absolute inset-0 bg-gradient-glow" />
         
         <div className="relative max-w-7xl mx-auto text-center">
-          <h1 className="text-hero glow-text animate-slide-up">
-            Let's <span className="text-gradient">Connect</span>
+          <h1 className="text-hero animate-slide-up">
+            <span className="text-foreground glow-text">Let's</span>{" "}
+            <span className="text-gradient">Connect</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Ready to bring your creative vision to life? I'm here to help with your video editing, 
@@ -144,7 +145,7 @@ const Contact = () => {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Contact Form */}
           <div>
             <Card className="card-glass border-border/30 border-l-4 border-l-primary">

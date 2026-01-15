@@ -147,8 +147,9 @@ const Portfolio = () => {
         <div className="absolute inset-0 bg-gradient-glow" />
         
         <div className="relative max-w-7xl mx-auto text-center">
-          <h1 className="text-hero glow-text animate-slide-up">
-            My <span className="text-gradient">Portfolio</span>
+          <h1 className="text-hero animate-slide-up">
+            <span className="text-foreground glow-text">My</span>{" "}
+            <span className="text-gradient">Portfolio</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Explore my creative journey through video editing, cinematography, and visual design projects.
