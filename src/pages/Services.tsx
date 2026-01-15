@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GlowButton } from '@/components/ui/glow-button';
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
-import { CursorGlowCard } from '@/components/ui/cursor-glow-card';
 import { CursorSpotlight } from '@/components/ui/cursor-spotlight';
+import { AnimatedText } from '@/components/ui/animated-text';
 import { useState } from 'react';
 
 const Services = () => {
@@ -137,7 +137,7 @@ const Services = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+      transition: { staggerChildren: 0.1, delayChildren: 0.1 }
     }
   };
 
@@ -154,85 +154,128 @@ const Services = () => {
   return (
     <div className="min-h-screen pt-24">
       {/* Header */}
-      <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="orb orb-primary w-[400px] h-[400px] -top-20 -right-20 opacity-50" />
+      <CursorSpotlight
+        spotlightSize={600}
+        spotlightOpacity={0.12}
+        className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      >
+        <motion.div 
+          className="orb orb-primary w-[400px] h-[400px] -top-20 -right-20 opacity-50"
+          animate={{ x: [0, -20, 0], y: [0, 15, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        />
         <div className="absolute inset-0 bg-grid opacity-20" />
         
-        <div className="relative max-w-7xl mx-auto text-center">
-          <h1 className="text-hero animate-slide-up">
-            <span className="text-foreground">Creative</span>{" "}
-            <span className="text-gradient">Services</span>
+        <motion.div 
+          className="relative max-w-7xl mx-auto text-center"
+          initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <h1 className="text-hero">
+            <AnimatedText text="Creative" className="text-foreground" animation="blur" delay={0.1} />
+            {" "}
+            <AnimatedText text="Services" className="text-gradient" animation="blur" delay={0.3} />
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <motion.p 
+            className="text-xl text-muted-foreground max-w-3xl mx-auto mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
             Professional video editing, cinematography, and design services tailored to bring your vision to life.
-          </p>
-        </div>
-      </section>
+          </motion.p>
+        </motion.div>
+      </CursorSpotlight>
 
       {/* Services Grid */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+      <CursorSpotlight
+        spotlightSize={700}
+        spotlightOpacity={0.1}
+        className="py-24 px-4 sm:px-6 lg:px-8 relative"
+      >
         <div className="absolute inset-0 bg-gradient-glow" />
         
         <div className="relative max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service, index) => (
-              <Card 
-                key={service.title} 
-                className={`card-glass group ${service.popular ? 'border-primary/30 shadow-[0_0_30px_hsl(var(--primary)/0.1)]' : ''}`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center space-x-4">
-                      <span className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_25px_hsl(var(--primary)/0.3)] transition-all duration-500">
-                        <service.icon className="w-7 h-7 text-primary" />
-                      </span>
-                      <span className="text-xl group-hover:text-gradient transition-all duration-300">{service.title}</span>
-                    </CardTitle>
-                    {service.popular && (
-                      <Badge className="bg-primary text-primary-foreground shadow-[0_0_15px_hsl(var(--primary)/0.4)]">Popular</Badge>
-                    )}
-                  </div>
-                  <p className="text-muted-foreground mt-4">{service.description}</p>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border">
-                        <Clock className="w-5 h-5 text-primary" />
-                        <span className="font-mono text-sm">{service.timeline}</span>
-                      </div>
-                      <div className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border">
-                        <DollarSign className="w-5 h-5 text-primary" />
-                        <span className="font-mono text-sm">{service.pricing}</span>
-                      </div>
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            {services.map((service) => (
+              <motion.div key={service.title} variants={itemVariants}>
+                <Card 
+                  className={`card-glass group h-full ${service.popular ? 'border-primary/30 shadow-[0_0_30px_hsl(var(--primary)/0.1)]' : ''}`}
+                >
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="flex items-center space-x-4">
+                        <motion.span 
+                          className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_25px_hsl(var(--primary)/0.3)] transition-all duration-500"
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <service.icon className="w-7 h-7 text-primary" />
+                        </motion.span>
+                        <span className="text-xl group-hover:text-gradient transition-all duration-300">{service.title}</span>
+                      </CardTitle>
+                      {service.popular && (
+                        <Badge className="bg-primary text-primary-foreground shadow-[0_0_15px_hsl(var(--primary)/0.4)]">Popular</Badge>
+                      )}
                     </div>
+                    <p className="text-muted-foreground mt-4">{service.description}</p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border">
+                          <Clock className="w-5 h-5 text-primary" />
+                          <span className="font-mono text-sm">{service.timeline}</span>
+                        </div>
+                        <div className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border">
+                          <DollarSign className="w-5 h-5 text-primary" />
+                          <span className="font-mono text-sm">{service.pricing}</span>
+                        </div>
+                      </div>
 
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-gradient">What's Included:</h4>
-                      <ul className="space-y-2">
-                        {service.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center space-x-3 text-sm text-muted-foreground">
-                            <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <div className="space-y-3">
+                        <h4 className="font-semibold text-gradient">What's Included:</h4>
+                        <ul className="space-y-2">
+                          {service.features.map((feature, idx) => (
+                            <li key={idx} className="flex items-center space-x-3 text-sm text-muted-foreground">
+                              <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </CursorSpotlight>
 
       {/* Packages */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+      <CursorSpotlight
+        spotlightSize={600}
+        spotlightOpacity={0.08}
+        className="py-24 px-4 sm:px-6 lg:px-8 relative"
+      >
         <div className="absolute inset-0 bg-card/30" />
         
         <div className="relative max-w-7xl mx-auto">
-          <div className="text-center mb-20">
+          <motion.div 
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
             <h2 className="text-4xl lg:text-6xl font-bold mb-6">
               <span className="text-foreground">Service</span>{" "}
               <span className="text-gradient">Packages</span>
@@ -240,51 +283,66 @@ const Services = () => {
             <p className="text-xl text-muted-foreground">
               Choose the package that best fits your project needs
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {packages.map((pkg, index) => (
-              <Card 
-                key={pkg.name} 
-                className={`card-glass group relative ${pkg.popular ? 'border-primary/50 shadow-[0_0_40px_hsl(var(--primary)/0.15)]' : ''}`}
-              >
-                {pkg.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-primary text-primary-foreground px-4 py-1 shadow-[0_0_20px_hsl(var(--primary)/0.5)]">Most Popular</Badge>
-                  </div>
-                )}
-                <CardHeader className="pt-8">
-                  <div className="text-center">
-                    <CardTitle className="text-2xl group-hover:text-gradient transition-all duration-300">{pkg.name}</CardTitle>
-                    <div className="text-5xl font-bold text-gradient font-mono mt-6">{pkg.price}</div>
-                    <p className="text-sm text-muted-foreground mt-4">{pkg.description}</p>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-4 mb-10">
-                    {pkg.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center space-x-3 text-sm">
-                        <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <GlowButton 
-                    asChild 
-                    className="w-full"
-                    variant={pkg.popular ? 'default' : 'outline'}
-                  >
-                    <Link to="/contact" className="group">
-                      Get Started
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Link>
-                  </GlowButton>
-                </CardContent>
-              </Card>
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            {packages.map((pkg) => (
+              <motion.div key={pkg.name} variants={itemVariants}>
+                <Card 
+                  className={`card-glass group relative h-full ${pkg.popular ? 'border-primary/50 shadow-[0_0_40px_hsl(var(--primary)/0.15)]' : ''}`}
+                >
+                  {pkg.popular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                      <Badge className="bg-primary text-primary-foreground px-4 py-1 shadow-[0_0_20px_hsl(var(--primary)/0.5)]">Most Popular</Badge>
+                    </div>
+                  )}
+                  <CardHeader className="pt-8">
+                    <div className="text-center">
+                      <CardTitle className="text-2xl group-hover:text-gradient transition-all duration-300">{pkg.name}</CardTitle>
+                      <motion.div 
+                        className="text-5xl font-bold text-gradient font-mono mt-6"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {pkg.price}
+                      </motion.div>
+                      <p className="text-sm text-muted-foreground mt-4">{pkg.description}</p>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-4 mb-10">
+                      {pkg.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center space-x-3 text-sm">
+                          <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
+                      <GlowButton 
+                        asChild 
+                        className="w-full"
+                        variant={pkg.popular ? 'default' : 'outline'}
+                      >
+                        <Link to="/contact" className="group">
+                          Get Started
+                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                        </Link>
+                      </GlowButton>
+                    </motion.div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </CursorSpotlight>
 
       {/* Process - Cursor Interactive */}
       <CursorSpotlight
@@ -355,71 +413,65 @@ const Services = () => {
                   onMouseEnter={() => setHoveredStep(index)}
                   onMouseLeave={() => setHoveredStep(null)}
                 >
-                  <CursorGlowCard
-                    glowColor="hsl(var(--primary))"
-                    glowIntensity="medium"
-                    tiltEffect={true}
-                    className="h-full"
+                  <motion.div 
+                    className={`text-center p-6 rounded-2xl bg-card/50 backdrop-blur-xl border border-white/10 h-full transition-all duration-500 ${
+                      hoveredStep !== null && hoveredStep !== index ? 'opacity-50' : 'opacity-100'
+                    }`}
+                    whileHover={{ y: -5 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <div 
-                      className={`text-center p-6 rounded-2xl bg-card/50 backdrop-blur-xl border border-white/10 h-full transition-all duration-500 ${
-                        hoveredStep !== null && hoveredStep !== index ? 'opacity-50' : 'opacity-100'
-                      }`}
+                    {/* Step Number */}
+                    <motion.div 
+                      className="w-20 h-20 bg-primary/10 backdrop-blur-sm border border-primary/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-mono font-bold text-primary relative overflow-hidden"
+                      whileHover={{ 
+                        scale: 1.05, 
+                        boxShadow: '0 0 40px hsl(var(--primary)/0.5)'
+                      }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      {/* Step Number */}
-                      <motion.div 
-                        className="w-20 h-20 bg-primary/10 backdrop-blur-sm border border-primary/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-mono font-bold text-primary relative overflow-hidden"
-                        whileHover={{ 
-                          scale: 1.1, 
-                          rotate: [0, -5, 5, 0],
-                          boxShadow: '0 0 40px hsl(var(--primary)/0.5)'
-                        }}
-                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      >
-                        {/* Animated gradient border */}
-                        <motion.div
-                          className="absolute inset-0 rounded-2xl"
-                          style={{
-                            background: 'conic-gradient(from 0deg, transparent, hsl(var(--primary)/0.5), transparent)',
-                          }}
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-                        />
-                        <span className="relative z-10 bg-card rounded-xl w-[calc(100%-4px)] h-[calc(100%-4px)] flex items-center justify-center">
-                          {phase.step}
-                        </span>
-                      </motion.div>
-
-                      {/* Title */}
-                      <motion.h3 
-                        className="text-xl font-semibold mb-3"
-                        initial={{ opacity: 0.8 }}
-                        whileHover={{ opacity: 1 }}
-                      >
-                        <span className={hoveredStep === index ? 'text-gradient' : 'text-foreground transition-all duration-300'}>
-                          {phase.title}
-                        </span>
-                      </motion.h3>
-
-                      {/* Description */}
-                      <motion.p 
-                        className="text-muted-foreground text-sm"
-                        initial={{ opacity: 0.7 }}
-                        animate={{ opacity: hoveredStep === index ? 1 : 0.7 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        {phase.description}
-                      </motion.p>
-
-                      {/* Decorative elements */}
+                      {/* Animated gradient border */}
                       <motion.div
-                        className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-primary/30"
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: hoveredStep === index ? 1 : 0 }}
-                        transition={{ duration: 0.3 }}
+                        className="absolute inset-0 rounded-2xl"
+                        style={{
+                          background: 'conic-gradient(from 0deg, transparent, hsl(var(--primary)/0.5), transparent)',
+                        }}
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
                       />
-                    </div>
-                  </CursorGlowCard>
+                      <span className="relative z-10 bg-card rounded-xl w-[calc(100%-4px)] h-[calc(100%-4px)] flex items-center justify-center">
+                        {phase.step}
+                      </span>
+                    </motion.div>
+
+                    {/* Title */}
+                    <motion.h3 
+                      className="text-xl font-semibold mb-3"
+                      initial={{ opacity: 0.8 }}
+                      whileHover={{ opacity: 1 }}
+                    >
+                      <span className={hoveredStep === index ? 'text-gradient' : 'text-foreground transition-all duration-300'}>
+                        {phase.title}
+                      </span>
+                    </motion.h3>
+
+                    {/* Description */}
+                    <motion.p 
+                      className="text-muted-foreground text-sm"
+                      initial={{ opacity: 0.7 }}
+                      animate={{ opacity: hoveredStep === index ? 1 : 0.7 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {phase.description}
+                    </motion.p>
+
+                    {/* Decorative elements */}
+                    <motion.div
+                      className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-primary/30"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: hoveredStep === index ? 1 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </motion.div>
                 </motion.div>
               ))}
             </motion.div>
@@ -428,11 +480,25 @@ const Services = () => {
       </CursorSpotlight>
 
       {/* CTA */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="orb orb-accent w-[300px] h-[300px] -bottom-20 -left-20 opacity-40" />
+      <CursorSpotlight
+        spotlightSize={500}
+        spotlightOpacity={0.1}
+        className="py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+      >
+        <motion.div 
+          className="orb orb-accent w-[300px] h-[300px] -bottom-20 -left-20 opacity-40"
+          animate={{ x: [0, 20, 0], y: [0, -15, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
         <div className="absolute inset-0 bg-grid opacity-10" />
         
-        <div className="relative max-w-4xl mx-auto text-center">
+        <motion.div 
+          className="relative max-w-4xl mx-auto text-center"
+          initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <h2 className="text-4xl lg:text-6xl font-bold mb-8">
             <span className="text-foreground">Ready to Start</span>
             <br />
@@ -441,14 +507,16 @@ const Services = () => {
           <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
             Let's discuss your vision and create something amazing together.
           </p>
-          <GlowButton asChild size="lg" className="text-lg">
-            <Link to="/contact" className="group">
-              Start Your Project
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
-          </GlowButton>
-        </div>
-      </section>
+          <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
+            <GlowButton asChild size="lg" className="text-lg">
+              <Link to="/contact" className="group">
+                Start Your Project
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+              </Link>
+            </GlowButton>
+          </motion.div>
+        </motion.div>
+      </CursorSpotlight>
     </div>
   );
 };
