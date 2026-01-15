@@ -2,9 +2,8 @@ import { ArrowRight, Play, Camera, Video, Palette, Zap, Quote, ChevronLeft, Chev
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ParallaxWrapper from '@/components/ParallaxWrapper';
 
 const Home = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -66,29 +65,9 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Parallax Background Effects */}
+        {/* Background Effects */}
         <div className="absolute inset-0 bg-grid opacity-30" />
         <div className="absolute inset-0 bg-gradient-glow" />
-        
-        {/* Floating Parallax Orbs */}
-        <ParallaxWrapper speed={-0.3} className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-        <ParallaxWrapper speed={0.4} className="absolute top-40 right-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
-        <ParallaxWrapper speed={-0.5} className="absolute bottom-20 left-1/4 w-64 h-64 bg-primary/15 rounded-full blur-2xl pointer-events-none" />
-        <ParallaxWrapper speed={0.2} className="absolute bottom-40 right-1/3 w-48 h-48 bg-accent/20 rounded-full blur-2xl pointer-events-none" />
-        
-        {/* Geometric Shapes with Parallax */}
-        <ParallaxWrapper speed={-0.6} className="absolute top-1/4 left-[15%] opacity-20 pointer-events-none">
-          <div className="w-20 h-20 border-2 border-primary/40 rotate-45" />
-        </ParallaxWrapper>
-        <ParallaxWrapper speed={0.5} className="absolute top-1/3 right-[10%] opacity-20 pointer-events-none">
-          <div className="w-16 h-16 border-2 border-accent/40 rounded-full" />
-        </ParallaxWrapper>
-        <ParallaxWrapper speed={-0.4} className="absolute bottom-1/4 right-[20%] opacity-15 pointer-events-none">
-          <div className="w-24 h-24 border border-primary/30 rotate-12" />
-        </ParallaxWrapper>
-        <ParallaxWrapper speed={0.3} className="absolute bottom-1/3 left-[5%] opacity-15 pointer-events-none">
-          <div className="w-12 h-12 bg-primary/20 rotate-45" />
-        </ParallaxWrapper>
         
         <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
