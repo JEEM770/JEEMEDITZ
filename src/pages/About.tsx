@@ -516,19 +516,50 @@ const About = () => {
               return (
                 <motion.div
                   key={skill.name}
-                  variants={itemVariants}
-                  custom={index}
+                  initial={{ opacity: 0, y: 40, filter: 'blur(12px)', scale: 0.95 }}
+                  whileInView={{ 
+                    opacity: 1, 
+                    y: 0, 
+                    filter: 'blur(0px)', 
+                    scale: 1,
+                  }}
+                  viewport={{ once: true, margin: '-30px' }}
+                  transition={{ 
+                    duration: 0.7, 
+                    delay: index * 0.08,
+                    ease: easeSmooth,
+                  }}
+                  whileHover={{ 
+                    scale: 1.02,
+                    transition: { duration: 0.3 }
+                  }}
                 >
                   <CursorGlowCard glowIntensity="low">
-                    <div 
+                    <motion.div 
                       ref={(el) => (sectionRefs.current[key] = el)}
-                      className="space-y-4 p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border transition-all duration-500 hover:bg-card hover:border-primary/30 group"
+                      className="space-y-4 p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border transition-all duration-500 hover:bg-card hover:border-primary/30 hover:shadow-[0_0_30px_hsl(var(--primary)/0.15)] group"
                     >
-                      <div className="flex justify-between">
-                        <span className="font-medium group-hover:text-gradient transition-all duration-300">{skill.name}</span>
+                      <div className="flex justify-between items-center">
+                        <motion.span 
+                          className="font-medium group-hover:text-gradient transition-all duration-300"
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: index * 0.08 + 0.2 }}
+                        >
+                          {skill.name}
+                        </motion.span>
                         <motion.span 
                           className="text-primary font-mono font-bold"
-                          key={animatedValues[key]}
+                          initial={{ opacity: 0, scale: 0.5 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ 
+                            duration: 0.4, 
+                            delay: index * 0.08 + 0.4,
+                            type: 'spring',
+                            stiffness: 200,
+                          }}
                         >
                           {animatedValues[key] || 0}%
                         </motion.span>
@@ -536,26 +567,35 @@ const About = () => {
                       <div className="relative overflow-hidden rounded-full">
                         <Progress 
                           value={animatedValues[key] || 0} 
-                          className={`h-2 ${isAnimating[key] ? 'shadow-[0_0_15px_hsl(var(--primary)/0.5)]' : ''}`}
+                          className={`h-2.5 ${isAnimating[key] ? 'shadow-[0_0_20px_hsl(var(--primary)/0.6)]' : ''}`}
                         />
-                        {/* Shimmer effect on progress */}
+                        {/* Animated glow on progress bar */}
                         <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                          animate={{
-                            x: ['-100%', '200%'],
+                          className="absolute top-0 left-0 h-full rounded-full bg-gradient-to-r from-primary via-accent to-primary"
+                          style={{ width: `${animatedValues[key] || 0}%` }}
+                          initial={{ opacity: 0 }}
+                          animate={{ 
+                            opacity: isAnimating[key] ? 1 : 0.8,
+                            boxShadow: isAnimating[key] 
+                              ? '0 0 25px hsl(var(--primary) / 0.7), 0 0 50px hsl(var(--primary) / 0.3)' 
+                              : '0 0 10px hsl(var(--primary) / 0.3)',
                           }}
+                          transition={{ duration: 0.3 }}
+                        />
+                        {/* Shimmer effect */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                          animate={{ x: ['-100%', '200%'] }}
                           transition={{
-                            duration: 2,
+                            duration: 1.5,
                             repeat: Infinity,
-                            repeatDelay: 3,
-                            ease: 'linear',
+                            repeatDelay: 4,
+                            ease: 'easeInOut',
                           }}
-                          style={{
-                            width: '50%',
-                          }}
+                          style={{ width: '40%' }}
                         />
                       </div>
-                    </div>
+                    </motion.div>
                   </CursorGlowCard>
                 </motion.div>
               );
