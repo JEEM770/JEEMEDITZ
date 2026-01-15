@@ -15,7 +15,7 @@ export const CursorGlowCard = ({
   className,
   glowColor = 'hsl(var(--primary))',
   glowIntensity = 'medium',
-  tiltEffect = true,
+  tiltEffect = false,
 }: CursorGlowCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
