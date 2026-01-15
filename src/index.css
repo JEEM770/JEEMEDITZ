@@ -6,42 +6,42 @@
 
 @layer base {
   :root {
-    /* LanX Dark Theme - Neon Cyan */
-    --background: 220 20% 4%;
-    --foreground: 210 20% 98%;
+    /* LanX Dark Theme - Deep Navy Blue */
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
 
-    --card: 220 20% 8%;
-    --card-foreground: 210 20% 95%;
+    --card: 222 40% 8%;
+    --card-foreground: 210 40% 95%;
 
-    --popover: 220 20% 6%;
-    --popover-foreground: 210 20% 98%;
+    --popover: 222 45% 6%;
+    --popover-foreground: 210 40% 98%;
 
-    /* Cyan primary */
-    --primary: 165 100% 50%;
-    --primary-foreground: 220 20% 4%;
-    --primary-glow: 165 100% 60%;
+    /* Blue primary - matching LanX */
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 5%;
+    --primary-glow: 217 91% 70%;
 
     /* Dark secondary */
-    --secondary: 220 15% 15%;
-    --secondary-foreground: 210 20% 90%;
+    --secondary: 222 30% 12%;
+    --secondary-foreground: 210 30% 90%;
 
-    --muted: 220 15% 12%;
-    --muted-foreground: 210 10% 55%;
+    --muted: 222 25% 14%;
+    --muted-foreground: 215 20% 55%;
 
-    --accent: 200 100% 60%;
-    --accent-foreground: 220 20% 4%;
+    --accent: 217 80% 50%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 15% 18%;
-    --input: 220 15% 12%;
-    --ring: 165 100% 50%;
+    --border: 222 25% 16%;
+    --input: 222 25% 12%;
+    --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
     /* Glow colors */
-    --glow-primary: 165 100% 50%;
+    --glow-primary: 217 91% 60%;
     --glow-secondary: 200 100% 60%;
 
     /* Transitions */
@@ -54,63 +54,60 @@
     --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.4);
 
     /* Sidebar */
-    --sidebar-background: 220 20% 6%;
-    --sidebar-foreground: 210 20% 90%;
-    --sidebar-primary: 165 100% 50%;
-    --sidebar-primary-foreground: 220 20% 4%;
-    --sidebar-accent: 220 15% 12%;
-    --sidebar-accent-foreground: 210 20% 90%;
-    --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 165 100% 50%;
+    --sidebar-background: 222 45% 6%;
+    --sidebar-foreground: 210 30% 90%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 222 47% 5%;
+    --sidebar-accent: 222 25% 12%;
+    --sidebar-accent-foreground: 210 30% 90%;
+    --sidebar-border: 222 25% 16%;
+    --sidebar-ring: 217 91% 60%;
   }
 
   .light {
-    --background: 210 20% 98%;
-    --foreground: 220 20% 10%;
+    --background: 210 40% 98%;
+    --foreground: 222 47% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card-foreground: 222 47% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover-foreground: 222 47% 10%;
 
-    /* Muted teal primary for light */
-    --primary: 165 80% 32%;
+    /* Blue primary for light mode */
+    --primary: 217 91% 50%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 165 70% 40%;
+    --primary-glow: 217 80% 60%;
 
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 220 20% 20%;
+    --secondary: 210 30% 96%;
+    --secondary-foreground: 222 40% 20%;
 
-    --muted: 210 20% 94%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 210 30% 94%;
+    --muted-foreground: 222 20% 45%;
 
-    --accent: 200 80% 45%;
+    --accent: 217 70% 55%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 94%;
-    --ring: 165 80% 32%;
+    --border: 210 30% 90%;
+    --input: 210 30% 94%;
+    --ring: 217 91% 50%;
 
-    /* Light mode glows are subtle */
-    --glow-primary: 165 80% 32%;
-    --glow-secondary: 200 80% 45%;
-
+    /* Light mode shadows */
     --shadow-glow: 0 4px 20px hsl(0 0% 0% / 0.08);
     --shadow-glow-lg: 0 8px 40px hsl(0 0% 0% / 0.12);
     --shadow-card: 0 2px 12px hsl(0 0% 0% / 0.06);
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 20% 20%;
-    --sidebar-primary: 165 80% 32%;
+    --sidebar-foreground: 222 40% 20%;
+    --sidebar-primary: 217 91% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 20% 96%;
-    --sidebar-accent-foreground: 220 20% 20%;
-    --sidebar-border: 210 20% 90%;
-    --sidebar-ring: 165 80% 32%;
+    --sidebar-accent: 210 30% 96%;
+    --sidebar-accent-foreground: 222 40% 20%;
+    --sidebar-border: 210 30% 90%;
+    --sidebar-ring: 217 91% 50%;
   }
 }
 
@@ -147,7 +144,14 @@
 @layer components {
   /* Text Effects */
   .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    background: linear-gradient(135deg, hsl(var(--foreground)) 0%, hsl(var(--muted-foreground)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-blue {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -155,9 +159,9 @@
 
   .glow-text {
     text-shadow: 
-      0 0 10px hsl(var(--primary) / 0.5),
-      0 0 20px hsl(var(--primary) / 0.3),
-      0 0 40px hsl(var(--primary) / 0.2);
+      0 0 10px hsl(var(--primary) / 0.4),
+      0 0 20px hsl(var(--primary) / 0.2),
+      0 0 40px hsl(var(--primary) / 0.1);
   }
 
   .text-hero {
@@ -175,12 +179,13 @@
   }
 
   .card-hover {
-    transition: transform 0.4s var(--transition-smooth), box-shadow 0.4s var(--transition-smooth);
+    transition: transform 0.4s var(--transition-smooth), box-shadow 0.4s var(--transition-smooth), border-color 0.4s ease;
   }
 
   .card-hover:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px hsl(var(--primary) / 0.1);
+    border-color: hsl(var(--primary) / 0.3);
   }
 
   /* Button Effects */
@@ -246,23 +251,23 @@
   /* Background Effects */
   .bg-grid {
     background-image: 
-      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+      linear-gradient(hsl(var(--border) / 0.2) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.2) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 
   .bg-gradient-radial {
     background: radial-gradient(
       ellipse at center,
-      hsl(var(--primary) / 0.15) 0%,
+      hsl(var(--primary) / 0.08) 0%,
       transparent 50%
     );
   }
 
   .bg-gradient-glow {
     background: 
-      radial-gradient(ellipse at 50% 0%, hsl(var(--primary) / 0.2) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 100%, hsl(var(--accent) / 0.1) 0%, transparent 50%);
+      radial-gradient(ellipse at 50% 0%, hsl(var(--primary) / 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 100%, hsl(var(--accent) / 0.08) 0%, transparent 50%);
   }
 
   /* Link Underline Animation */
@@ -299,7 +304,7 @@
       position: fixed;
       width: 400px;
       height: 400px;
-      background: radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, hsl(var(--primary) / 0.1) 0%, transparent 70%);
       pointer-events: none;
       z-index: 0;
       transform: translate(-50%, -50%);
