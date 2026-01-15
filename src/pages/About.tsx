@@ -248,53 +248,113 @@ const About = () => {
             </motion.div>
 
             <motion.div 
-              className="flex justify-center lg:justify-end"
+              className="flex justify-center lg:justify-end perspective-1000"
               variants={scaleVariants}
               initial="hidden"
               animate="visible"
             >
-              <div 
+              <motion.div 
                 ref={heroImageRef}
                 className="relative group cursor-pointer"
                 style={{
-                  transform: `perspective(1000px) rotateX(${heroMousePos.y * -0.5}deg) rotateY(${heroMousePos.x * 0.5}deg)`,
-                  transition: 'transform 0.1s ease-out',
+                  transformStyle: 'preserve-3d',
                 }}
+                animate={{
+                  rotateX: heroMousePos.y * -0.8,
+                  rotateY: heroMousePos.x * 0.8,
+                }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 300,
+                  damping: 30,
+                  mass: 0.5,
+                }}
+                whileHover={{ scale: 1.02 }}
               >
-                {/* Animated glow ring */}
+                {/* Animated rotating glow ring */}
                 <motion.div 
-                  className="absolute -inset-4 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                  className="absolute -inset-4 rounded-3xl opacity-0 group-hover:opacity-100"
                   style={{
                     background: 'conic-gradient(from 0deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)))',
+                    filter: 'blur(2px)',
                   }}
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                  transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
                 />
+                <motion.div className="absolute -inset-3 bg-background rounded-3xl" />
+                
+                {/* Dynamic blur glow that follows mouse */}
                 <motion.div 
-                  className="absolute -inset-3 bg-background rounded-3xl"
+                  className="absolute -inset-2 rounded-3xl blur-2xl"
+                  style={{
+                    background: `radial-gradient(circle at ${50 + heroMousePos.x}% ${50 + heroMousePos.y}%, hsl(var(--primary) / 0.6), hsl(var(--accent) / 0.3), transparent)`,
+                  }}
+                  animate={{
+                    opacity: [0.4, 0.6, 0.4],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
                 />
                 
-                {/* Blur glow behind */}
-                <div className="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-primary rounded-3xl blur-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-500" />
+                {/* 3D floating layers effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-3xl border border-primary/10"
+                  style={{
+                    transform: 'translateZ(20px)',
+                  }}
+                  animate={{
+                    boxShadow: [
+                      '0 0 30px hsl(var(--primary) / 0.2)',
+                      '0 0 50px hsl(var(--primary) / 0.3)',
+                      '0 0 30px hsl(var(--primary) / 0.2)',
+                    ],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                />
                 
                 <motion.img
                   src="https://i.postimg.cc/5N3cH1XN/IMG-3305.jpg"
                   alt="JEEM - Creative Professional"
-                  className="relative w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-3xl border border-primary/20 shadow-2xl"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.4 }}
+                  className="relative w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-3xl border border-primary/20"
+                  style={{
+                    transform: 'translateZ(40px)',
+                    boxShadow: '0 25px 50px -12px hsl(0 0% 0% / 0.5)',
+                  }}
                 />
                 
-                {/* Floating badge */}
+                {/* Reflection/shine effect that follows cursor */}
+                <motion.div
+                  className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none"
+                  style={{ transform: 'translateZ(50px)' }}
+                >
+                  <motion.div
+                    className="absolute w-[200%] h-[200%] opacity-20"
+                    style={{
+                      background: 'linear-gradient(105deg, transparent 40%, hsl(0 0% 100% / 0.4) 45%, hsl(0 0% 100% / 0.6) 50%, hsl(0 0% 100% / 0.4) 55%, transparent 60%)',
+                      left: `${-50 + heroMousePos.x * 2}%`,
+                      top: `${-50 + heroMousePos.y * 2}%`,
+                    }}
+                  />
+                </motion.div>
+                
+                {/* Floating badge with 3D offset */}
                 <motion.div
                   className="absolute -bottom-4 -right-4 px-4 py-2 bg-card/90 backdrop-blur-xl border border-primary/30 rounded-full shadow-lg"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1, duration: 0.5 }}
+                  style={{ transform: 'translateZ(60px)' }}
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: 1, duration: 0.6, type: 'spring' }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    boxShadow: '0 0 20px hsl(var(--primary) / 0.4)',
+                  }}
                 >
                   <span className="text-sm font-mono text-primary">8+ Years Experience</span>
                 </motion.div>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
