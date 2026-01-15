@@ -1,4 +1,4 @@
-import { ArrowRight, Play, Camera, Video, Palette, Zap, Quote, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { ArrowRight, Play, Camera, Video, Palette, Zap, Quote, ChevronLeft, ChevronRight, Star, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { GlowButton } from '@/components/ui/glow-button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -331,12 +331,20 @@ const Home = () => {
             Let's collaborate to bring your vision to life with professional video editing, 
             cinematography, and design services.
           </p>
-          <GlowButton asChild size="lg" className="text-lg animate-glow-pulse">
-            <Link to="/contact" className="group">
-              Get In Touch
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
-          </GlowButton>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <GlowButton asChild size="lg" className="text-lg animate-glow-pulse">
+              <Link to="/contact" className="group">
+                Get In Touch
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+              </Link>
+            </GlowButton>
+            <GlowButton asChild variant="outline" size="lg" className="text-lg bg-emerald-500/10 border-emerald-500/30 hover:bg-emerald-500/20 hover:border-emerald-500/50">
+              <a href="https://wa.me/8801992331822" target="_blank" rel="noopener noreferrer" className="group">
+                <MessageCircle className="w-5 h-5 mr-2 text-emerald-500" />
+                WhatsApp
+              </a>
+            </GlowButton>
+          </div>
         </div>
       </section>
     </div>

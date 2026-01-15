@@ -1,4 +1,4 @@
-import { Youtube, Facebook, Mail, Phone } from 'lucide-react';
+import { Youtube, Facebook, Mail, Phone, MessageCircle } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -56,6 +56,14 @@ const Footer = () => {
           <div className="space-y-6">
             <h3 className="text-lg font-semibold text-foreground">Follow Me</h3>
             <div className="flex space-x-4">
+              <a
+                href="https://wa.me/8801992331822"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center hover:bg-emerald-500/20 transition-all duration-300 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:scale-110"
+              >
+                <MessageCircle className="w-5 h-5 text-emerald-500 transition-colors duration-300" />
+              </a>
               <a
                 href="https://youtube.com/@jeem_editz?si=8zTx6DRW8Cu-8FIj"
                 target="_blank"
