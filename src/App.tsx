@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
+import FloatingActionButton from "./components/FloatingActionButton";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Portfolio from "./pages/Portfolio";
@@ -44,6 +45,7 @@ const App = () => (
           <AnimatedRoutes />
         </main>
         <Footer />
+        <FloatingActionButton />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
