@@ -82,7 +82,8 @@ const Portfolio = () => {
     { id: 10, thumbnail: "https://img.youtube.com/vi/1Y60L3QECgQ/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/1Y60L3QECgQ", views: "8.9K", platform: "youtube", link: "https://youtube.com/shorts/1Y60L3QECgQ" },
     { id: 11, thumbnail: "https://img.youtube.com/vi/MKsiYm5TA9g/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/MKsiYm5TA9g", views: "6.3K", platform: "youtube", link: "https://youtube.com/shorts/MKsiYm5TA9g" },
     { id: 12, thumbnail: "https://img.youtube.com/vi/Mwh1l5MHONM/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/Mwh1l5MHONM", views: "9.7K", platform: "youtube", link: "https://youtube.com/shorts/Mwh1l5MHONM" },
-    { id: 13, thumbnail: "https://img.youtube.com/vi/EElW9wBtseY/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/EElW9wBtseY", views: "5.0K", platform: "youtube", link: "https://youtube.com/shorts/EElW9wBtseY" }
+    { id: 13, thumbnail: "https://img.youtube.com/vi/EElW9wBtseY/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/EElW9wBtseY", views: "5.0K", platform: "youtube", link: "https://youtube.com/shorts/EElW9wBtseY" },
+    { id: 14, thumbnail: "https://img.youtube.com/vi/SzXwsBiivQw/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/SzXwsBiivQw", views: "4.5K", platform: "youtube", link: "https://youtube.com/shorts/SzXwsBiivQw" }
   ];
 
   const categories = [
