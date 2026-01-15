@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ChevronDown, ChevronUp, Volume2, VolumeX, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { GlowButton } from "@/components/ui/glow-button";
 
 interface Reel {
   id: number;
@@ -236,7 +236,7 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
       {/* Centered Video */}
       <div className="absolute inset-0 flex items-center justify-center px-4 py-20">
         <div className="relative w-[min(88vw,360px)] aspect-[9/16]">
-          <div className="absolute inset-0 rounded-2xl overflow-hidden border border-border/50 bg-card shadow-[0_30px_90px_-30px_hsl(var(--primary)/0.35)]">
+          <div className="absolute inset-0 rounded-2xl overflow-hidden border border-border/50 bg-card shadow-lg">
             {isLoading && (
               <div className="absolute inset-0 z-20 grid place-items-center bg-background/80">
                 <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
@@ -269,47 +269,47 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
       </div>
 
       {/* Close */}
-      <Button
+      <GlowButton
         variant="ghost"
         size="icon"
-        className="absolute top-4 right-4 z-30 text-foreground hover:bg-muted/50"
+        className="absolute top-4 right-4 z-30 text-foreground"
         onClick={onClose}
         aria-label="Close"
       >
         <X className="w-6 h-6" />
-      </Button>
+      </GlowButton>
 
       {/* Mute */}
-      <Button
+      <GlowButton
         variant="ghost"
         size="icon"
-        className="absolute top-4 left-4 z-30 text-foreground hover:bg-muted/50"
+        className="absolute top-4 left-4 z-30 text-foreground"
         onClick={() => setIsMuted((v) => !v)}
         aria-label={isMuted ? "Unmute" : "Mute"}
       >
         {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
-      </Button>
+      </GlowButton>
 
       {/* Navigation */}
       <div className="absolute right-4 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-3">
-        <Button
+        <GlowButton
           variant="ghost"
           size="icon"
-          className="text-foreground hover:bg-muted/50"
+          className="text-foreground"
           onClick={goToPrev}
           aria-label="Previous reel"
         >
           <ChevronUp className="w-6 h-6" />
-        </Button>
-        <Button
+        </GlowButton>
+        <GlowButton
           variant="ghost"
           size="icon"
-          className="text-foreground hover:bg-muted/50"
+          className="text-foreground"
           onClick={goToNext}
           aria-label="Next reel"
         >
           <ChevronDown className="w-6 h-6" />
-        </Button>
+        </GlowButton>
       </div>
 
       {/* Counter */}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Video, Camera, Palette, Mail, Sun, Moon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { GlowButton } from '@/components/ui/glow-button';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,7 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary/30 group-hover:ring-primary transition-all duration-300 group-hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)]">
+            <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary/30 group-hover:ring-primary transition-all duration-300">
               <img
                 src="https://i.postimg.cc/ydzd8zDd/IMG-3305.jpg" 
                 alt="JEEM Profile" 
@@ -52,43 +52,38 @@ const Navigation = () => {
                 }`}
               >
                 <item.icon className={`w-4 h-4 transition-all duration-300 ${isActive(item.path) ? 'text-primary' : 'group-hover:text-primary'}`} />
-                <span className={`link-underline ${isActive(item.path) ? 'glow-text' : ''}`}>{item.name}</span>
-                {isActive(item.path) && (
-                  <span className="absolute inset-0 rounded-lg bg-primary/5 animate-pulse-glow" />
-                )}
+                <span className={`link-underline ${isActive(item.path) ? 'font-medium' : ''}`}>{item.name}</span>
               </Link>
             ))}
             
             {/* Theme Toggle */}
-            <Button
+            <GlowButton
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="ml-2 relative overflow-hidden group"
+              className="ml-2"
             >
               <Sun className={`w-5 h-5 absolute transition-all duration-300 ${isDark ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} />
               <Moon className={`w-5 h-5 transition-all duration-300 ${isDark ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}`} />
-              <span className="absolute inset-0 rounded-lg bg-primary/0 group-hover:bg-primary/10 transition-all duration-300" />
-            </Button>
+            </GlowButton>
           </div>
 
           {/* Mobile buttons */}
           <div className="flex items-center space-x-2 md:hidden">
-            <Button
+            <GlowButton
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
             >
               {isDark ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-            </Button>
-            <Button
+            </GlowButton>
+            <GlowButton
               variant="ghost"
               size="icon"
-              className="btn-glow"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </Button>
+            </GlowButton>
           </div>
         </div>
 
@@ -101,9 +96,9 @@ const Navigation = () => {
                 to={item.path}
                 onClick={() => setIsOpen(false)}
                 style={{ '--i': index } as React.CSSProperties}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 stagger-children ${
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 ${
                   isActive(item.path)
-                    ? 'bg-primary/10 text-primary shadow-[0_0_15px_hsl(var(--primary)/0.2)]'
+                    ? 'bg-primary/10 text-primary'
                     : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                 }`}
               >
