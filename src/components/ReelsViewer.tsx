@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { X, ChevronUp, ChevronDown, Volume2, VolumeX } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { ChevronDown, ChevronUp, Volume2, VolumeX, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Reel {
   id: number;
@@ -18,17 +19,15 @@ interface ReelsViewerProps {
   onClose: () => void;
 }
 
-// Extract YouTube video ID from shorts URL
 const getYouTubeId = (url: string) => {
   const match = url.match(/shorts\/([a-zA-Z0-9_-]+)/);
   return match ? match[1] : null;
 };
 
-// Format time in mm:ss
 const formatTime = (seconds: number) => {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
 };
 
 const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps) => {
@@ -38,86 +37,32 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(60);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const touchStartY = useRef<number>(0);
 
   const currentReel = reels[currentIndex];
-  const videoId = getYouTubeId(currentReel?.videoUrl || '');
+  const videoId = getYouTubeId(currentReel?.videoUrl || "");
 
   // Reset state when viewer opens
   useEffect(() => {
-    if (isOpen) {
-      setCurrentIndex(initialIndex);
-      setProgress(0);
-      setCurrentTime(0);
-      setIsLoading(true);
-    }
-  }, [isOpen, initialIndex]);
-
-  // Reset progress when switching reels
-  useEffect(() => {
+    if (!isOpen) return;
+    setCurrentIndex(initialIndex);
     setProgress(0);
     setCurrentTime(0);
-    setIsLoading(true);
     setDuration(60);
-  }, [currentIndex]);
+    setIsLoading(true);
+  }, [isOpen, initialIndex]);
 
-  // YouTube postMessage events
+  // Reset when switching reels
   useEffect(() => {
     if (!isOpen) return;
-
-    const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== 'https://www.youtube.com') return;
-      
-      try {
-        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        
-        if (data.event === 'infoDelivery' && data.info) {
-          if (typeof data.info.currentTime === 'number') {
-            setCurrentTime(data.info.currentTime);
-            setIsLoading(false);
-          }
-          
-          if (typeof data.info.duration === 'number' && data.info.duration > 0) {
-            setDuration(data.info.duration);
-          }
-          
-          if (typeof data.info.currentTime === 'number' && typeof data.info.duration === 'number' && data.info.duration > 0) {
-            const progressPercent = (data.info.currentTime / data.info.duration) * 100;
-            setProgress(progressPercent);
-            
-            if (data.info.duration - data.info.currentTime < 0.5 && data.info.currentTime > 1) {
-              setCurrentIndex((prev) => (prev + 1) % reels.length);
-            }
-          }
-          
-          if (typeof data.info.playerState === 'number') {
-            if (data.info.playerState === 0) {
-              setCurrentIndex((prev) => (prev + 1) % reels.length);
-            }
-          }
-        }
-        
-        if (data.event === 'onStateChange' || data.event === 'onReady') {
-          setIsLoading(false);
-        }
-      } catch {
-        // Ignore parsing errors
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [isOpen, reels.length]);
-
-  // Fallback loading timeout
-  useEffect(() => {
-    if (!isOpen) return;
-    const timeout = setTimeout(() => setIsLoading(false), 3000);
-    return () => clearTimeout(timeout);
-  }, [isOpen, currentIndex]);
+    setProgress(0);
+    setCurrentTime(0);
+    setDuration(60);
+    setIsLoading(true);
+  }, [currentIndex, isOpen]);
 
   const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % reels.length);
@@ -127,35 +72,45 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
     setCurrentIndex((prev) => (prev - 1 + reels.length) % reels.length);
   }, [reels.length]);
 
+  // Prevent body scroll when open
+  useEffect(() => {
+    if (!isOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isOpen]);
+
   // Keyboard navigation
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
-        case 'ArrowUp':
+        case "ArrowUp":
           e.preventDefault();
           goToPrev();
           break;
-        case 'ArrowDown':
+        case "ArrowDown":
           e.preventDefault();
           goToNext();
           break;
-        case 'Escape':
+        case "Escape":
           onClose();
           break;
-        case 'm':
-        case 'M':
+        case "m":
+        case "M":
           setIsMuted((prev) => !prev);
           break;
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, goToNext, goToPrev, onClose]);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [goToNext, goToPrev, isOpen, onClose]);
 
-  // Touch gestures
+  // Touch/swipe gestures
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
   };
@@ -172,146 +127,207 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
   };
 
   // Mouse wheel navigation
-  const handleWheel = useCallback((e: WheelEvent) => {
-    e.preventDefault();
-    if (e.deltaY > 0) goToNext();
-    else goToPrev();
-  }, [goToNext, goToPrev]);
+  const handleWheel = useCallback(
+    (e: WheelEvent) => {
+      e.preventDefault();
+      if (e.deltaY > 0) goToNext();
+      else goToPrev();
+    },
+    [goToNext, goToPrev]
+  );
 
   useEffect(() => {
     const container = containerRef.current;
-    if (container && isOpen) {
-      container.addEventListener('wheel', handleWheel, { passive: false });
-      return () => container.removeEventListener('wheel', handleWheel);
-    }
-  }, [isOpen, handleWheel]);
+    if (!container || !isOpen) return;
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => container.removeEventListener("wheel", handleWheel);
+  }, [handleWheel, isOpen]);
 
-  // Prevent body scroll
+  // YouTube postMessage events for progress
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
+    if (!isOpen) return;
+
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== "https://www.youtube.com") return;
+
+      try {
+        const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
+
+        if (data.event === "infoDelivery" && data.info) {
+          if (typeof data.info.currentTime === "number") {
+            setCurrentTime(data.info.currentTime);
+            setIsLoading(false);
+          }
+
+          if (typeof data.info.duration === "number" && data.info.duration > 0) {
+            setDuration(data.info.duration);
+          }
+
+          if (
+            typeof data.info.currentTime === "number" &&
+            typeof data.info.duration === "number" &&
+            data.info.duration > 0
+          ) {
+            setProgress((data.info.currentTime / data.info.duration) * 100);
+
+            // Auto-advance at end
+            if (data.info.duration - data.info.currentTime < 0.5 && data.info.currentTime > 1) {
+              setCurrentIndex((prev) => (prev + 1) % reels.length);
+            }
+          }
+
+          if (typeof data.info.playerState === "number" && data.info.playerState === 0) {
+            setCurrentIndex((prev) => (prev + 1) % reels.length);
+          }
+        }
+
+        if (data.event === "onReady" || data.event === "onStateChange") {
+          setIsLoading(false);
+        }
+      } catch {
+        // ignore
+      }
     };
-  }, [isOpen]);
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [isOpen, reels.length]);
+
+  // Ask YouTube for info periodically (needed for consistent updates)
+  useEffect(() => {
+    if (!isOpen || !iframeRef.current) return;
+
+    const requestInfo = () => {
+      iframeRef.current?.contentWindow?.postMessage(JSON.stringify({ event: "listening" }), "https://www.youtube.com");
+    };
+
+    const t = window.setTimeout(requestInfo, 800);
+    const i = window.setInterval(requestInfo, 500);
+
+    return () => {
+      window.clearTimeout(t);
+      window.clearInterval(i);
+    };
+  }, [isOpen, currentIndex]);
+
+  // Fallback loading timeout
+  useEffect(() => {
+    if (!isOpen) return;
+    const t = window.setTimeout(() => setIsLoading(false), 3500);
+    return () => window.clearTimeout(t);
+  }, [isOpen, currentIndex]);
 
   if (!isOpen || !videoId) return null;
 
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=${isMuted ? 1 : 0}&controls=0&modestbranding=1&rel=0&showinfo=0&playsinline=1&enablejsapi=1&origin=${window.location.origin}`;
 
-  return (
+  // NOTE: We render in a portal to avoid any parent transforms breaking `position: fixed`.
+  // This is the root cause of "video stuck at bottom" issues.
+  const ui = (
     <div
       ref={containerRef}
-      className="fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-black"
-      style={{ zIndex: 9999 }}
+      className="fixed inset-0 z-[9999] bg-background"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Reels viewer"
     >
-      {/* Progress Bar - Top */}
-      <div className="absolute top-4 left-4 right-4 z-30">
-        <div className="max-w-sm mx-auto">
-          <div className="h-1 bg-white/20 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-primary transition-all duration-100"
-              style={{ width: `${progress}%` }}
+      {/* Centered Video */}
+      <div className="absolute inset-0 flex items-center justify-center px-4 py-20">
+        <div className="relative w-[min(88vw,360px)] aspect-[9/16]">
+          <div className="absolute inset-0 rounded-2xl overflow-hidden border border-border/50 bg-card shadow-[0_30px_90px_-30px_hsl(var(--primary)/0.35)]">
+            {isLoading && (
+              <div className="absolute inset-0 z-20 grid place-items-center bg-background/80">
+                <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+              </div>
+            )}
+            <iframe
+              ref={iframeRef}
+              key={`${videoId}-${currentIndex}`}
+              src={embedUrl}
+              title={`Reel ${currentIndex + 1}`}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
             />
           </div>
-          <div className="flex justify-between text-white/60 text-xs mt-1 font-mono">
+        </div>
+      </div>
+
+      {/* Progress */}
+      <div className="absolute top-4 left-4 right-4 z-30">
+        <div className="max-w-sm mx-auto">
+          <div className="h-1 bg-muted/50 rounded-full overflow-hidden">
+            <div className="h-full bg-primary transition-all duration-100" style={{ width: `${progress}%` }} />
+          </div>
+          <div className="flex justify-between text-muted-foreground text-xs mt-1 font-mono">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
       </div>
 
-      {/* Close Button */}
+      {/* Close */}
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 right-4 z-30 text-white hover:bg-white/20 w-10 h-10"
+        className="absolute top-4 right-4 z-30 text-foreground hover:bg-muted/50"
         onClick={onClose}
+        aria-label="Close"
       >
         <X className="w-6 h-6" />
       </Button>
 
-      {/* Mute Button */}
+      {/* Mute */}
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 left-4 z-30 text-white hover:bg-white/20 w-10 h-10"
-        onClick={() => setIsMuted(!isMuted)}
+        className="absolute top-4 left-4 z-30 text-foreground hover:bg-muted/50"
+        onClick={() => setIsMuted((v) => !v)}
+        aria-label={isMuted ? "Unmute" : "Mute"}
       >
         {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
       </Button>
 
-      {/* Navigation Arrows - Right Side */}
+      {/* Navigation */}
       <div className="absolute right-4 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-3">
         <Button
           variant="ghost"
           size="icon"
-          className="text-white hover:bg-white/20 w-10 h-10"
+          className="text-foreground hover:bg-muted/50"
           onClick={goToPrev}
+          aria-label="Previous reel"
         >
           <ChevronUp className="w-6 h-6" />
         </Button>
         <Button
           variant="ghost"
           size="icon"
-          className="text-white hover:bg-white/20 w-10 h-10"
+          className="text-foreground hover:bg-muted/50"
           onClick={goToNext}
+          aria-label="Next reel"
         >
           <ChevronDown className="w-6 h-6" />
         </Button>
       </div>
 
-      {/* Counter - Bottom */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 text-white/80 text-sm font-mono">
+      {/* Counter */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 text-muted-foreground text-sm font-mono">
         {currentIndex + 1} / {reels.length}
       </div>
 
-      {/* Keyboard Hints */}
-      <div className="absolute bottom-6 right-4 z-30 text-white/40 text-xs hidden md:block">
+      {/* Hints */}
+      <div className="absolute bottom-6 right-4 z-30 text-muted-foreground/70 text-xs hidden md:block">
         ↑↓ Navigate • M Mute • Esc Close
       </div>
-
-      {/* Mobile Swipe Hint */}
-      <div className="absolute bottom-14 left-1/2 -translate-x-1/2 z-30 text-white/40 text-xs md:hidden animate-pulse">
+      <div className="absolute bottom-14 left-1/2 -translate-x-1/2 z-30 text-muted-foreground/70 text-xs md:hidden animate-pulse">
         Swipe up/down to navigate
-      </div>
-
-      {/* Video Container - TRUE CENTER */}
-      <div 
-        className="absolute z-10"
-        style={{
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 'min(340px, 85vw)',
-          height: 'min(604px, 75vh)',
-          maxWidth: '340px',
-          maxHeight: '604px',
-        }}
-      >
-        <div className="w-full h-full rounded-2xl overflow-hidden border border-white/20 bg-black shadow-2xl">
-          {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black z-20">
-              <div className="w-10 h-10 border-3 border-primary border-t-transparent rounded-full animate-spin" />
-            </div>
-          )}
-          <iframe
-            ref={iframeRef}
-            key={`${videoId}-${currentIndex}`}
-            src={embedUrl}
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
       </div>
     </div>
   );
+
+  return createPortal(ui, document.body);
 };
 
 export default ReelsViewer;
