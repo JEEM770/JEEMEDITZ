@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Video, Camera, Palette, Mail, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { GlowButton } from '@/components/ui/glow-button';
 
 const Navigation = () => {
@@ -9,11 +9,11 @@ const Navigation = () => {
   const location = useLocation();
 
   const navItems = [
-    { name: 'Home', path: '/', icon: Camera },
-    { name: 'About', path: '/about', icon: Video },
-    { name: 'Portfolio', path: '/portfolio', icon: Palette },
-    { name: 'Services', path: '/services', icon: Video },
-    { name: 'Contact', path: '/contact', icon: Mail },
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Portfolio', path: '/portfolio' },
+    { name: 'Services', path: '/services' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -24,91 +24,88 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary/30 group-hover:ring-primary transition-all duration-300">
-              <img
-                src="https://i.postimg.cc/ydzd8zDd/IMG-3305.jpg" 
-                alt="JEEM Profile" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <span className="text-xl font-bold text-gradient">JEEM</span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={`relative flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-                  isActive(item.path)
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                <item.icon className={`w-4 h-4 transition-all duration-300 ${isActive(item.path) ? 'text-primary' : 'group-hover:text-primary'}`} />
-                <span className={`link-underline ${isActive(item.path) ? 'font-medium' : ''}`}>{item.name}</span>
-              </Link>
-            ))}
-            
-            {/* Theme Toggle */}
-            <GlowButton
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              className="ml-2"
-            >
-              <Sun className={`w-5 h-5 absolute transition-all duration-300 ${isDark ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} />
-              <Moon className={`w-5 h-5 transition-all duration-300 ${isDark ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}`} />
-            </GlowButton>
+    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4">
+      {/* Floating Pill Navigation */}
+      <div className="nav-pill flex items-center gap-1 px-2">
+        {/* Logo */}
+        <Link to="/" className="flex items-center space-x-2 px-3 py-2 group">
+          <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-primary/30 group-hover:ring-primary group-hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] transition-all duration-300">
+            <img
+              src="https://i.postimg.cc/ydzd8zDd/IMG-3305.jpg" 
+              alt="JEEM Profile" 
+              className="w-full h-full object-cover"
+            />
           </div>
+          <span className="text-lg font-bold text-gradient hidden sm:block">JEEM</span>
+        </Link>
 
-          {/* Mobile buttons */}
-          <div className="flex items-center space-x-2 md:hidden">
-            <GlowButton
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
+        {/* Divider */}
+        <div className="hidden md:block w-px h-6 bg-border mx-2" />
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-1">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              to={item.path}
+              className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                isActive(item.path)
+                  ? 'bg-primary text-primary-foreground shadow-[0_0_15px_hsl(var(--primary)/0.4)]'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
+              }`}
             >
-              {isDark ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-            </GlowButton>
-            <GlowButton
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </GlowButton>
-          </div>
+              {item.name}
+            </Link>
+          ))}
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden py-4 space-y-2 border-t border-border/50 animate-slide-up">
+        {/* Divider */}
+        <div className="hidden md:block w-px h-6 bg-border mx-2" />
+        
+        {/* Theme Toggle */}
+        <GlowButton
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          className="rounded-full w-9 h-9"
+        >
+          <Sun className={`w-4 h-4 absolute transition-all duration-300 ${isDark ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} />
+          <Moon className={`w-4 h-4 transition-all duration-300 ${isDark ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}`} />
+        </GlowButton>
+
+        {/* Mobile Menu Button */}
+        <GlowButton
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden rounded-full w-9 h-9"
+        >
+          {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </GlowButton>
+      </div>
+
+      {/* Mobile Navigation Dropdown */}
+      {isOpen && (
+        <div className="absolute top-full left-4 right-4 mt-2 p-3 nav-pill md:hidden animate-slide-up">
+          <div className="space-y-1">
             {navItems.map((item, index) => (
               <Link
                 key={item.name}
                 to={item.path}
                 onClick={() => setIsOpen(false)}
-                style={{ '--i': index } as React.CSSProperties}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 ${
+                style={{ animationDelay: `${index * 0.05}s` }}
+                className={`flex items-center px-4 py-3 rounded-xl transition-all duration-300 animate-fade-in ${
                   isActive(item.path)
-                    ? 'bg-primary/10 text-primary'
+                    ? 'bg-primary text-primary-foreground shadow-[0_0_15px_hsl(var(--primary)/0.4)]'
                     : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                 }`}
               >
-                <item.icon className={`w-5 h-5 ${isActive(item.path) ? 'text-primary' : ''}`} />
-                <span className={isActive(item.path) ? 'text-gradient font-medium' : ''}>{item.name}</span>
+                <span className={isActive(item.path) ? 'font-semibold' : ''}>{item.name}</span>
               </Link>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 };
