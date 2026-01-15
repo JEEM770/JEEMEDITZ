@@ -35,7 +35,6 @@ export interface GlowButtonProps
 
 const GlowButton = React.forwardRef<HTMLButtonElement, GlowButtonProps>(
   ({ className, variant, size, asChild = false, children, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
     const buttonRef = React.useRef<HTMLButtonElement>(null);
     const [glowPosition, setGlowPosition] = React.useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = React.useState(false);
@@ -51,8 +50,24 @@ const GlowButton = React.forwardRef<HTMLButtonElement, GlowButtonProps>(
       });
     };
 
+    // When asChild is true, render without the glow wrapper structure
+    if (asChild) {
+      return (
+        <Slot
+          ref={buttonRef as React.Ref<HTMLElement>}
+          className={cn(glowButtonVariants({ variant, size, className }))}
+          onMouseMove={handleMouseMove as any}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          {...(props as any)}
+        >
+          {children}
+        </Slot>
+      );
+    }
+
     return (
-      <Comp
+      <button
         ref={buttonRef}
         className={cn(glowButtonVariants({ variant, size, className }))}
         onMouseMove={handleMouseMove}
@@ -70,7 +85,7 @@ const GlowButton = React.forwardRef<HTMLButtonElement, GlowButtonProps>(
         />
         {/* Content */}
         <span className="relative z-10 flex items-center gap-2">{children}</span>
-      </Comp>
+      </button>
     );
   }
 );
