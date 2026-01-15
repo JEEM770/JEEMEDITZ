@@ -1,11 +1,10 @@
 import { useState, useRef } from 'react';
-import { ExternalLink, Play, Calendar, Eye, FolderOpen, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { ExternalLink, Play, Calendar, Eye, FolderOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Facebook } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GlowButton } from '@/components/ui/glow-button';
 import { Badge } from '@/components/ui/badge';
 import ReelsViewer from '@/components/ReelsViewer';
-import { useReels } from '@/hooks/useReels';
 
 // Custom TikTok Icon Component
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -21,17 +20,8 @@ const InstagramIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-interface ReelCardData {
-  id: string | number;
-  thumbnail: string;
-  videoUrl: string;
-  views: string;
-  platform: string;
-  link: string;
-}
-
 // Reel Card Component
-const ReelCard = ({ reel, onPlay }: { reel: ReelCardData; onPlay: () => void }) => (
+const ReelCard = ({ reel, onPlay }: { reel: { id: number; thumbnail: string; videoUrl: string; views: string; platform: string; link: string }; onPlay: () => void }) => (
   <div
     role="button"
     tabIndex={0}
@@ -40,19 +30,7 @@ const ReelCard = ({ reel, onPlay }: { reel: ReelCardData; onPlay: () => void }) 
     onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPlay(); } }}
     className="relative group cursor-pointer overflow-hidden rounded-2xl aspect-[9/16] bg-muted flex-shrink-0 w-48 sm:w-56 lg:w-64 border border-border transition-all duration-500 ease-out hover:-translate-y-2 hover:border-primary/50 hover:shadow-[0_20px_40px_hsl(0_0%_0%/0.3),0_0_30px_hsl(var(--primary)/0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
   >
-    <img 
-      src={reel.thumbnail} 
-      alt={`Reel thumbnail ${reel.id}`} 
-      className="w-full h-full object-cover absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-110" 
-      loading="lazy"
-      onError={(e) => {
-        // Fallback to hqdefault if maxresdefault fails
-        const target = e.target as HTMLImageElement;
-        if (target.src.includes('maxresdefault')) {
-          target.src = target.src.replace('maxresdefault', 'hqdefault');
-        }
-      }}
-    />
+    <img src={reel.thumbnail} alt={`Reel thumbnail ${reel.id}`} className="w-full h-full object-cover absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-110" loading="lazy" />
     <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
     <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
       <div className="flex items-center justify-between text-foreground text-sm">
@@ -78,9 +56,6 @@ const Portfolio = () => {
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
 
-  // Fetch reels from database
-  const { data: dbReels, isLoading: reelsLoading } = useReels();
-
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
       carouselRef.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: 'smooth' });
@@ -94,15 +69,21 @@ const Portfolio = () => {
     if (Math.abs(diff) > 50) scrollCarousel(diff > 0 ? 'right' : 'left');
   };
 
-  // Transform database reels to the format expected by ReelCard and ReelsViewer
-  const reels: ReelCardData[] = (dbReels || []).map((reel) => ({
-    id: reel.id,
-    thumbnail: reel.thumbnail,
-    videoUrl: reel.youtube_url,
-    views: reel.views,
-    platform: reel.platform,
-    link: reel.youtube_url,
-  }));
+  const reels = [
+    { id: 1, thumbnail: "https://img.youtube.com/vi/kHEgGTLowZg/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/kHEgGTLowZg", views: "12.5K", platform: "youtube", link: "https://youtube.com/shorts/kHEgGTLowZg" },
+    { id: 2, thumbnail: "https://img.youtube.com/vi/y_8dkV-UGpU/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/y_8dkV-UGpU", views: "8.2K", platform: "youtube", link: "https://youtube.com/shorts/y_8dkV-UGpU" },
+    { id: 3, thumbnail: "https://img.youtube.com/vi/bR9pB_uIwgw/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/bR9pB_uIwgw", views: "15.1K", platform: "youtube", link: "https://youtube.com/shorts/bR9pB_uIwgw" },
+    { id: 4, thumbnail: "https://img.youtube.com/vi/ukcBZcfb7kg/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/ukcBZcfb7kg", views: "6.7K", platform: "youtube", link: "https://youtube.com/shorts/ukcBZcfb7kg" },
+    { id: 5, thumbnail: "https://img.youtube.com/vi/Aw1wGTbwk9Q/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/Aw1wGTbwk9Q", views: "9.3K", platform: "youtube", link: "https://youtube.com/shorts/Aw1wGTbwk9Q" },
+    { id: 6, thumbnail: "https://img.youtube.com/vi/zLbw7JxGrhA/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/zLbw7JxGrhA", views: "11.2K", platform: "youtube", link: "https://youtube.com/shorts/zLbw7JxGrhA" },
+    { id: 7, thumbnail: "https://img.youtube.com/vi/OVqM4TEzFP0/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/OVqM4TEzFP0", views: "7.8K", platform: "youtube", link: "https://youtube.com/shorts/OVqM4TEzFP0" },
+    { id: 8, thumbnail: "https://img.youtube.com/vi/StML8oP_K-U/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/StML8oP_K-U", views: "5.4K", platform: "youtube", link: "https://youtube.com/shorts/StML8oP_K-U" },
+    { id: 9, thumbnail: "https://img.youtube.com/vi/14Mnc7i0Ktk/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/14Mnc7i0Ktk", views: "10.1K", platform: "youtube", link: "https://youtube.com/shorts/14Mnc7i0Ktk" },
+    { id: 10, thumbnail: "https://img.youtube.com/vi/1Y60L3QECgQ/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/1Y60L3QECgQ", views: "8.9K", platform: "youtube", link: "https://youtube.com/shorts/1Y60L3QECgQ" },
+    { id: 11, thumbnail: "https://img.youtube.com/vi/MKsiYm5TA9g/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/MKsiYm5TA9g", views: "6.3K", platform: "youtube", link: "https://youtube.com/shorts/MKsiYm5TA9g" },
+    { id: 12, thumbnail: "https://img.youtube.com/vi/Mwh1l5MHONM/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/Mwh1l5MHONM", views: "9.7K", platform: "youtube", link: "https://youtube.com/shorts/Mwh1l5MHONM" },
+    { id: 13, thumbnail: "https://img.youtube.com/vi/EElW9wBtseY/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/EElW9wBtseY", views: "5.0K", platform: "youtube", link: "https://youtube.com/shorts/EElW9wBtseY" }
+  ];
 
   const categories = [
     { id: 'all', name: 'All Projects' },

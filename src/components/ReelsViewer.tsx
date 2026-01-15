@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp, Volume2, VolumeX, X } from "lucide-react";
 import { GlowButton } from "@/components/ui/glow-button";
 
 interface Reel {
-  id: string | number;
+  id: number;
   thumbnail: string;
   videoUrl: string;
   views: string;
