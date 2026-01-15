@@ -260,10 +260,36 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-50 bg-black flex items-center justify-center"
+      className="fixed inset-0 z-[100] bg-black"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      {/* Video Container - Absolute Center */}
+      <div 
+        className="absolute rounded-xl overflow-hidden border border-white/10"
+        style={{ 
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 'min(90vw, 360px)', 
+          height: 'min(80vh, 640px)',
+        }}
+      >
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/90 z-10">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
+        <iframe
+          ref={iframeRef}
+          key={`${videoId}-${currentIndex}`}
+          src={embedUrl}
+          className="w-full h-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
+
       {/* Progress Bar */}
       <div className="absolute top-0 left-0 right-0 z-20 px-4 pt-4">
         <div className="max-w-md mx-auto">
@@ -333,32 +359,6 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
       {/* Mobile Swipe Hint */}
       <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 text-white/40 text-xs md:hidden animate-pulse">
         Swipe up/down to navigate
-      </div>
-
-      {/* Video Container - Properly Centered */}
-      <div className="w-full h-full flex items-center justify-center p-4 pt-16 pb-20">
-        <div 
-          className="relative rounded-xl overflow-hidden border border-white/10"
-          style={{ 
-            width: 'min(100%, 360px)', 
-            height: 'min(85vh, 640px)',
-            aspectRatio: '9/16'
-          }}
-        >
-          {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/90 z-10">
-              <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-            </div>
-          )}
-          <iframe
-            ref={iframeRef}
-            key={`${videoId}-${currentIndex}`}
-            src={embedUrl}
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
       </div>
     </div>
   );
