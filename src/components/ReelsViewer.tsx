@@ -335,21 +335,23 @@ const ReelsViewer = ({ reels, initialIndex, isOpen, onClose }: ReelsViewerProps)
         Swipe up/down to navigate
       </div>
 
-      {/* Video Container */}
-      <div className="relative w-full max-w-md h-full max-h-[90vh] aspect-[9/16] mx-auto">
-        {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
-            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-          </div>
-        )}
-        <iframe
-          ref={iframeRef}
-          key={`${videoId}-${currentIndex}`}
-          src={embedUrl}
-          className="w-full h-full rounded-lg"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
+      {/* Video Container - Properly Centered */}
+      <div className="absolute inset-0 flex items-center justify-center p-4">
+        <div className="relative w-full max-w-sm h-auto aspect-[9/16] max-h-[85vh]">
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/90 z-10 rounded-xl">
+              <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+          )}
+          <iframe
+            ref={iframeRef}
+            key={`${videoId}-${currentIndex}`}
+            src={embedUrl}
+            className="absolute inset-0 w-full h-full rounded-xl border border-white/10"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
       </div>
     </div>
   );
