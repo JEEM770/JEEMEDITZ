@@ -8,6 +8,7 @@ import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
 import FloatingActionButton from "./components/FloatingActionButton";
+import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Portfolio from "./pages/Portfolio";
@@ -46,6 +47,7 @@ const App = () => (
         </main>
         <Footer />
         <FloatingActionButton />
+        <ScrollToTop />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
