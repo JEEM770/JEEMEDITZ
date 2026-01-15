@@ -24,15 +24,12 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
-      // EmailJS configuration
       const serviceId = 'service_z87cjxn';
       const templateId = 'template_h981i0f';
       const publicKey = 'jimVuqoMvBgM3bWHm';
 
-      // Initialize EmailJS
       emailjs.init(publicKey);
 
-      // Send email using EmailJS
       await emailjs.send(
         serviceId,
         templateId,
@@ -76,24 +73,21 @@ const Contact = () => {
       title: "Email",
       value: "tunjanna11@gmail.com",
       description: "Send me an email for detailed inquiries",
-      link: "mailto:tunjanna11@gmail.com",
-      color: "text-blue-500"
+      link: "mailto:tunjanna11@gmail.com"
     },
     {
       icon: Phone,
       title: "Phone & WhatsApp",
       value: "01992331822",
       description: "Call or message me directly",
-      link: "tel:01992331822",
-      color: "text-green-500"
+      link: "tel:01992331822"
     },
     {
       icon: MessageSquare,
       title: "WhatsApp",
       value: "Quick Messages",
       description: "For instant communication",
-      link: "https://wa.me/8801992331822",
-      color: "text-green-500"
+      link: "https://wa.me/8801992331822"
     }
   ];
 
@@ -102,15 +96,13 @@ const Contact = () => {
       icon: Youtube,
       title: "YouTube Channel",
       description: "Watch my latest videos and tutorials",
-      link: "https://youtube.com/@jeem_editz?si=ymSLbn2QpqD_5KDg",
-      color: "text-red-500"
+      link: "https://youtube.com/@jeem_editz?si=ymSLbn2QpqD_5KDg"
     },
     {
       icon: Facebook,
       title: "Facebook Profile",
       description: "Connect with me on Facebook",
-      link: "https://www.facebook.com/share/15VzXaWHks/?mibextid=wwXIfr",
-      color: "text-blue-500"
+      link: "https://www.facebook.com/share/15VzXaWHks/?mibextid=wwXIfr"
     }
   ];
 
@@ -136,25 +128,28 @@ const Contact = () => {
   return (
     <div className="min-h-screen pt-20">
       {/* Header */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-            Let's <span className="text-primary">Connect</span>
+      <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-30" />
+        <div className="absolute inset-0 bg-gradient-glow" />
+        
+        <div className="relative max-w-7xl mx-auto text-center">
+          <h1 className="text-hero glow-text animate-slide-up">
+            Let's <span className="text-gradient">Connect</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Ready to bring your creative vision to life? I'm here to help with your video editing, 
             cinematography, and design needs. Let's discuss your project!
           </p>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <div>
-            <Card className="card-gradient card-shadow">
+            <Card className="card-glass border-border/30 border-l-4 border-l-primary">
               <CardHeader>
-                <CardTitle className="text-2xl">Send me a message</CardTitle>
+                <CardTitle className="text-2xl text-gradient">Send me a message</CardTitle>
                 <p className="text-muted-foreground">
                   Fill out the form below and I'll get back to you within 24 hours.
                 </p>
@@ -171,6 +166,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         placeholder="Your full name"
+                        className="bg-secondary/30 border-border/50 focus:border-primary/50 focus:shadow-[0_0_10px_hsl(var(--primary)/0.2)]"
                       />
                     </div>
                     <div className="space-y-2">
@@ -183,6 +179,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         placeholder="your.email@example.com"
+                        className="bg-secondary/30 border-border/50 focus:border-primary/50 focus:shadow-[0_0_10px_hsl(var(--primary)/0.2)]"
                       />
                     </div>
                   </div>
@@ -195,6 +192,7 @@ const Contact = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="Your phone number"
+                      className="bg-secondary/30 border-border/50 focus:border-primary/50 focus:shadow-[0_0_10px_hsl(var(--primary)/0.2)]"
                     />
                   </div>
 
@@ -206,6 +204,7 @@ const Contact = () => {
                       value={formData.service}
                       onChange={handleChange}
                       placeholder="e.g., Video editing, Cinematography, Graphic design"
+                      className="bg-secondary/30 border-border/50 focus:border-primary/50 focus:shadow-[0_0_10px_hsl(var(--primary)/0.2)]"
                     />
                   </div>
 
@@ -219,12 +218,13 @@ const Contact = () => {
                       required
                       rows={5}
                       placeholder="Tell me about your project, timeline, and any specific requirements..."
+                      className="bg-secondary/30 border-border/50 focus:border-primary/50 focus:shadow-[0_0_10px_hsl(var(--primary)/0.2)]"
                     />
                   </div>
 
                   <Button 
                     type="submit" 
-                    className="w-full gold-glow transition-cinematic hover:scale-105"
+                    className="w-full btn-glow bg-primary text-primary-foreground hover:bg-primary/90"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -242,23 +242,25 @@ const Contact = () => {
           </div>
 
           {/* Contact Information */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* Contact Methods */}
-            <Card className="card-gradient card-shadow">
+            <Card className="card-glass border-border/30">
               <CardHeader>
-                <CardTitle className="text-xl">Get in Touch</CardTitle>
+                <CardTitle className="text-xl text-gradient">Get in Touch</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-2">
                 {contactMethods.map((method, index) => (
                   <a
                     key={method.title}
                     href={method.link}
-                    className="flex items-center space-x-4 p-3 rounded-lg hover:bg-secondary transition-smooth"
+                    className="flex items-center space-x-4 p-4 rounded-xl hover:bg-primary/5 border border-transparent hover:border-primary/20 hover:shadow-[0_0_15px_hsl(var(--primary)/0.1)] transition-all duration-300 group"
                   >
-                    <method.icon className={`w-6 h-6 ${method.color}`} />
+                    <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] transition-all duration-300">
+                      <method.icon className="w-5 h-5 text-primary" />
+                    </span>
                     <div>
-                      <h3 className="font-semibold">{method.title}</h3>
-                      <p className="text-primary font-medium">{method.value}</p>
+                      <h3 className="font-semibold group-hover:text-gradient transition-all duration-300">{method.title}</h3>
+                      <p className="text-primary font-mono font-medium">{method.value}</p>
                       <p className="text-sm text-muted-foreground">{method.description}</p>
                     </div>
                   </a>
@@ -267,20 +269,24 @@ const Contact = () => {
             </Card>
 
             {/* Social Links */}
-            <Card className="card-gradient card-shadow">
+            <Card className="card-glass border-border/30">
               <CardHeader>
-                <CardTitle className="text-xl">Follow My Work</CardTitle>
+                <CardTitle className="text-xl text-gradient">Follow My Work</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-2">
                 {socialLinks.map((social, index) => (
                   <a
                     key={social.title}
                     href={social.link}
-                    className="flex items-center space-x-4 p-3 rounded-lg hover:bg-secondary transition-smooth"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-4 p-4 rounded-xl hover:bg-primary/5 border border-transparent hover:border-primary/20 hover:shadow-[0_0_15px_hsl(var(--primary)/0.1)] transition-all duration-300 group"
                   >
-                    <social.icon className={`w-6 h-6 ${social.color}`} />
+                    <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] transition-all duration-300">
+                      <social.icon className="w-5 h-5 text-primary" />
+                    </span>
                     <div>
-                      <h3 className="font-semibold">{social.title}</h3>
+                      <h3 className="font-semibold group-hover:text-gradient transition-all duration-300">{social.title}</h3>
                       <p className="text-sm text-muted-foreground">{social.description}</p>
                     </div>
                   </a>
@@ -289,45 +295,37 @@ const Contact = () => {
             </Card>
 
             {/* Quick Info */}
-            <Card className="card-gradient card-shadow">
+            <Card className="card-glass border-border/30">
               <CardHeader>
-                <CardTitle className="text-xl">Quick Info</CardTitle>
+                <CardTitle className="text-xl text-gradient">Quick Info</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <Clock className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="font-medium">Response Time</p>
-                    <p className="text-sm text-muted-foreground">Within 24 hours</p>
+                {[
+                  { icon: Clock, title: "Response Time", value: "Within 24 hours" },
+                  { icon: MapPin, title: "Location", value: "Bangladesh (Available Worldwide)" },
+                  { icon: CheckCircle, title: "Availability", value: "Currently accepting new projects" }
+                ].map((info) => (
+                  <div key={info.title} className="flex items-center space-x-3 p-3 rounded-lg bg-secondary/20">
+                    <info.icon className="w-5 h-5 text-primary" />
+                    <div>
+                      <p className="font-medium">{info.title}</p>
+                      <p className="text-sm text-muted-foreground">{info.value}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <MapPin className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="font-medium">Location</p>
-                    <p className="text-sm text-muted-foreground">Bangladesh (Available Worldwide)</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="font-medium">Availability</p>
-                    <p className="text-sm text-muted-foreground">Currently accepting new projects</p>
-                  </div>
-                </div>
+                ))}
               </CardContent>
             </Card>
           </div>
         </div>
 
         {/* FAQ Section */}
-        <div className="mt-20">
-          <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        <div className="mt-24">
+          <h2 className="text-4xl lg:text-5xl font-bold text-center mb-12 text-gradient">Frequently Asked Questions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {faqs.map((faq, index) => (
-              <Card key={index} className="card-gradient card-shadow">
+              <Card key={index} className="card-glass card-hover border-border/30 border-l-4 border-l-primary/50 group">
                 <CardHeader>
-                  <CardTitle className="text-lg">{faq.question}</CardTitle>
+                  <CardTitle className="text-lg group-hover:text-gradient transition-all duration-300">{faq.question}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">{faq.answer}</p>
