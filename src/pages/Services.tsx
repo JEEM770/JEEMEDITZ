@@ -74,7 +74,7 @@ const Services = () => {
 
   const packages = [
     {
-      name: "Basic Package",
+      name: "Basic",
       price: "$150",
       description: "Perfect for small projects and social media content",
       features: [
@@ -88,7 +88,7 @@ const Services = () => {
       popular: false
     },
     {
-      name: "Professional Package",
+      name: "Professional",
       price: "$300",
       description: "Ideal for business content and marketing videos",
       features: [
@@ -103,7 +103,7 @@ const Services = () => {
       popular: true
     },
     {
-      name: "Premium Package",
+      name: "Premium",
       price: "$500",
       description: "Complete production solution for complex projects",
       features: [
@@ -121,60 +121,59 @@ const Services = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-24">
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-30" />
-        <div className="absolute inset-0 bg-mesh" />
+        <div className="orb orb-primary w-[400px] h-[400px] -top-20 -right-20 opacity-50" />
+        <div className="absolute inset-0 bg-grid opacity-20" />
         
         <div className="relative max-w-7xl mx-auto text-center">
           <h1 className="text-hero animate-slide-up">
             <span className="text-foreground">Creative</span>{" "}
             <span className="text-gradient">Services</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            Professional video editing, cinematography, and design services tailored to bring your vision to life. 
-            From concept to completion, I deliver exceptional results.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            Professional video editing, cinematography, and design services tailored to bring your vision to life.
           </p>
         </div>
       </section>
 
       {/* Services Grid */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute inset-0 bg-mesh opacity-30" />
+        <div className="absolute inset-0 bg-gradient-glow" />
         
         <div className="relative max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((service, index) => (
               <Card 
                 key={service.title} 
-                className={`card-modern group ${service.popular ? 'border-l-4 border-l-primary' : ''}`}
-                style={{ '--i': index } as React.CSSProperties}
+                className={`card-glass group ${service.popular ? 'border-primary/30 shadow-[0_0_30px_hsl(var(--primary)/0.1)]' : ''}`}
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center space-x-3">
-                      <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
-                        <service.icon className="w-6 h-6 text-primary" />
+                    <CardTitle className="flex items-center space-x-4">
+                      <span className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_25px_hsl(var(--primary)/0.3)] transition-all duration-500">
+                        <service.icon className="w-7 h-7 text-primary" />
                       </span>
                       <span className="text-xl group-hover:text-gradient transition-all duration-300">{service.title}</span>
                     </CardTitle>
                     {service.popular && (
-                      <Badge className="bg-primary/10 text-primary border border-primary/30">Popular</Badge>
+                      <Badge className="bg-primary text-primary-foreground shadow-[0_0_15px_hsl(var(--primary)/0.4)]">Popular</Badge>
                     )}
                   </div>
-                  <p className="text-muted-foreground mt-2">{service.description}</p>
+                  <p className="text-muted-foreground mt-4">{service.description}</p>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                      <div className="flex items-center space-x-2 p-2 rounded-lg bg-secondary/30">
-                        <Clock className="w-4 h-4 text-primary" />
-                        <span className="font-mono">{service.timeline}</span>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border">
+                        <Clock className="w-5 h-5 text-primary" />
+                        <span className="font-mono text-sm">{service.timeline}</span>
                       </div>
-                      <div className="flex items-center space-x-2 p-2 rounded-lg bg-secondary/30">
-                        <DollarSign className="w-4 h-4 text-primary" />
-                        <span className="font-mono">{service.pricing}</span>
+                      <div className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border">
+                        <DollarSign className="w-5 h-5 text-primary" />
+                        <span className="font-mono text-sm">{service.pricing}</span>
                       </div>
                     </div>
 
@@ -182,7 +181,7 @@ const Services = () => {
                       <h4 className="font-semibold text-gradient">What's Included:</h4>
                       <ul className="space-y-2">
                         {service.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center space-x-2 text-sm text-muted-foreground">
+                          <li key={idx} className="flex items-center space-x-3 text-sm text-muted-foreground">
                             <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
                             <span>{feature}</span>
                           </li>
@@ -199,13 +198,16 @@ const Services = () => {
 
       {/* Packages */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute inset-0 bg-card/50" />
+        <div className="absolute inset-0 bg-card/30" />
         
         <div className="relative max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-gradient">Service Packages</h2>
+          <div className="text-center mb-20">
+            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+              <span className="text-foreground">Service</span>{" "}
+              <span className="text-gradient">Packages</span>
+            </h2>
             <p className="text-xl text-muted-foreground">
-              Choose the package that best fits your project needs and budget
+              Choose the package that best fits your project needs
             </p>
           </div>
 
@@ -213,23 +215,25 @@ const Services = () => {
             {packages.map((pkg, index) => (
               <Card 
                 key={pkg.name} 
-                className={`card-modern group ${pkg.popular ? 'border-2 border-primary/50' : ''}`}
+                className={`card-glass group relative ${pkg.popular ? 'border-primary/50 shadow-[0_0_40px_hsl(var(--primary)/0.15)]' : ''}`}
               >
-                <CardHeader>
+                {pkg.popular && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <Badge className="bg-primary text-primary-foreground px-4 py-1 shadow-[0_0_20px_hsl(var(--primary)/0.5)]">Most Popular</Badge>
+                  </div>
+                )}
+                <CardHeader className="pt-8">
                   <div className="text-center">
-                    {pkg.popular && (
-                      <Badge className="mb-4 bg-primary text-primary-foreground">Most Popular</Badge>
-                    )}
                     <CardTitle className="text-2xl group-hover:text-gradient transition-all duration-300">{pkg.name}</CardTitle>
-                    <div className="text-4xl font-bold text-gradient font-mono mt-4">{pkg.price}</div>
-                    <p className="text-sm text-muted-foreground mt-2">{pkg.description}</p>
+                    <div className="text-5xl font-bold text-gradient font-mono mt-6">{pkg.price}</div>
+                    <p className="text-sm text-muted-foreground mt-4">{pkg.description}</p>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-3 mb-8">
+                  <ul className="space-y-4 mb-10">
                     {pkg.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center space-x-2 text-sm">
-                        <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                      <li key={idx} className="flex items-center space-x-3 text-sm">
+                        <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -253,28 +257,31 @@ const Services = () => {
 
       {/* Process */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute inset-0 bg-mesh opacity-30" />
+        <div className="absolute inset-0 bg-gradient-glow" />
         
         <div className="relative max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-gradient">My Process</h2>
+          <div className="text-center mb-20">
+            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+              <span className="text-foreground">My</span>{" "}
+              <span className="text-gradient">Process</span>
+            </h2>
             <p className="text-xl text-muted-foreground">
-              A streamlined workflow designed to deliver exceptional results
+              A streamlined workflow for exceptional results
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {[
-              { step: "01", title: "Consultation", description: "Discuss your vision, requirements, and timeline" },
-              { step: "02", title: "Planning", description: "Create detailed project plan and gather assets" },
-              { step: "03", title: "Production", description: "Execute the project with regular progress updates" },
-              { step: "04", title: "Delivery", description: "Final review, revisions, and project delivery" }
+              { step: "01", title: "Consultation", description: "Discuss your vision and requirements" },
+              { step: "02", title: "Planning", description: "Create detailed project plan" },
+              { step: "03", title: "Production", description: "Execute with regular updates" },
+              { step: "04", title: "Delivery", description: "Final review and delivery" }
             ].map((phase, index) => (
               <div key={phase.step} className="text-center group">
-                <div className="w-20 h-20 bg-primary/10 backdrop-blur-sm border border-primary/30 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-mono font-bold group-hover:bg-primary/20 transition-all duration-300">
+                <div className="w-20 h-20 bg-primary/10 backdrop-blur-sm border border-primary/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-mono font-bold text-primary group-hover:bg-primary/20 group-hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] transition-all duration-500">
                   {phase.step}
                 </div>
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-gradient transition-all duration-300">{phase.title}</h3>
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-gradient transition-all duration-300">{phase.title}</h3>
                 <p className="text-muted-foreground">{phase.description}</p>
               </div>
             ))}
@@ -283,20 +290,20 @@ const Services = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-card/50" />
-        <div className="absolute inset-0 bg-grid opacity-20" />
+      <section className="py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="orb orb-accent w-[300px] h-[300px] -bottom-20 -left-20 opacity-40" />
+        <div className="absolute inset-0 bg-grid opacity-10" />
         
         <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-            <span className="text-foreground">Ready to Start Your</span>{" "}
-            <span className="text-gradient">Project?</span>
+          <h2 className="text-4xl lg:text-6xl font-bold mb-8">
+            <span className="text-foreground">Ready to Start</span>
+            <br />
+            <span className="text-gradient">Your Project?</span>
           </h2>
-          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Let's discuss your vision and create something amazing together. 
-            Get in touch for a free consultation.
+          <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
+            Let's discuss your vision and create something amazing together.
           </p>
-          <GlowButton asChild size="lg" className="text-lg px-8 py-6">
+          <GlowButton asChild size="lg" className="text-lg">
             <Link to="/contact" className="group">
               Start Your Project
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />

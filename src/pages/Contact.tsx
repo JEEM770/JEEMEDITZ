@@ -126,29 +126,30 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-24">
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-30" />
-        <div className="absolute inset-0 bg-mesh" />
+        <div className="orb orb-primary w-[400px] h-[400px] -top-20 -right-20 opacity-50" />
+        <div className="orb orb-accent w-[300px] h-[300px] bottom-0 -left-20 opacity-40" style={{ animationDelay: '-5s' }} />
+        <div className="absolute inset-0 bg-grid opacity-20" />
         
         <div className="relative max-w-7xl mx-auto text-center">
           <h1 className="text-hero animate-slide-up">
             <span className="text-foreground">Let's</span>{" "}
             <span className="text-gradient">Connect</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Ready to bring your creative vision to life? I'm here to help with your video editing, 
-            cinematography, and design needs. Let's discuss your project!
+            cinematography, and design needs.
           </p>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Contact Form */}
           <div>
-            <Card className="card-glass border-border/30 border-l-4 border-l-primary">
+            <Card className="card-glass border-l-4 border-l-primary">
               <CardHeader>
                 <CardTitle className="text-2xl text-gradient">Send me a message</CardTitle>
                 <p className="text-muted-foreground">
@@ -167,7 +168,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         placeholder="Your full name"
-                        className="bg-secondary/30 border-border/50 focus:border-primary/50"
+                        className="bg-secondary/30 border-border focus:border-primary/50 rounded-xl"
                       />
                     </div>
                     <div className="space-y-2">
@@ -180,7 +181,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         placeholder="your.email@example.com"
-                        className="bg-secondary/30 border-border/50 focus:border-primary/50"
+                        className="bg-secondary/30 border-border focus:border-primary/50 rounded-xl"
                       />
                     </div>
                   </div>
@@ -193,7 +194,7 @@ const Contact = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="Your phone number"
-                      className="bg-secondary/30 border-border/50 focus:border-primary/50"
+                      className="bg-secondary/30 border-border focus:border-primary/50 rounded-xl"
                     />
                   </div>
 
@@ -205,7 +206,7 @@ const Contact = () => {
                       value={formData.service}
                       onChange={handleChange}
                       placeholder="e.g., Video editing, Cinematography, Graphic design"
-                      className="bg-secondary/30 border-border/50 focus:border-primary/50"
+                      className="bg-secondary/30 border-border focus:border-primary/50 rounded-xl"
                     />
                   </div>
 
@@ -219,7 +220,7 @@ const Contact = () => {
                       required
                       rows={5}
                       placeholder="Tell me about your project, timeline, and any specific requirements..."
-                      className="bg-secondary/30 border-border/50 focus:border-primary/50"
+                      className="bg-secondary/30 border-border focus:border-primary/50 rounded-xl"
                     />
                   </div>
 
@@ -243,20 +244,20 @@ const Contact = () => {
           </div>
 
           {/* Contact Information */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Contact Methods */}
-            <Card className="card-glass border-border/30">
+            <Card className="card-glass">
               <CardHeader>
                 <CardTitle className="text-xl text-gradient">Get in Touch</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
-                {contactMethods.map((method, index) => (
+              <CardContent className="space-y-3">
+                {contactMethods.map((method) => (
                   <a
                     key={method.title}
                     href={method.link}
-                    className="flex items-center space-x-4 p-4 rounded-xl hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all duration-300 group"
+                    className="flex items-center space-x-4 p-4 rounded-2xl hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all duration-300 group"
                   >
-                    <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
+                    <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] transition-all duration-500">
                       <method.icon className="w-5 h-5 text-primary" />
                     </span>
                     <div>
@@ -270,20 +271,20 @@ const Contact = () => {
             </Card>
 
             {/* Social Links */}
-            <Card className="card-glass border-border/30">
+            <Card className="card-glass">
               <CardHeader>
                 <CardTitle className="text-xl text-gradient">Follow My Work</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
-                {socialLinks.map((social, index) => (
+              <CardContent className="space-y-3">
+                {socialLinks.map((social) => (
                   <a
                     key={social.title}
                     href={social.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-4 p-4 rounded-xl hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all duration-300 group"
+                    className="flex items-center space-x-4 p-4 rounded-2xl hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all duration-300 group"
                   >
-                    <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
+                    <span className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] transition-all duration-500">
                       <social.icon className="w-5 h-5 text-primary" />
                     </span>
                     <div>
@@ -296,7 +297,7 @@ const Contact = () => {
             </Card>
 
             {/* Quick Info */}
-            <Card className="card-glass border-border/30">
+            <Card className="card-glass">
               <CardHeader>
                 <CardTitle className="text-xl text-gradient">Quick Info</CardTitle>
               </CardHeader>
@@ -306,7 +307,7 @@ const Contact = () => {
                   { icon: MapPin, title: "Location", value: "Bangladesh (Available Worldwide)" },
                   { icon: CheckCircle, title: "Availability", value: "Currently accepting new projects" }
                 ].map((info) => (
-                  <div key={info.title} className="flex items-center space-x-3 p-3 rounded-lg bg-secondary/20">
+                  <div key={info.title} className="flex items-center space-x-4 p-4 rounded-xl bg-secondary/30 border border-border">
                     <info.icon className="w-5 h-5 text-primary" />
                     <div>
                       <p className="font-medium">{info.title}</p>
@@ -320,11 +321,14 @@ const Contact = () => {
         </div>
 
         {/* FAQ Section */}
-        <div className="mt-24">
-          <h2 className="text-4xl lg:text-5xl font-bold text-center mb-12 text-gradient">Frequently Asked Questions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="mt-32">
+          <h2 className="text-4xl lg:text-6xl font-bold text-center mb-16">
+            <span className="text-foreground">Frequently Asked</span>{" "}
+            <span className="text-gradient">Questions</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {faqs.map((faq, index) => (
-              <Card key={index} className="card-modern border-l-4 border-l-primary/50 group">
+              <Card key={index} className="card-glass border-l-4 border-l-primary/50 group">
                 <CardHeader>
                   <CardTitle className="text-lg group-hover:text-gradient transition-all duration-300">{faq.question}</CardTitle>
                 </CardHeader>
