@@ -41,12 +41,21 @@ const ReelCard = ({
 }) => {
   return (
     <div 
-      className="relative group cursor-pointer overflow-hidden rounded-2xl aspect-[9/16] bg-muted flex-shrink-0 w-48 sm:w-56 lg:w-64 border border-border/30 transition-all duration-300 hover:scale-105 hover:border-primary/50 hover:shadow-[0_0_30px_hsl(var(--primary)/0.2)]" 
+      className="relative group cursor-pointer overflow-hidden rounded-2xl aspect-[9/16] bg-muted flex-shrink-0 w-48 sm:w-56 lg:w-64 border border-border/30 transition-all duration-500 ease-out hover:border-primary/50 hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)]" 
       onClick={onPlay}
     >
-      <img src={reel.thumbnail} alt={`Reel ${reel.id}`} className="w-full h-full object-cover absolute inset-0" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
-      <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+      {/* Thumbnail */}
+      <img 
+        src={reel.thumbnail} 
+        alt={`Reel ${reel.id}`} 
+        className="w-full h-full object-cover absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-110" 
+      />
+      
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      
+      {/* Stats at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
         <div className="flex items-center justify-between text-white text-sm">
           <div className="flex items-center gap-2 font-mono">
             <Eye className="w-4 h-4" />
@@ -57,11 +66,16 @@ const ReelCard = ({
           {reel.platform === 'instagram' && <InstagramIcon className="w-5 h-5" />}
         </div>
       </div>
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <div className="w-14 h-14 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-[0_0_25px_hsl(var(--primary)/0.5)]">
+      
+      {/* Play button center */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="w-14 h-14 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-[0_0_25px_hsl(var(--primary)/0.5)] transform scale-75 group-hover:scale-100 transition-transform duration-300">
           <Play className="w-6 h-6 text-primary-foreground ml-1" />
         </div>
       </div>
+      
+      {/* Glow border effect on hover */}
+      <div className="absolute inset-0 rounded-2xl border-2 border-primary/0 group-hover:border-primary/40 transition-all duration-300 pointer-events-none" />
     </div>
   );
 };
