@@ -177,19 +177,82 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Profile Image */}
-          <div className="flex justify-center lg:justify-end animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <div className="relative group">
-              {/* Glow ring */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-500 animate-spin-slow" />
-              
-              <img
-                src="https://i.postimg.cc/L5rqzSJ5/IMG-3305.jpg"
-                alt="JEEM - Video Editor & Cinematographer"
-                className="relative w-72 h-72 lg:w-[400px] lg:h-[400px] object-cover rounded-full border-2 border-primary/30 float shadow-2xl"
+          {/* Profile Image with Enhanced Effects */}
+          <motion.div 
+            className="flex justify-center lg:justify-end"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <motion.div 
+              className="relative group cursor-pointer"
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              whileHover={{ scale: 1.03 }}
+            >
+              {/* Outer glow ring */}
+              <motion.div 
+                className="absolute -inset-3 rounded-full opacity-50 group-hover:opacity-80 transition-opacity duration-700"
+                style={{
+                  background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)))',
+                  backgroundSize: '200% 200%',
+                }}
+                animate={{ 
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                  rotate: [0, 360]
+                }}
+                transition={{ 
+                  backgroundPosition: { duration: 4, repeat: Infinity, ease: 'linear' },
+                  rotate: { duration: 20, repeat: Infinity, ease: 'linear' }
+                }}
               />
-            </div>
-          </div>
+              
+              {/* Blur glow */}
+              <motion.div 
+                className="absolute -inset-6 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"
+                style={{
+                  background: 'radial-gradient(circle, hsl(var(--primary) / 0.6), hsl(var(--accent) / 0.4), transparent 70%)'
+                }}
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              />
+              
+              {/* Inner border ring */}
+              <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary via-accent to-primary opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Image container */}
+              <div className="relative rounded-full p-1 bg-background">
+                <img
+                  src="https://i.postimg.cc/L5rqzSJ5/IMG-3305.jpg"
+                  alt="JEEM - Video Editor & Cinematographer"
+                  className="relative w-72 h-72 lg:w-[380px] lg:h-[380px] object-cover rounded-full shadow-2xl"
+                />
+              </div>
+              
+              {/* Floating particles */}
+              {[...Array(4)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 rounded-full bg-primary/60"
+                  style={{
+                    top: `${20 + i * 20}%`,
+                    left: i % 2 === 0 ? '-8%' : '100%',
+                  }}
+                  animate={{
+                    y: [-10, 10, -10],
+                    opacity: [0.3, 0.8, 0.3],
+                    scale: [0.8, 1.2, 0.8],
+                  }}
+                  transition={{
+                    duration: 2 + i * 0.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: i * 0.3,
+                  }}
+                />
+              ))}
+            </motion.div>
+          </motion.div>
         </div>
 
         {/* Scroll indicator */}
