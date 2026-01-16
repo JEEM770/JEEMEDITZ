@@ -103,156 +103,36 @@ const Home = () => {
               </GlowButton>
             </div>
 
-            {/* Quick Stats - Premium Glassmorphism Design */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-6 pt-10">
+            {/* Quick Stats */}
+            <div className="flex gap-8 pt-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
               {[
-                { value: '50+', label: 'Projects Completed' },
-                { value: '8+', label: 'Years Experience' },
-                { value: '100%', label: 'Client Satisfaction' },
-              ].map((stat, index) => (
-                <motion.div 
-                  key={stat.label} 
-                  className="relative group cursor-pointer"
-                  initial={{ opacity: 0, y: 40, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: 0.5 + index * 0.12,
-                    ease: [0.25, 0.1, 0.25, 1]
-                  }}
-                  whileHover={{ y: -6, scale: 1.02 }}
-                >
-                  {/* Animated glow background */}
-                  <motion.div 
-                    className="absolute -inset-1 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-700"
-                    style={{
-                      background: 'linear-gradient(135deg, hsl(var(--primary) / 0.4), hsl(var(--accent) / 0.3), hsl(var(--primary) / 0.4))'
-                    }}
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                  
-                  {/* Glass card */}
-                  <div className="relative p-5 lg:p-6 text-center rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/10 group-hover:border-primary/40 group-hover:bg-white/[0.08] transition-all duration-500 shadow-xl shadow-black/10">
-                    
-                    {/* Decorative gradient line top */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                    
-                    {/* Animated number with glow */}
-                    <motion.div 
-                      className="text-4xl lg:text-5xl font-black mb-2 relative"
-                      style={{ 
-                        background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)))',
-                        backgroundSize: '200% 200%',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                      }}
-                      animate={{ 
-                        backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                      }}
-                      transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      {stat.value}
-                    </motion.div>
-                    
-                    {/* Label with elegant styling */}
-                    <motion.div 
-                      className="text-[10px] lg:text-xs text-muted-foreground/70 font-medium tracking-[0.2em] uppercase"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.7 + index * 0.12 }}
-                    >
-                      {stat.label}
-                    </motion.div>
-                    
-                    {/* Corner accents */}
-                    <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-primary/0 group-hover:border-primary/40 transition-all duration-500 rounded-tl" />
-                    <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-primary/0 group-hover:border-primary/40 transition-all duration-500 rounded-tr" />
-                    <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-primary/0 group-hover:border-primary/40 transition-all duration-500 rounded-bl" />
-                    <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-primary/0 group-hover:border-primary/40 transition-all duration-500 rounded-br" />
+                { value: '50+', label: 'Projects' },
+                { value: '8', label: 'Years Exp.' },
+                { value: '100%', label: 'Satisfaction' },
+              ].map((stat) => (
+                <div key={stat.label} className="text-center group">
+                  <div className="text-3xl lg:text-4xl font-bold text-gradient font-mono group-hover:scale-105 transition-transform duration-300">
+                    {stat.value}
                   </div>
-                </motion.div>
+                  <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Profile Image with Enhanced Effects */}
-          <motion.div 
-            className="flex justify-center lg:justify-end"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            <motion.div 
-              className="relative group cursor-pointer"
-              animate={{ y: [0, -12, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              whileHover={{ scale: 1.03 }}
-            >
-              {/* Outer glow ring */}
-              <motion.div 
-                className="absolute -inset-3 rounded-full opacity-50 group-hover:opacity-80 transition-opacity duration-700"
-                style={{
-                  background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)))',
-                  backgroundSize: '200% 200%',
-                }}
-                animate={{ 
-                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                  rotate: [0, 360]
-                }}
-                transition={{ 
-                  backgroundPosition: { duration: 4, repeat: Infinity, ease: 'linear' },
-                  rotate: { duration: 20, repeat: Infinity, ease: 'linear' }
-                }}
+          {/* Profile Image */}
+          <div className="flex justify-center lg:justify-end animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <div className="relative group">
+              {/* Glow ring */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-500 animate-spin-slow" />
+              
+              <img
+                src="https://i.postimg.cc/L5rqzSJ5/IMG-3305.jpg"
+                alt="JEEM - Video Editor & Cinematographer"
+                className="relative w-72 h-72 lg:w-[400px] lg:h-[400px] object-cover rounded-full border-2 border-primary/30 float shadow-2xl"
               />
-              
-              {/* Blur glow */}
-              <motion.div 
-                className="absolute -inset-6 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"
-                style={{
-                  background: 'radial-gradient(circle, hsl(var(--primary) / 0.6), hsl(var(--accent) / 0.4), transparent 70%)'
-                }}
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              />
-              
-              {/* Inner border ring */}
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary via-accent to-primary opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              {/* Image container */}
-              <div className="relative rounded-full p-1 bg-background">
-                <img
-                  src="https://i.postimg.cc/L5rqzSJ5/IMG-3305.jpg"
-                  alt="JEEM - Video Editor & Cinematographer"
-                  className="relative w-72 h-72 lg:w-[380px] lg:h-[380px] object-cover rounded-full shadow-2xl"
-                />
-              </div>
-              
-              {/* Floating particles */}
-              {[...Array(4)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute w-2 h-2 rounded-full bg-primary/60"
-                  style={{
-                    top: `${20 + i * 20}%`,
-                    left: i % 2 === 0 ? '-8%' : '100%',
-                  }}
-                  animate={{
-                    y: [-10, 10, -10],
-                    opacity: [0.3, 0.8, 0.3],
-                    scale: [0.8, 1.2, 0.8],
-                  }}
-                  transition={{
-                    duration: 2 + i * 0.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: i * 0.3,
-                  }}
-                />
-              ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
 
         {/* Scroll indicator */}
