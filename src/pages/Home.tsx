@@ -103,45 +103,74 @@ const Home = () => {
               </GlowButton>
             </div>
 
-            {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-6 pt-10">
+            {/* Quick Stats - Premium Glassmorphism Design */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-6 pt-10">
               {[
-                { value: '50+', label: 'Projects Delivered' },
-                { value: '8', label: 'Years Experience' },
+                { value: '50+', label: 'Projects Completed' },
+                { value: '8+', label: 'Years Experience' },
                 { value: '100%', label: 'Client Satisfaction' },
               ].map((stat, index) => (
                 <motion.div 
                   key={stat.label} 
-                  className="relative group cursor-default"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  className="relative group cursor-pointer"
+                  initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ 
-                    duration: 0.6, 
-                    delay: 0.4 + index * 0.15,
-                    ease: [0.16, 1, 0.3, 1]
+                    duration: 0.8, 
+                    delay: 0.5 + index * 0.12,
+                    ease: [0.25, 0.1, 0.25, 1]
                   }}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ y: -6, scale: 1.02 }}
                 >
-                  {/* Glow background on hover */}
-                  <div className="absolute inset-0 bg-primary/5 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+                  {/* Animated glow background */}
+                  <motion.div 
+                    className="absolute -inset-1 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-700"
+                    style={{
+                      background: 'linear-gradient(135deg, hsl(var(--primary) / 0.4), hsl(var(--accent) / 0.3), hsl(var(--primary) / 0.4))'
+                    }}
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  />
                   
-                  <div className="relative p-4 text-center border border-transparent group-hover:border-primary/20 rounded-2xl transition-all duration-500 bg-card/30 backdrop-blur-sm">
+                  {/* Glass card */}
+                  <div className="relative p-5 lg:p-6 text-center rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/10 group-hover:border-primary/40 group-hover:bg-white/[0.08] transition-all duration-500 shadow-xl shadow-black/10">
+                    
+                    {/* Decorative gradient line top */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                    
+                    {/* Animated number with glow */}
                     <motion.div 
-                      className="text-4xl lg:text-5xl font-black tracking-tight"
+                      className="text-4xl lg:text-5xl font-black mb-2 relative"
                       style={{ 
-                        background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%)',
+                        background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)))',
+                        backgroundSize: '200% 200%',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        fontFamily: "'Inter', system-ui, sans-serif"
                       }}
+                      animate={{ 
+                        backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                      }}
+                      transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
                       whileHover={{ scale: 1.1 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
                     >
                       {stat.value}
                     </motion.div>
-                    <div className="text-xs lg:text-sm text-muted-foreground mt-2 font-medium uppercase tracking-widest">
+                    
+                    {/* Label with elegant styling */}
+                    <motion.div 
+                      className="text-[10px] lg:text-xs text-muted-foreground/70 font-medium tracking-[0.2em] uppercase"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.7 + index * 0.12 }}
+                    >
                       {stat.label}
-                    </div>
+                    </motion.div>
+                    
+                    {/* Corner accents */}
+                    <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-primary/0 group-hover:border-primary/40 transition-all duration-500 rounded-tl" />
+                    <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-primary/0 group-hover:border-primary/40 transition-all duration-500 rounded-tr" />
+                    <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-primary/0 group-hover:border-primary/40 transition-all duration-500 rounded-bl" />
+                    <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-primary/0 group-hover:border-primary/40 transition-all duration-500 rounded-br" />
                   </div>
                 </motion.div>
               ))}
