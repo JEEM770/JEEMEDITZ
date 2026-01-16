@@ -104,18 +104,46 @@ const Home = () => {
             </div>
 
             {/* Quick Stats */}
-            <div className="flex gap-8 pt-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <div className="grid grid-cols-3 gap-6 pt-10">
               {[
-                { value: '50+', label: 'Projects' },
-                { value: '8', label: 'Years Exp.' },
-                { value: '100%', label: 'Satisfaction' },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center group">
-                  <div className="text-3xl lg:text-4xl font-bold text-gradient font-mono group-hover:scale-105 transition-transform duration-300">
-                    {stat.value}
+                { value: '50+', label: 'Projects Delivered' },
+                { value: '8', label: 'Years Experience' },
+                { value: '100%', label: 'Client Satisfaction' },
+              ].map((stat, index) => (
+                <motion.div 
+                  key={stat.label} 
+                  className="relative group cursor-default"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    duration: 0.6, 
+                    delay: 0.4 + index * 0.15,
+                    ease: [0.16, 1, 0.3, 1]
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {/* Glow background on hover */}
+                  <div className="absolute inset-0 bg-primary/5 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+                  
+                  <div className="relative p-4 text-center border border-transparent group-hover:border-primary/20 rounded-2xl transition-all duration-500 bg-card/30 backdrop-blur-sm">
+                    <motion.div 
+                      className="text-4xl lg:text-5xl font-black tracking-tight"
+                      style={{ 
+                        background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        fontFamily: "'Inter', system-ui, sans-serif"
+                      }}
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    >
+                      {stat.value}
+                    </motion.div>
+                    <div className="text-xs lg:text-sm text-muted-foreground mt-2 font-medium uppercase tracking-widest">
+                      {stat.label}
+                    </div>
                   </div>
-                  <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
