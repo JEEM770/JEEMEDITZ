@@ -10,6 +10,7 @@ import PageTransition from "./components/PageTransition";
 import FloatingActionButton from "./components/FloatingActionButton";
 import ScrollToTop from "./components/ScrollToTop";
 import ScrollToTopOnNavigation from "./components/ScrollToTopOnNavigation";
+import CursorFollower from "./components/CursorFollower";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Portfolio from "./pages/Portfolio";
@@ -42,6 +43,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <CursorFollower />
         <ScrollToTopOnNavigation />
         <Navigation />
         <main>
