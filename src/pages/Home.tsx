@@ -174,22 +174,18 @@ const Home = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
             >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <GlowButton asChild size="lg">
-                  <Link to="/portfolio">
-                    <Play className="w-5 h-5 mr-2" />
-                    View My Work
-                  </Link>
-                </GlowButton>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <GlowButton asChild variant="outline" size="lg">
-                  <Link to="/about" className="group">
-                    Learn More
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </GlowButton>
-              </motion.div>
+              <GlowButton asChild size="lg" magnetic magneticStrength={0.5}>
+                <Link to="/portfolio">
+                  <Play className="w-5 h-5 mr-2" />
+                  View My Work
+                </Link>
+              </GlowButton>
+              <GlowButton asChild variant="outline" size="lg" magnetic magneticStrength={0.5}>
+                <Link to="/about" className="group">
+                  Learn More
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                </Link>
+              </GlowButton>
             </motion.div>
 
             {/* Quick Stats with counter animation */}
@@ -339,27 +335,27 @@ const Home = () => {
           {/* Testimonial Carousel */}
           <div className="relative group/testimonial">
             {/* Navigation Buttons */}
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <GlowButton
-                variant="outline"
-                size="icon"
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 hidden md:flex"
-                onClick={prevTestimonial}
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </GlowButton>
-            </motion.div>
+            <GlowButton
+              variant="outline"
+              size="icon"
+              magnetic
+              magneticStrength={0.6}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 hidden md:flex"
+              onClick={prevTestimonial}
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </GlowButton>
 
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <GlowButton
-                variant="outline"
-                size="icon"
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 hidden md:flex"
-                onClick={nextTestimonial}
-              >
-                <ChevronRight className="w-5 h-5" />
-              </GlowButton>
-            </motion.div>
+            <GlowButton
+              variant="outline"
+              size="icon"
+              magnetic
+              magneticStrength={0.6}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 hidden md:flex"
+              onClick={nextTestimonial}
+            >
+              <ChevronRight className="w-5 h-5" />
+            </GlowButton>
 
             {/* Testimonial Card */}
             <AnimatePresence mode="wait">
@@ -501,17 +497,12 @@ const Home = () => {
             Let's collaborate to bring your vision to life with professional video editing, 
             cinematography, and design services.
           </p>
-          <motion.div 
-            whileHover={{ scale: 1.05 }} 
-            whileTap={{ scale: 0.95 }}
-          >
-            <GlowButton asChild size="lg" className="text-lg animate-glow-pulse">
-              <Link to="/contact" className="group">
-                Get In Touch
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-            </GlowButton>
-          </motion.div>
+          <GlowButton asChild size="lg" magnetic magneticStrength={0.5} className="text-lg">
+            <Link to="/contact" className="group">
+              Get In Touch
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+            </Link>
+          </GlowButton>
         </FadeIn>
       </section>
     </div>
