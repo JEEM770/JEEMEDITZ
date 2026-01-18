@@ -641,3 +641,26 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Custom Cursor - Hide default on desktop */
+@media (hover: hover) and (pointer: fine) {
+  html {
+    cursor: none !important;
+  }
+  
+  a, button, input, textarea, select, [role="button"], [data-cursor-hover] {
+    cursor: none !important;
+  }
+}
+
+/* Cursor trail particle animation */
+@keyframes cursor-trail-fade {
+  0% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+}
