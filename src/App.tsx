@@ -11,6 +11,8 @@ import FloatingActionButton from "./components/FloatingActionButton";
 import ScrollToTop from "./components/ScrollToTop";
 import ScrollToTopOnNavigation from "./components/ScrollToTopOnNavigation";
 import CursorFollower from "./components/CursorFollower";
+import CursorThemeSwitcher from "./components/CursorThemeSwitcher";
+import { CursorThemeProvider } from "./contexts/CursorThemeContext";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Portfolio from "./pages/Portfolio";
@@ -40,19 +42,22 @@ const AnimatedRoutes = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <CursorFollower />
-        <ScrollToTopOnNavigation />
-        <Navigation />
-        <main>
-          <AnimatedRoutes />
-        </main>
-        <Footer />
-        <FloatingActionButton />
-        <ScrollToTop />
-      </BrowserRouter>
+      <CursorThemeProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <CursorFollower />
+          <CursorThemeSwitcher />
+          <ScrollToTopOnNavigation />
+          <Navigation />
+          <main>
+            <AnimatedRoutes />
+          </main>
+          <Footer />
+          <FloatingActionButton />
+          <ScrollToTop />
+        </BrowserRouter>
+      </CursorThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
