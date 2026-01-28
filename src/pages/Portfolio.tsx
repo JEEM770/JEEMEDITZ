@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GlowButton } from '@/components/ui/glow-button';
 import { Badge } from '@/components/ui/badge';
 import ReelsViewer from '@/components/ReelsViewer';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useParallax, useScrollScale, useScrollOpacity } from '@/hooks/use-scroll-animation';
 
 // Custom TikTok Icon Component
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -56,6 +58,17 @@ const Portfolio = () => {
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
 
+  // Parallax hooks for different sections
+  const { ref: headerParallaxRef, y: headerParallaxY } = useParallax(0.4);
+  const { ref: reelsParallaxRef, y: reelsParallaxY } = useParallax(0.2);
+  const { ref: projectsScaleRef, scale: projectsScale } = useScrollScale(0.95, 1);
+  
+  // Page-wide scroll progress for floating elements
+  const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  const orbY = useTransform(smoothProgress, [0, 1], [0, -150]);
+  const orbRotate = useTransform(smoothProgress, [0, 1], [0, 20]);
+
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
       carouselRef.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: 'smooth' });
@@ -106,14 +119,24 @@ const Portfolio = () => {
   const filteredProjects = selectedCategory === 'all' ? projects : projects.filter(project => project.category === selectedCategory);
 
   return (
-    <div className="min-h-screen pt-24">
+    <div className="min-h-screen pt-24 overflow-hidden">
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="orb orb-primary w-[400px] h-[400px] -top-20 -left-20 opacity-50" />
-        <div className="orb orb-accent w-[300px] h-[300px] bottom-0 right-0 opacity-40" style={{ animationDelay: '-10s' }} />
+        <motion.div 
+          ref={headerParallaxRef}
+          className="orb orb-primary w-[400px] h-[400px] -top-20 -left-20 opacity-50" 
+          style={{ y: headerParallaxY }}
+        />
+        <motion.div 
+          className="orb orb-accent w-[300px] h-[300px] bottom-0 right-0 opacity-40" 
+          style={{ animationDelay: '-10s', y: orbY, rotate: orbRotate }}
+        />
         <div className="absolute inset-0 bg-grid opacity-20" />
         
-        <div className="relative max-w-7xl mx-auto text-center">
+        <motion.div 
+          className="relative max-w-7xl mx-auto text-center"
+          style={{ y: useTransform(smoothProgress, [0, 0.3], [0, 30]) }}
+        >
           <h1 className="text-hero animate-slide-up">
             <span className="text-foreground">My</span>{" "}
             <span className="text-gradient">Portfolio</span>
@@ -121,7 +144,7 @@ const Portfolio = () => {
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Explore my creative journey through video editing, cinematography, and visual design projects.
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Reels Section */}
@@ -129,15 +152,31 @@ const Portfolio = () => {
         <div className="absolute inset-0 bg-card/30" />
         <div className="absolute inset-0 bg-gradient-glow" />
         
-        <div className="relative max-w-7xl mx-auto">
+        <motion.div 
+          ref={reelsParallaxRef}
+          className="relative max-w-7xl mx-auto"
+          style={{ y: reelsParallaxY }}
+        >
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+            <motion.h2 
+              className="text-4xl lg:text-6xl font-bold mb-6"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <span className="text-foreground">Featured</span>{" "}
               <span className="text-gradient">Reels</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            </motion.h2>
+            <motion.p 
+              className="text-lg text-muted-foreground max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
               Quick edits, cinematic moments, and creative snippets from my short-form content.
-            </p>
+            </motion.p>
           </div>
           
           <div className="relative group/carousel">
@@ -185,7 +224,7 @@ const Portfolio = () => {
               View All Reels
             </GlowButton>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Category Filter */}
@@ -207,10 +246,21 @@ const Portfolio = () => {
 
       {/* Projects Grid */}
       <section className="px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="max-w-7xl mx-auto">
+        <motion.div 
+          ref={projectsScaleRef}
+          className="max-w-7xl mx-auto"
+          style={{ scale: projectsScale }}
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project, index) => (
-              <Card key={project.id} className="card-glass overflow-hidden group">
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="card-glass overflow-hidden group">
                 <div className="relative overflow-hidden">
                   <img src={project.thumbnail} alt={project.title} className="w-full h-52 object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
@@ -264,9 +314,10 @@ const Portfolio = () => {
                   </div>
                 </CardContent>
               </Card>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Social Media CTA */}

@@ -2,10 +2,11 @@ import { Calendar, GraduationCap, Award, Target, Zap, Quote } from 'lucide-react
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion';
 import { CursorGlowCard } from '@/components/ui/cursor-glow-card';
 import { CursorSpotlight } from '@/components/ui/cursor-spotlight';
 import { AnimatedText, AnimatedCharacters } from '@/components/ui/animated-text';
+import { useParallax, useScrollScale, useScrollOpacity } from '@/hooks/use-scroll-animation';
 
 const About = () => {
   const [animatedValues, setAnimatedValues] = useState<{ [key: string]: number }>({});
@@ -16,6 +17,19 @@ const About = () => {
   // Hero image cursor effect
   const heroImageRef = useRef<HTMLDivElement>(null);
   const [heroMousePos, setHeroMousePos] = useState({ x: 0, y: 0 });
+
+  // Parallax hooks for different sections
+  const { ref: heroParallaxRef, y: heroParallaxY } = useParallax(0.3);
+  const { ref: educationParallaxRef, y: educationParallaxY } = useParallax(0.2);
+  const { ref: experienceParallaxRef, y: experienceParallaxY } = useParallax(0.15);
+  const { ref: skillsScaleRef, scale: skillsScale } = useScrollScale(0.9, 1);
+  const { ref: quoteOpacityRef, opacity: quoteOpacity } = useScrollOpacity();
+
+  // Page-wide scroll progress for floating elements
+  const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  const floatingY = useTransform(smoothProgress, [0, 1], [0, -100]);
+  const floatingRotate = useTransform(smoothProgress, [0, 1], [0, 15]);
 
   const handleHeroMouseMove = useCallback((e: React.MouseEvent) => {
     if (!heroImageRef.current) return;
@@ -176,11 +190,13 @@ const About = () => {
   };
 
   return (
-    <div className="min-h-screen pt-24">
+    <div className="min-h-screen pt-24 overflow-hidden">
       {/* Hero Section */}
       <CursorSpotlight className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <motion.div 
+          ref={heroParallaxRef}
           className="orb orb-primary w-[500px] h-[500px] -top-40 -left-40 opacity-50"
+          style={{ y: heroParallaxY }}
           animate={{
             x: heroMousePos.x * 2,
             y: heroMousePos.y * 2,
@@ -189,7 +205,7 @@ const About = () => {
         />
         <motion.div 
           className="orb orb-accent w-[300px] h-[300px] bottom-0 right-0 opacity-40" 
-          style={{ animationDelay: '-8s' }}
+          style={{ animationDelay: '-8s', y: floatingY, rotate: floatingRotate }}
           animate={{
             x: heroMousePos.x * -1.5,
             y: heroMousePos.y * -1.5,
