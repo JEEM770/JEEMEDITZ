@@ -645,11 +645,11 @@
 /* Custom Cursor - Hide default on desktop */
 @media (hover: hover) and (pointer: fine) {
   html {
-    cursor: none !important;
+    cursor: auto;
   }
   
   a, button, input, textarea, select, [role="button"], [data-cursor-hover] {
-    cursor: none !important;
+    cursor: pointer;
   }
 }
 

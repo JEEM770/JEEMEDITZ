@@ -1,20 +1,12 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 import { useCursorTheme } from "@/contexts/CursorThemeContext";
-
-interface Sparkle {
-  id: number;
-  x: number;
-  y: number;
-}
 
 const CursorFollower = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isIdle, setIsIdle] = useState(false);
-  const [sparkles, setSparkles] = useState<Sparkle[]>([]);
-  const sparkleIdRef = useRef(0);
   const idleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastMoveRef = useRef({ x: 0, y: 0 });
 
@@ -24,15 +16,15 @@ const CursorFollower = () => {
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
 
-  // Spring physics for the character body (follows with cute delay)
-  const bodyX = useSpring(cursorX, { stiffness: 200, damping: 25, mass: 0.8 });
-  const bodyY = useSpring(cursorY, { stiffness: 200, damping: 25, mass: 0.8 });
+  // Simplified spring physics (reduced stiffness for better performance)
+  const bodyX = useSpring(cursorX, { stiffness: 150, damping: 20 });
+  const bodyY = useSpring(cursorY, { stiffness: 150, damping: 20 });
 
-  // Eye tracking - pupils move toward cursor direction
+  // Eye tracking - simplified
   const pupilOffsetX = useMotionValue(0);
   const pupilOffsetY = useMotionValue(0);
-  const smoothPupilX = useSpring(pupilOffsetX, { stiffness: 300, damping: 30 });
-  const smoothPupilY = useSpring(pupilOffsetY, { stiffness: 300, damping: 30 });
+  const smoothPupilX = useSpring(pupilOffsetX, { stiffness: 200, damping: 25 });
+  const smoothPupilY = useSpring(pupilOffsetY, { stiffness: 200, damping: 25 });
 
   useEffect(() => {
     // Check if device supports hover (not touch)
@@ -67,16 +59,6 @@ const CursorFollower = () => {
         pupilOffsetX.set(0);
         pupilOffsetY.set(0);
       }, 3000);
-
-      // Spawn sparkles occasionally
-      if (Math.random() > 0.92) {
-        const newSparkle: Sparkle = {
-          id: sparkleIdRef.current++,
-          x: e.clientX + (Math.random() - 0.5) * 40,
-          y: e.clientY + (Math.random() - 0.5) * 40,
-        };
-        setSparkles((prev) => [...prev.slice(-4), newSparkle]);
-      }
     };
 
     const handleMouseLeave = () => {
@@ -104,16 +86,15 @@ const CursorFollower = () => {
         !!target.closest("a") ||
         !!target.closest("button") ||
         !!target.closest("[role='button']") ||
-        !!target.closest("[data-cursor-hover]") ||
-        getComputedStyle(target).cursor === "pointer";
+        !!target.closest("[data-cursor-hover]");
       
       setIsHovering(isInteractive);
     };
 
-    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mousemove", handleMouseMove, { passive: true });
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
-    document.addEventListener("mouseover", handleElementHover);
+    document.addEventListener("mouseover", handleElementHover, { passive: true });
     document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
 
@@ -137,268 +118,190 @@ const CursorFollower = () => {
 
   if (prefersReducedMotion) return null;
 
-  const characterSize = isHovering ? 52 : isClicking ? 40 : 46;
+  const characterSize = isHovering ? 48 : isClicking ? 38 : 42;
 
   return (
-    <>
-      {/* Sparkle particles */}
-      {sparkles.map((sparkle) => (
-        <motion.div
-          key={sparkle.id}
-          className="pointer-events-none fixed z-[9997]"
-          initial={{ opacity: 1, scale: 1, rotate: 0 }}
-          animate={{ opacity: 0, scale: 0, rotate: 180 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          style={{
-            left: sparkle.x,
-            top: sparkle.y,
-            x: "-50%",
-            y: "-50%",
-          }}
-        >
-          <svg width="12" height="12" viewBox="0 0 12 12" style={{ fill: currentTheme.mouthColor }}>
-            <path d="M6 0L7.5 4.5L12 6L7.5 7.5L6 12L4.5 7.5L0 6L4.5 4.5L6 0Z" />
-          </svg>
-        </motion.div>
-      ))}
-
-      {/* Main character body */}
+    <motion.div
+      className="pointer-events-none fixed z-[9999]"
+      style={{
+        left: bodyX,
+        top: bodyY,
+        x: "-50%",
+        y: "-50%",
+        opacity: isVisible ? 1 : 0,
+      }}
+    >
+      {/* Character face */}
       <motion.div
-        className="pointer-events-none fixed z-[10000]"
+        className="relative rounded-full"
+        animate={{
+          width: characterSize,
+          height: characterSize,
+          scale: isClicking ? 0.9 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
         style={{
-          left: bodyX,
-          top: bodyY,
-          x: "-50%",
-          y: "-50%",
-          opacity: isVisible ? 1 : 0,
+          background: currentTheme.skinGradient,
+          boxShadow: `
+            0 0 15px ${currentTheme.glowColor},
+            0 3px 8px rgba(0, 0, 0, 0.15),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.05),
+            inset 0 2px 4px rgba(255, 255, 255, 0.8)
+          `,
         }}
       >
-        {/* Character face */}
-        <motion.div
-          className="relative rounded-full"
-          animate={{
-            width: characterSize,
-            height: characterSize,
-            scale: isClicking ? 0.9 : 1,
-          }}
-          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        {/* Left eye */}
+        <div
+          className="absolute bg-white rounded-full overflow-hidden"
           style={{
-            background: currentTheme.skinGradient,
-            boxShadow: `
-              0 0 20px ${currentTheme.glowColor},
-              0 4px 12px rgba(0, 0, 0, 0.15),
-              inset 0 -2px 4px rgba(0, 0, 0, 0.05),
-              inset 0 2px 4px rgba(255, 255, 255, 0.8)
-            `,
+            width: isIdle ? 10 : 11,
+            height: isIdle ? 4 : isClicking ? 2 : 11,
+            left: "22%",
+            top: isIdle ? "38%" : "32%",
+            boxShadow: "inset 0 1px 2px rgba(0, 0, 0, 0.1)",
+            transition: "height 0.15s ease, top 0.15s ease",
           }}
         >
-          {/* Left eye */}
-          <div
-            className="absolute bg-white rounded-full overflow-hidden"
-            style={{
-              width: isIdle ? 10 : 12,
-              height: isIdle ? 4 : isClicking ? 2 : 12,
-              left: "22%",
-              top: isIdle ? "38%" : "32%",
-              boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.1)",
-              transition: "height 0.2s ease, top 0.2s ease",
-            }}
-          >
-            {!isClicking && !isIdle && (
-              <motion.div
-                className="absolute rounded-full"
-                style={{
-                  width: 6,
-                  height: 6,
-                  left: 3,
-                  top: 3,
-                  x: smoothPupilX,
-                  y: smoothPupilY,
-                  backgroundColor: currentTheme.eyeColor,
-                }}
-              >
-                {/* Eye highlight */}
-                <div 
-                  className="absolute w-1.5 h-1.5 bg-white rounded-full"
-                  style={{ top: 0, left: 1 }}
-                />
-              </motion.div>
-            )}
-          </div>
-
-          {/* Right eye */}
-          <div
-            className="absolute bg-white rounded-full overflow-hidden"
-            style={{
-              width: isIdle ? 10 : 12,
-              height: isIdle ? 4 : isClicking ? 2 : 12,
-              right: "22%",
-              top: isIdle ? "38%" : "32%",
-              boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.1)",
-              transition: "height 0.2s ease, top 0.2s ease",
-            }}
-          >
-            {!isClicking && !isIdle && (
-              <motion.div
-                className="absolute rounded-full"
-                style={{
-                  width: 6,
-                  height: 6,
-                  left: 3,
-                  top: 3,
-                  x: smoothPupilX,
-                  y: smoothPupilY,
-                  backgroundColor: currentTheme.eyeColor,
-                }}
-              >
-                {/* Eye highlight */}
-                <div 
-                  className="absolute w-1.5 h-1.5 bg-white rounded-full"
-                  style={{ top: 0, left: 1 }}
-                />
-              </motion.div>
-            )}
-          </div>
-
-          {/* Blush - left */}
-          <motion.div
-            className="absolute rounded-full"
-            animate={{
-              opacity: isHovering ? 0.7 : 0.3,
-              scale: isHovering ? 1.1 : 1,
-            }}
-            style={{
-              width: 8,
-              height: 5,
-              left: "12%",
-              top: "52%",
-              background: currentTheme.blushColor,
-              filter: "blur(1px)",
-            }}
-          />
-
-          {/* Blush - right */}
-          <motion.div
-            className="absolute rounded-full"
-            animate={{
-              opacity: isHovering ? 0.7 : 0.3,
-              scale: isHovering ? 1.1 : 1,
-            }}
-            style={{
-              width: 8,
-              height: 5,
-              right: "12%",
-              top: "52%",
-              background: currentTheme.blushColor,
-              filter: "blur(1px)",
-            }}
-          />
-
-          {/* Mouth */}
-          <div
-            className="absolute"
-            style={{
-              left: "50%",
-              top: isClicking ? "60%" : "58%",
-              transform: "translateX(-50%)",
-            }}
-          >
-            {isClicking ? (
-              // Surprised "O" mouth
-              <div
-                className="rounded-full"
-                style={{
-                  width: 6,
-                  height: 6,
-                  backgroundColor: currentTheme.mouthColor,
-                  boxShadow: "inset 0 1px 2px rgba(0, 0, 0, 0.2)",
-                }}
+          {!isClicking && !isIdle && (
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                width: 5,
+                height: 5,
+                left: 3,
+                top: 3,
+                x: smoothPupilX,
+                y: smoothPupilY,
+                backgroundColor: currentTheme.eyeColor,
+              }}
+            >
+              <div 
+                className="absolute w-1 h-1 bg-white rounded-full"
+                style={{ top: 0, left: 1 }}
               />
-            ) : isHovering ? (
-              // Big happy smile
-              <div
-                style={{
-                  width: 14,
-                  height: 7,
-                  borderRadius: "0 0 7px 7px",
-                  backgroundColor: currentTheme.mouthColor,
-                  boxShadow: "inset 0 -1px 2px rgba(0, 0, 0, 0.1)",
-                }}
-              />
-            ) : isIdle ? (
-              // Sleepy mouth
-              <div
-                style={{
-                  width: 8,
-                  height: 2,
-                  borderRadius: "2px",
-                  backgroundColor: currentTheme.mouthColor,
-                }}
-              />
-            ) : (
-              // Normal smile
-              <div
-                style={{
-                  width: 10,
-                  height: 5,
-                  borderRadius: "0 0 5px 5px",
-                  backgroundColor: currentTheme.mouthColor,
-                  boxShadow: "inset 0 -1px 2px rgba(0, 0, 0, 0.1)",
-                }}
-              />
-            )}
-          </div>
-
-          {/* Idle ZZZ bubbles */}
-          {isIdle && (
-            <div className="absolute -right-3 -top-2">
-              <motion.span
-                className="text-[8px] font-bold"
-                style={{ color: currentTheme.mouthColor, opacity: 0.6 }}
-                animate={{ opacity: [0, 1, 0], y: [0, -5, -10] }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: 0 }}
-              >
-                z
-              </motion.span>
-              <motion.span
-                className="text-[10px] font-bold absolute left-2 -top-1"
-                style={{ color: currentTheme.mouthColor, opacity: 0.7 }}
-                animate={{ opacity: [0, 1, 0], y: [0, -5, -10] }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
-              >
-                Z
-              </motion.span>
-              <motion.span
-                className="text-[12px] font-bold absolute left-4 -top-2"
-                style={{ color: currentTheme.mouthColor, opacity: 0.8 }}
-                animate={{ opacity: [0, 1, 0], y: [0, -5, -10] }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }}
-              >
-                Z
-              </motion.span>
-            </div>
+            </motion.div>
           )}
-        </motion.div>
+        </div>
 
-        {/* Glow ring underneath */}
-        <motion.div
-          className="absolute rounded-full -z-10"
-          animate={{
-            width: characterSize + 20,
-            height: characterSize + 20,
-            opacity: isHovering ? 0.5 : 0.25,
-          }}
+        {/* Right eye */}
+        <div
+          className="absolute bg-white rounded-full overflow-hidden"
           style={{
-            left: "50%",
-            top: "50%",
-            x: "-50%",
-            y: "-50%",
-            background: `radial-gradient(circle, ${currentTheme.glowColor} 0%, transparent 70%)`,
-            filter: "blur(8px)",
+            width: isIdle ? 10 : 11,
+            height: isIdle ? 4 : isClicking ? 2 : 11,
+            right: "22%",
+            top: isIdle ? "38%" : "32%",
+            boxShadow: "inset 0 1px 2px rgba(0, 0, 0, 0.1)",
+            transition: "height 0.15s ease, top 0.15s ease",
+          }}
+        >
+          {!isClicking && !isIdle && (
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                width: 5,
+                height: 5,
+                left: 3,
+                top: 3,
+                x: smoothPupilX,
+                y: smoothPupilY,
+                backgroundColor: currentTheme.eyeColor,
+              }}
+            >
+              <div 
+                className="absolute w-1 h-1 bg-white rounded-full"
+                style={{ top: 0, left: 1 }}
+              />
+            </motion.div>
+          )}
+        </div>
+
+        {/* Blush - left */}
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: 7,
+            height: 4,
+            left: "14%",
+            top: "52%",
+            background: currentTheme.blushColor,
+            opacity: isHovering ? 0.6 : 0.25,
+            filter: "blur(1px)",
+            transition: "opacity 0.2s ease",
           }}
         />
+
+        {/* Blush - right */}
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: 7,
+            height: 4,
+            right: "14%",
+            top: "52%",
+            background: currentTheme.blushColor,
+            opacity: isHovering ? 0.6 : 0.25,
+            filter: "blur(1px)",
+            transition: "opacity 0.2s ease",
+          }}
+        />
+
+        {/* Mouth */}
+        <div
+          className="absolute"
+          style={{
+            left: "50%",
+            top: isClicking ? "60%" : "58%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          {isClicking ? (
+            <div
+              className="rounded-full"
+              style={{
+                width: 5,
+                height: 5,
+                backgroundColor: currentTheme.mouthColor,
+              }}
+            />
+          ) : isHovering ? (
+            <div
+              style={{
+                width: 12,
+                height: 6,
+                borderRadius: "0 0 6px 6px",
+                backgroundColor: currentTheme.mouthColor,
+              }}
+            />
+          ) : isIdle ? (
+            <div
+              style={{
+                width: 7,
+                height: 2,
+                borderRadius: "2px",
+                backgroundColor: currentTheme.mouthColor,
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: 9,
+                height: 4,
+                borderRadius: "0 0 4px 4px",
+                backgroundColor: currentTheme.mouthColor,
+              }}
+            />
+          )}
+        </div>
+
+        {/* Idle ZZZ - simplified */}
+        {isIdle && (
+          <div className="absolute -right-2 -top-1 text-[10px] font-bold" style={{ color: currentTheme.mouthColor, opacity: 0.5 }}>
+            z
+          </div>
+        )}
       </motion.div>
-    </>
+    </motion.div>
   );
 };
 
