@@ -5,8 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GlowButton } from '@/components/ui/glow-button';
 import { Badge } from '@/components/ui/badge';
 import ReelsViewer from '@/components/ReelsViewer';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { useParallax, useScrollScale, useScrollOpacity } from '@/hooks/use-scroll-animation';
+import { motion } from 'framer-motion';
 
 // Custom TikTok Icon Component
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -30,11 +29,11 @@ const ReelCard = ({ reel, onPlay }: { reel: { id: number; thumbnail: string; vid
     aria-label={`Play reel ${reel.id}`}
     onClick={onPlay}
     onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPlay(); } }}
-    className="relative group cursor-pointer overflow-hidden rounded-2xl aspect-[9/16] bg-muted flex-shrink-0 w-48 sm:w-56 lg:w-64 border border-border transition-all duration-500 ease-out hover:-translate-y-2 hover:border-primary/50 hover:shadow-[0_20px_40px_hsl(0_0%_0%/0.3),0_0_30px_hsl(var(--primary)/0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+    className="relative group cursor-pointer overflow-hidden rounded-2xl aspect-[9/16] bg-muted flex-shrink-0 w-48 sm:w-56 lg:w-64 border border-border transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
   >
-    <img src={reel.thumbnail} alt={`Reel thumbnail ${reel.id}`} className="w-full h-full object-cover absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-110" loading="lazy" />
-    <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
+    <img src={reel.thumbnail} alt={`Reel thumbnail ${reel.id}`} className="w-full h-full object-cover absolute inset-0 transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
       <div className="flex items-center justify-between text-foreground text-sm">
         <div className="flex items-center gap-2 font-mono"><Eye className="w-4 h-4" /><span>{reel.views}</span></div>
         {reel.platform === 'tiktok' && <TikTokIcon className="w-5 h-5" />}
@@ -43,8 +42,8 @@ const ReelCard = ({ reel, onPlay }: { reel: { id: number; thumbnail: string; vid
       </div>
     </div>
     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-      <div className="w-16 h-16 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-300 shadow-[0_0_30px_hsl(var(--primary)/0.5)]">
-        <Play className="w-7 h-7 text-primary-foreground ml-1" />
+      <div className="w-14 h-14 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
+        <Play className="w-6 h-6 text-primary-foreground ml-0.5" />
       </div>
     </div>
   </div>
@@ -57,17 +56,6 @@ const Portfolio = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
-
-  // Parallax hooks for different sections
-  const { ref: headerParallaxRef, y: headerParallaxY } = useParallax(0.4);
-  const { ref: reelsParallaxRef, y: reelsParallaxY } = useParallax(0.2);
-  const { ref: projectsScaleRef, scale: projectsScale } = useScrollScale(0.95, 1);
-  
-  // Page-wide scroll progress for floating elements
-  const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-  const orbY = useTransform(smoothProgress, [0, 1], [0, -150]);
-  const orbRotate = useTransform(smoothProgress, [0, 1], [0, 20]);
 
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -119,29 +107,24 @@ const Portfolio = () => {
   const filteredProjects = selectedCategory === 'all' ? projects : projects.filter(project => project.category === selectedCategory);
 
   return (
-    <div className="min-h-screen pt-24 overflow-hidden">
+    <div className="min-h-screen pt-24">
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <motion.div 
-          ref={headerParallaxRef}
-          className="orb orb-primary w-[400px] h-[400px] -top-20 -left-20 opacity-50" 
-          style={{ y: headerParallaxY }}
-        />
-        <motion.div 
-          className="orb orb-accent w-[300px] h-[300px] bottom-0 right-0 opacity-40" 
-          style={{ animationDelay: '-10s', y: orbY, rotate: orbRotate }}
-        />
+        <div className="absolute w-[350px] h-[350px] -top-20 -left-20 rounded-full bg-primary/20 blur-[100px]" />
+        <div className="absolute w-[250px] h-[250px] bottom-0 right-0 rounded-full bg-accent/15 blur-[100px]" />
         <div className="absolute inset-0 bg-grid opacity-20" />
         
         <motion.div 
           className="relative max-w-7xl mx-auto text-center"
-          style={{ y: useTransform(smoothProgress, [0, 0.3], [0, 30]) }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <h1 className="text-hero animate-slide-up">
+          <h1 className="text-hero">
             <span className="text-foreground">My</span>{" "}
             <span className="text-gradient">Portfolio</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-8">
             Explore my creative journey through video editing, cinematography, and visual design projects.
           </p>
         </motion.div>
@@ -150,40 +133,30 @@ const Portfolio = () => {
       {/* Reels Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
         <div className="absolute inset-0 bg-card/30" />
-        <div className="absolute inset-0 bg-gradient-glow" />
+        <div className="absolute inset-0 bg-gradient-glow opacity-30" />
         
-        <motion.div 
-          ref={reelsParallaxRef}
-          className="relative max-w-7xl mx-auto"
-          style={{ y: reelsParallaxY }}
-        >
-          <div className="text-center mb-16">
-            <motion.h2 
-              className="text-4xl lg:text-6xl font-bold mb-6"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
+        <div className="relative max-w-7xl mx-auto">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
               <span className="text-foreground">Featured</span>{" "}
               <span className="text-gradient">Reels</span>
-            </motion.h2>
-            <motion.p 
-              className="text-lg text-muted-foreground max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Quick edits, cinematic moments, and creative snippets from my short-form content.
-            </motion.p>
-          </div>
+            </p>
+          </motion.div>
           
           <div className="relative group/carousel">
             <GlowButton 
               variant="outline" 
               size="icon" 
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 -translate-x-4 w-12 h-12" 
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 -translate-x-4 w-12 h-12" 
               onClick={() => scrollCarousel('left')}
             >
               <ChevronLeft className="w-6 h-6" />
@@ -206,7 +179,7 @@ const Portfolio = () => {
             <GlowButton 
               variant="outline" 
               size="icon" 
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 translate-x-4 w-12 h-12" 
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 translate-x-4 w-12 h-12" 
               onClick={() => scrollCarousel('right')}
             >
               <ChevronRight className="w-6 h-6" />
@@ -224,7 +197,7 @@ const Portfolio = () => {
               View All Reels
             </GlowButton>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Category Filter */}
@@ -246,113 +219,103 @@ const Portfolio = () => {
 
       {/* Projects Grid */}
       <section className="px-4 sm:px-6 lg:px-8 pb-24">
-        <motion.div 
-          ref={projectsScaleRef}
-          className="max-w-7xl mx-auto"
-          style={{ scale: projectsScale }}
-        >
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
               >
-                <Card className="card-glass overflow-hidden group">
-                <div className="relative overflow-hidden">
-                  <img src={project.thumbnail} alt={project.title} className="w-full h-52 object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                    {project.youtubeId ? (
-                      <GlowButton size="sm" onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}>
-                        <Play className="w-4 h-4 mr-2" />Watch
-                      </GlowButton>
-                    ) : (
-                      <GlowButton size="sm" onClick={() => window.open(project.driveLink, '_blank')}>
-                        <FolderOpen className="w-4 h-4 mr-2" />View Files
-                      </GlowButton>
-                    )}
-                  </div>
-                  {project.duration && (
-                    <Badge className="absolute bottom-3 right-3 bg-background/80 backdrop-blur-sm text-foreground border-0 font-mono">
-                      {project.duration}
+                <Card className="card-glass overflow-hidden group hover:border-primary/30 transition-all duration-300">
+                  <div className="relative overflow-hidden">
+                    <img src={project.thumbnail} alt={project.title} className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      {project.youtubeId ? (
+                        <GlowButton size="sm" onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}>
+                          <Play className="w-4 h-4 mr-2" />
+                          Watch
+                        </GlowButton>
+                      ) : project.driveLink ? (
+                        <GlowButton size="sm" onClick={() => window.open(project.driveLink, '_blank')}>
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          View
+                        </GlowButton>
+                      ) : null}
+                    </div>
+                    <Badge className="absolute top-3 left-3 bg-primary/90 text-primary-foreground">
+                      {project.type}
                     </Badge>
-                  )}
-                </div>
-                <CardHeader>
-                  <div className="flex justify-between items-start gap-2">
-                    <CardTitle className="text-lg group-hover:text-gradient transition-all duration-300">{project.title}</CardTitle>
-                    <Badge variant="outline" className="border-primary/30 text-primary shrink-0">{project.type}</Badge>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map(tag => (
-                      <Badge key={tag} variant="secondary" className="text-xs bg-secondary/50">{tag}</Badge>
-                    ))}
-                  </div>
-                  <div className="flex justify-between items-center text-sm text-muted-foreground pt-4 border-t border-border">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="w-4 h-4 text-primary" />
-                        <span className="font-mono">{project.year}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Eye className="w-4 h-4 text-primary" />
+                  <CardHeader className="pb-2">
+                    <CardTitle className="flex items-center justify-between">
+                      <span className="text-lg">{project.title}</span>
+                      <div className="flex items-center gap-1 text-muted-foreground text-sm">
+                        <Eye className="w-4 h-4" />
                         <span className="font-mono">{project.views}</span>
                       </div>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{project.description}</p>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>{project.year}</span>
+                      </div>
+                      {project.duration && (
+                        <span className="font-mono">{project.duration}</span>
+                      )}
                     </div>
-                    <GlowButton 
-                      size="icon" 
-                      variant="ghost" 
-                      onClick={() => window.open(project.youtubeId ? `https://youtube.com/watch?v=${project.youtubeId}` : project.driveLink, '_blank')}
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </GlowButton>
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="flex flex-wrap gap-1.5 mt-4">
+                      {project.tags.map(tag => (
+                        <Badge key={tag} variant="secondary" className="text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Social Media CTA */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="orb orb-primary w-[300px] h-[300px] top-0 right-20 opacity-40" />
-        <div className="absolute inset-0 bg-grid opacity-10" />
-        
-        <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-6xl font-bold mb-6">
-            <span className="text-foreground">Follow</span>{" "}
-            <span className="text-gradient">My Work</span>
-          </h2>
-          <p className="text-xl text-muted-foreground mb-12">
-            Stay connected and explore my content across different platforms.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <GlowButton size="lg" onClick={() => window.open("https://youtube.com/@jeem_editz?si=QiEFHzk4CCxMzgcU", '_blank')}>
-              <Play className="w-5 h-5 mr-2" />YouTube
-            </GlowButton>
-            <GlowButton variant="outline" size="lg" onClick={() => window.open("https://www.tiktok.com/@jeemeditz_?is_from_webapp=1&sender_device=pc", '_blank')} className="group">
-              <TikTokIcon className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />TikTok
-            </GlowButton>
-            <GlowButton variant="outline" size="lg" onClick={() => window.open("https://www.facebook.com/share/179wDk6kDw/?mibextid=wwXIfr", '_blank')} className="group">
-              <Facebook className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />Facebook
-            </GlowButton>
           </div>
         </div>
       </section>
 
+      {/* CTA Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+        <div className="absolute inset-0 bg-gradient-glow opacity-30" />
+        
+        <motion.div 
+          className="relative max-w-4xl mx-auto text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <FolderOpen className="w-16 h-16 text-primary/50 mx-auto mb-8" />
+          <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+            <span className="text-foreground">Want to See</span>{" "}
+            <span className="text-gradient">More?</span>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+            This is just a glimpse of my work. I have many more projects across different categories and styles.
+          </p>
+          <GlowButton size="lg" onClick={() => window.open("https://drive.google.com/drive/folders/1mNqLxKOJQgd0eNEQnqNaE2gJ7b8DvYnB?usp=sharing", '_blank')}>
+            <FolderOpen className="w-5 h-5 mr-2" />
+            View Full Portfolio
+          </GlowButton>
+        </motion.div>
+      </section>
+
       {/* Reels Viewer Modal */}
-      <ReelsViewer 
-        reels={reels} 
-        initialIndex={selectedReelIndex} 
-        isOpen={reelsViewerOpen} 
-        onClose={() => setReelsViewerOpen(false)} 
+      <ReelsViewer
+        isOpen={reelsViewerOpen}
+        onClose={() => setReelsViewerOpen(false)}
+        reels={reels}
+        initialIndex={selectedReelIndex}
       />
     </div>
   );

@@ -3,19 +3,9 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GlowButton } from '@/components/ui/glow-button';
 import { Badge } from '@/components/ui/badge';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { useParallax, useScrollScale } from '@/hooks/use-scroll-animation';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/ui/motion-wrapper';
+import { motion } from 'framer-motion';
 
 const Services = () => {
-  // Parallax hooks
-  const { ref: headerParallaxRef, y: headerParallaxY } = useParallax(0.3);
-  const { ref: packagesScaleRef, scale: packagesScale } = useScrollScale(0.95, 1);
-  const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-  const orbY = useTransform(smoothProgress, [0, 1], [0, -120]);
-  const orbRotate = useTransform(smoothProgress, [0, 1], [0, 25]);
-
   const services = [
     {
       icon: Video,
@@ -131,103 +121,54 @@ const Services = () => {
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50, filter: 'blur(10px)' },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
-    },
-  };
-
-  const featureVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const },
-    },
-  };
-
   return (
-    <div className="min-h-screen pt-24 overflow-hidden">
+    <div className="min-h-screen pt-24">
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <motion.div 
-          ref={headerParallaxRef}
-          className="orb orb-primary w-[400px] h-[400px] -top-20 -right-20 opacity-50" 
-          style={{ y: headerParallaxY }}
-        />
+        <div className="absolute w-[350px] h-[350px] -top-20 -right-20 rounded-full bg-primary/20 blur-[100px]" />
         <div className="absolute inset-0 bg-grid opacity-20" />
         
-        <FadeIn className="relative max-w-7xl mx-auto text-center">
-          <motion.h1 
-            className="text-hero"
-            initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
+        <motion.div 
+          className="relative max-w-7xl mx-auto text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="text-hero">
             <span className="text-foreground">Creative</span>{" "}
             <span className="text-gradient">Services</span>
-          </motion.h1>
-          <motion.p 
-            className="text-xl text-muted-foreground max-w-3xl mx-auto mt-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-8">
             Professional video editing, cinematography, and design services tailored to bring your vision to life.
-          </motion.p>
-        </FadeIn>
+          </p>
+        </motion.div>
       </section>
 
       {/* Services Grid */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute inset-0 bg-gradient-glow" />
+        <div className="absolute inset-0 bg-gradient-glow opacity-30" />
         
         <div className="relative max-w-7xl mx-auto">
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((service, index) => (
               <motion.div
                 key={service.title}
-                variants={itemVariants}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
               >
-                <Card 
-                  className={`card-glass group h-full ${service.popular ? 'border-primary/30 shadow-[0_0_30px_hsl(var(--primary)/0.1)]' : ''}`}
-                >
+                <Card className={`card-glass group h-full hover:border-primary/30 transition-all duration-300 ${service.popular ? 'border-primary/30' : ''}`}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="flex items-center space-x-4">
-                        <motion.span 
-                          className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-[0_0_25px_hsl(var(--primary)/0.3)] transition-all duration-500"
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                        >
+                        <span className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                           <service.icon className="w-7 h-7 text-primary" />
-                        </motion.span>
-                        <span className="text-xl group-hover:text-gradient transition-all duration-300">{service.title}</span>
+                        </span>
+                        <span className="text-xl">{service.title}</span>
                       </CardTitle>
                       {service.popular && (
-                        <Badge className="bg-primary text-primary-foreground shadow-[0_0_15px_hsl(var(--primary)/0.4)]">Popular</Badge>
+                        <Badge className="bg-primary text-primary-foreground">Popular</Badge>
                       )}
                     </div>
                     <p className="text-muted-foreground mt-4">{service.description}</p>
@@ -235,50 +176,33 @@ const Services = () => {
                   <CardContent>
                     <div className="space-y-6">
                       <div className="grid grid-cols-2 gap-4">
-                        <motion.div 
-                          className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border"
-                          whileHover={{ scale: 1.02, borderColor: 'hsl(var(--primary) / 0.3)' }}
-                        >
+                        <div className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border">
                           <Clock className="w-5 h-5 text-primary" />
                           <span className="font-mono text-sm">{service.timeline}</span>
-                        </motion.div>
-                        <motion.div 
-                          className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border"
-                          whileHover={{ scale: 1.02, borderColor: 'hsl(var(--primary) / 0.3)' }}
-                        >
+                        </div>
+                        <div className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border">
                           <DollarSign className="w-5 h-5 text-primary" />
                           <span className="font-mono text-sm">{service.pricing}</span>
-                        </motion.div>
+                        </div>
                       </div>
 
                       <div className="space-y-3">
                         <h4 className="font-semibold text-gradient">What's Included:</h4>
-                        <motion.ul 
-                          className="space-y-2"
-                          variants={containerVariants}
-                          initial="hidden"
-                          whileInView="visible"
-                          viewport={{ once: true }}
-                        >
+                        <ul className="space-y-2">
                           {service.features.map((feature, idx) => (
-                            <motion.li 
-                              key={idx} 
-                              className="flex items-center space-x-3 text-sm text-muted-foreground"
-                              variants={featureVariants}
-                              custom={idx}
-                            >
+                            <li key={idx} className="flex items-center space-x-3 text-sm text-muted-foreground">
                               <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
                               <span>{feature}</span>
-                            </motion.li>
+                            </li>
                           ))}
-                        </motion.ul>
+                        </ul>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -286,12 +210,14 @@ const Services = () => {
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
         <div className="absolute inset-0 bg-card/30" />
         
-        <motion.div 
-          ref={packagesScaleRef}
-          className="relative max-w-7xl mx-auto"
-          style={{ scale: packagesScale }}
-        >
-          <FadeIn className="text-center mb-20">
+        <div className="relative max-w-7xl mx-auto">
+          <motion.div 
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             <h2 className="text-4xl lg:text-6xl font-bold mb-6">
               <span className="text-foreground">Service</span>{" "}
               <span className="text-gradient">Packages</span>
@@ -299,69 +225,41 @@ const Services = () => {
             <p className="text-xl text-muted-foreground">
               Choose the package that best fits your project needs
             </p>
-          </FadeIn>
+          </motion.div>
 
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {packages.map((pkg, index) => (
               <motion.div
                 key={pkg.name}
-                variants={itemVariants}
-                whileHover={{ y: -12, transition: { duration: 0.3 } }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
               >
-                <Card 
-                  className={`card-glass group relative h-full ${pkg.popular ? 'border-primary/50 shadow-[0_0_40px_hsl(var(--primary)/0.15)]' : ''}`}
-                >
+                <Card className={`card-glass group relative h-full hover:border-primary/30 transition-all duration-300 ${pkg.popular ? 'border-primary/50' : ''}`}>
                   {pkg.popular && (
-                    <motion.div 
-                      className="absolute -top-4 left-1/2 -translate-x-1/2"
-                      initial={{ opacity: 0, y: -10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      <Badge className="bg-primary text-primary-foreground px-4 py-1 shadow-[0_0_20px_hsl(var(--primary)/0.5)]">Most Popular</Badge>
-                    </motion.div>
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                      <Badge className="bg-primary text-primary-foreground px-4 py-1">Most Popular</Badge>
+                    </div>
                   )}
                   <CardHeader className="pt-8">
                     <div className="text-center">
-                      <CardTitle className="text-2xl group-hover:text-gradient transition-all duration-300">{pkg.name}</CardTitle>
-                      <motion.div 
-                        className="text-5xl font-bold text-gradient font-mono mt-6"
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 + 0.2, type: "spring", stiffness: 200 }}
-                      >
+                      <CardTitle className="text-2xl">{pkg.name}</CardTitle>
+                      <div className="text-5xl font-bold text-gradient font-mono mt-6">
                         {pkg.price}
-                      </motion.div>
+                      </div>
                       <p className="text-sm text-muted-foreground mt-4">{pkg.description}</p>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <motion.ul 
-                      className="space-y-4 mb-10"
-                      variants={containerVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                    >
+                    <ul className="space-y-4 mb-10">
                       {pkg.features.map((feature, idx) => (
-                        <motion.li 
-                          key={idx} 
-                          className="flex items-center space-x-3 text-sm"
-                          variants={featureVariants}
-                        >
+                        <li key={idx} className="flex items-center space-x-3 text-sm">
                           <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                           <span>{feature}</span>
-                        </motion.li>
+                        </li>
                       ))}
-                    </motion.ul>
+                    </ul>
                     <GlowButton 
                       asChild 
                       className="w-full"
@@ -376,16 +274,22 @@ const Services = () => {
                 </Card>
               </motion.div>
             ))}
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </section>
 
       {/* Process */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute inset-0 bg-gradient-glow" />
+        <div className="absolute inset-0 bg-gradient-glow opacity-30" />
         
         <div className="relative max-w-7xl mx-auto">
-          <FadeIn className="text-center mb-20">
+          <motion.div 
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             <h2 className="text-4xl lg:text-6xl font-bold mb-6">
               <span className="text-foreground">My</span>{" "}
               <span className="text-gradient">Process</span>
@@ -393,15 +297,9 @@ const Services = () => {
             <p className="text-xl text-muted-foreground">
               A streamlined workflow for exceptional results
             </p>
-          </FadeIn>
+          </motion.div>
 
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-4 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {[
               { step: "01", title: "Consultation", description: "Discuss your vision and requirements" },
               { step: "02", title: "Planning", description: "Create detailed project plan" },
@@ -411,79 +309,47 @@ const Services = () => {
               <motion.div 
                 key={phase.step} 
                 className="text-center group"
-                variants={itemVariants}
-                whileHover={{ y: -8 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
               >
-                <motion.div 
-                  className="w-20 h-20 bg-primary/10 backdrop-blur-sm border border-primary/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-mono font-bold text-primary group-hover:bg-primary/20 group-hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] transition-all duration-500"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                >
+                <div className="w-20 h-20 bg-primary/10 border border-primary/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-mono font-bold text-primary group-hover:bg-primary/20 transition-colors duration-300">
                   {phase.step}
-                </motion.div>
-                <h3 className="text-xl font-semibold mb-3 group-hover:text-gradient transition-all duration-300">{phase.title}</h3>
+                </div>
+                <h3 className="text-xl font-semibold mb-3">{phase.title}</h3>
                 <p className="text-muted-foreground">{phase.description}</p>
-                
-                {/* Connecting line for desktop */}
-                {index < 3 && (
-                  <motion.div 
-                    className="hidden md:block absolute top-10 left-[calc(50%+40px)] w-[calc(100%-80px)] h-0.5 bg-gradient-to-r from-primary/50 to-transparent"
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.2 + 0.5, duration: 0.6 }}
-                    style={{ originX: 0 }}
-                  />
-                )}
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <motion.div 
-          className="orb orb-accent w-[300px] h-[300px] -bottom-20 -left-20 opacity-40" 
-          style={{ y: orbY, rotate: orbRotate }}
-        />
-        <div className="absolute inset-0 bg-grid opacity-10" />
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+        <div className="absolute inset-0 bg-card/30" />
         
-        <FadeIn className="relative max-w-4xl mx-auto text-center" direction="up">
-          <motion.h2 
-            className="text-4xl lg:text-6xl font-bold mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-foreground">Ready to Start</span>
-            <br />
-            <span className="text-gradient">Your Project?</span>
-          </motion.h2>
-          <motion.p 
-            className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Let's discuss your vision and create something amazing together.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <GlowButton asChild size="lg" className="text-lg">
-              <Link to="/contact" className="group">
-                Start Your Project
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-            </GlowButton>
-          </motion.div>
-        </FadeIn>
+        <motion.div 
+          className="relative max-w-4xl mx-auto text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+            <span className="text-foreground">Ready to</span>{" "}
+            <span className="text-gradient">Get Started?</span>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+            Let's discuss your project and create something amazing together.
+          </p>
+          <GlowButton asChild size="lg">
+            <Link to="/contact">
+              Start Your Project
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+          </GlowButton>
+        </motion.div>
       </section>
     </div>
   );
