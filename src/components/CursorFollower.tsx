@@ -1,6 +1,12 @@
 import { useEffect, useState, useRef, useMemo } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
-import { useCursorTheme } from "@/contexts/CursorThemeContext";
+const GOLDEN_THEME = {
+  skinGradient: "linear-gradient(135deg, #fef3c7 0%, #fcd34d 50%, #f59e0b 100%)",
+  blushColor: "rgba(255, 150, 100, 0.5)",
+  mouthColor: "#d97706",
+  eyeColor: "#78350f",
+  glowColor: "rgba(245, 158, 11, 0.4)",
+};
 
 const CursorFollower = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -9,8 +15,6 @@ const CursorFollower = () => {
   const [isIdle, setIsIdle] = useState(false);
   const idleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastMoveRef = useRef({ x: 0, y: 0 });
-
-  const { currentTheme } = useCursorTheme();
 
   // Motion values for cursor position
   const cursorX = useMotionValue(0);
@@ -141,9 +145,9 @@ const CursorFollower = () => {
         }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         style={{
-          background: currentTheme.skinGradient,
+          background: GOLDEN_THEME.skinGradient,
           boxShadow: `
-            0 0 15px ${currentTheme.glowColor},
+            0 0 15px ${GOLDEN_THEME.glowColor},
             0 3px 8px rgba(0, 0, 0, 0.15),
             inset 0 -2px 4px rgba(0, 0, 0, 0.05),
             inset 0 2px 4px rgba(255, 255, 255, 0.8)
@@ -172,7 +176,7 @@ const CursorFollower = () => {
                 top: 3,
                 x: smoothPupilX,
                 y: smoothPupilY,
-                backgroundColor: currentTheme.eyeColor,
+                backgroundColor: GOLDEN_THEME.eyeColor,
               }}
             >
               <div 
@@ -205,7 +209,7 @@ const CursorFollower = () => {
                 top: 3,
                 x: smoothPupilX,
                 y: smoothPupilY,
-                backgroundColor: currentTheme.eyeColor,
+                backgroundColor: GOLDEN_THEME.eyeColor,
               }}
             >
               <div 
@@ -224,7 +228,7 @@ const CursorFollower = () => {
             height: 4,
             left: "14%",
             top: "52%",
-            background: currentTheme.blushColor,
+            background: GOLDEN_THEME.blushColor,
             opacity: isHovering ? 0.6 : 0.25,
             filter: "blur(1px)",
             transition: "opacity 0.2s ease",
@@ -239,7 +243,7 @@ const CursorFollower = () => {
             height: 4,
             right: "14%",
             top: "52%",
-            background: currentTheme.blushColor,
+            background: GOLDEN_THEME.blushColor,
             opacity: isHovering ? 0.6 : 0.25,
             filter: "blur(1px)",
             transition: "opacity 0.2s ease",
@@ -261,7 +265,7 @@ const CursorFollower = () => {
               style={{
                 width: 5,
                 height: 5,
-                backgroundColor: currentTheme.mouthColor,
+                backgroundColor: GOLDEN_THEME.mouthColor,
               }}
             />
           ) : isHovering ? (
@@ -270,7 +274,7 @@ const CursorFollower = () => {
                 width: 12,
                 height: 6,
                 borderRadius: "0 0 6px 6px",
-                backgroundColor: currentTheme.mouthColor,
+                backgroundColor: GOLDEN_THEME.mouthColor,
               }}
             />
           ) : isIdle ? (
@@ -279,7 +283,7 @@ const CursorFollower = () => {
                 width: 7,
                 height: 2,
                 borderRadius: "2px",
-                backgroundColor: currentTheme.mouthColor,
+                backgroundColor: GOLDEN_THEME.mouthColor,
               }}
             />
           ) : (
@@ -288,7 +292,7 @@ const CursorFollower = () => {
                 width: 9,
                 height: 4,
                 borderRadius: "0 0 4px 4px",
-                backgroundColor: currentTheme.mouthColor,
+                backgroundColor: GOLDEN_THEME.mouthColor,
               }}
             />
           )}
@@ -296,7 +300,7 @@ const CursorFollower = () => {
 
         {/* Idle ZZZ - simplified */}
         {isIdle && (
-          <div className="absolute -right-2 -top-1 text-[10px] font-bold" style={{ color: currentTheme.mouthColor, opacity: 0.5 }}>
+          <div className="absolute -right-2 -top-1 text-[10px] font-bold" style={{ color: GOLDEN_THEME.mouthColor, opacity: 0.5 }}>
             z
           </div>
         )}
