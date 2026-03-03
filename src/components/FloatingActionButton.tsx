@@ -26,30 +26,18 @@ const FloatingActionButton = () => {
       }}
       aria-label="Contact on WhatsApp"
     >
-      {/* Pulse animation rings */}
+      {/* Single pulse ring with longer delay */}
       <motion.span 
         className="absolute inset-0 rounded-full bg-emerald-500"
         animate={{ 
-          scale: [1, 1.5, 1.8],
-          opacity: [0.3, 0.15, 0]
+          scale: [1, 1.5],
+          opacity: [0.2, 0]
         }}
         transition={{
           duration: 2,
           repeat: Infinity,
+          repeatDelay: 4,
           ease: "easeOut"
-        }}
-      />
-      <motion.span 
-        className="absolute inset-0 rounded-full bg-emerald-500"
-        animate={{ 
-          scale: [1, 1.3, 1.5],
-          opacity: [0.2, 0.1, 0]
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeOut",
-          delay: 0.5
         }}
       />
       

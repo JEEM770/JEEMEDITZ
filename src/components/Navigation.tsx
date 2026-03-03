@@ -174,11 +174,24 @@ const Navigation = () => {
         </GlowButton>
       </motion.div>
 
+      {/* Mobile backdrop overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 z-40 md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Mobile Navigation Dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            className="absolute top-full left-4 right-4 mt-2 p-3 nav-pill md:hidden overflow-hidden"
+            className="absolute top-full left-4 right-4 mt-2 p-3 nav-pill md:hidden overflow-hidden z-50"
             variants={menuVariants}
             initial="closed"
             animate="open"
