@@ -200,6 +200,67 @@ const Portfolio = () => {
         </div>
       </section>
 
+      {/* Motion Graphics Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+        <div className="relative max-w-7xl mx-auto">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+              <span className="text-foreground">Motion</span>{" "}
+              <span className="text-gradient">Graphics</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Animated graphics, text animations, and visual effects crafted with precision.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {[
+              { title: "Motion Graphics Reel", thumbnail: "https://img.youtube.com/vi/9fwTRlPbitc/maxresdefault.jpg", videoUrl: "https://youtube.com/watch?v=9fwTRlPbitc", views: "3.1K" },
+              { title: "Kinetic Typography", thumbnail: "https://img.youtube.com/vi/5HxqRI2_Vnk/maxresdefault.jpg", videoUrl: "https://youtube.com/watch?v=5HxqRI2_Vnk", views: "5.2K" },
+              { title: "Logo Animation", thumbnail: "https://img.youtube.com/vi/WmRhC3ufoN4/maxresdefault.jpg", videoUrl: "https://youtube.com/watch?v=WmRhC3ufoN4", views: "4.7K" },
+              { title: "Intro Sequence", thumbnail: "https://img.youtube.com/vi/kHEgGTLowZg/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/kHEgGTLowZg", views: "12.5K" },
+              { title: "Title Animation", thumbnail: "https://img.youtube.com/vi/y_8dkV-UGpU/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/y_8dkV-UGpU", views: "8.2K" },
+              { title: "Social Media Promo", thumbnail: "https://img.youtube.com/vi/bR9pB_uIwgw/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/bR9pB_uIwgw", views: "15.1K" },
+              { title: "Lower Thirds Pack", thumbnail: "https://img.youtube.com/vi/ukcBZcfb7kg/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/ukcBZcfb7kg", views: "6.7K" },
+              { title: "Animated Infographic", thumbnail: "https://img.youtube.com/vi/Aw1wGTbwk9Q/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/Aw1wGTbwk9Q", views: "9.3K" },
+            ].map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                className="group cursor-pointer"
+                onClick={() => window.open(item.videoUrl, '_blank')}
+              >
+                <div className="relative aspect-square rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1">
+                  <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-14 h-14 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
+                      <Play className="w-6 h-6 text-primary-foreground ml-0.5" />
+                    </div>
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <p className="text-foreground text-sm font-medium truncate">{item.title}</p>
+                    <div className="flex items-center gap-1 text-muted-foreground text-xs font-mono mt-1">
+                      <Eye className="w-3 h-3" />
+                      <span>{item.views}</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Category Filter */}
       <section className="px-4 sm:px-6 lg:px-8 mb-16">
         <div className="max-w-7xl mx-auto">
