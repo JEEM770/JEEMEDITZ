@@ -165,15 +165,20 @@ const Portfolio = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.08 }}
+                className="group cursor-pointer"
+                onClick={() => window.open(`https://www.instagram.com/reel/${item.embedId}/`, '_blank')}
               >
                 <div className="relative aspect-square rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1">
-                  <iframe
-                    src={`https://www.instagram.com/reel/${item.embedId}/embed/`}
-                    className="w-full h-full border-0"
-                    title={item.title}
-                    allowFullScreen
-                    loading="lazy"
-                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[hsl(280,60%,45%)] via-[hsl(0,98%,55%)] to-[hsl(30,92%,59%)] opacity-20 group-hover:opacity-40 transition-opacity duration-300" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                    <InstagramIcon className="w-10 h-10 text-foreground/70 group-hover:text-foreground transition-colors duration-300" />
+                    <p className="text-foreground/80 text-sm font-medium">{item.title}</p>
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-14 h-14 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
+                      <Play className="w-6 h-6 text-primary-foreground ml-0.5" />
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
