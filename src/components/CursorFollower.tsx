@@ -13,7 +13,7 @@ const CursorFollower = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isIdle, setIsIdle] = useState(false);
-  const idleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const idleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastMoveRef = useRef({ x: 0, y: 0 });
 
   // Motion values for cursor position
