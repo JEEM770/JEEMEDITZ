@@ -15,6 +15,7 @@ const Navigation = () => {
     { name: 'Portfolio', path: '/portfolio' },
     { name: 'Services', path: '/services' },
     { name: 'Contact', path: '/contact' },
+    { name: '🌙 Eid Card', path: '/eid-card' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
