@@ -1,25 +1,18 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Download, Share2, Upload, Sparkles } from "lucide-react";
 import confetti from "canvas-confetti";
-
-const CARD_W = 1200;
-const CARD_H = 1600;
-const GREEN = "#1a7a3a";
-const DARK_GREEN = "#145a2c";
-const CREAM = "#fdf6e3";
-const LIGHT_GREEN = "#e8f5e9";
-const BORDER_GREEN = "#2e7d32";
+import { cardDesigns, CARD_W, CARD_H } from "@/lib/eid-card-designs";
 
 const EidCard = () => {
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState<string | null>(null);
   const [photoImg, setPhotoImg] = useState<HTMLImageElement | null>(null);
   const [generated, setGenerated] = useState(false);
+  const [selectedDesign, setSelectedDesign] = useState(cardDesigns[0].id);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fontLoaded = useRef(false);
 
-  // Load Bengali font
   useEffect(() => {
     const link = document.createElement("link");
     link.href =
@@ -58,161 +51,9 @@ const EidCard = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = CARD_W;
-    canvas.height = CARD_H;
-
-    // Background
-    ctx.fillStyle = CREAM;
-    ctx.fillRect(0, 0, CARD_W, CARD_H);
-
-    // Diamond grid pattern
-    ctx.strokeStyle = "rgba(30, 120, 60, 0.06)";
-    ctx.lineWidth = 1;
-    const gap = 50;
-    for (let x = 0; x < CARD_W; x += gap) {
-      for (let y = 0; y < CARD_H; y += gap) {
-        ctx.beginPath();
-        ctx.moveTo(x, y - gap / 2);
-        ctx.lineTo(x + gap / 2, y);
-        ctx.lineTo(x, y + gap / 2);
-        ctx.lineTo(x - gap / 2, y);
-        ctx.closePath();
-        ctx.stroke();
-      }
-    }
-
-    // Faded watermark "ঈদ মোবারক"
-    ctx.save();
-    ctx.font = '700 80px "Noto Sans Bengali", sans-serif';
-    ctx.fillStyle = "rgba(30, 120, 60, 0.04)";
-    ctx.textAlign = "center";
-    for (let y = 150; y < CARD_H; y += 200) {
-      for (let x = -100; x < CARD_W + 100; x += 500) {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(-0.15);
-        ctx.fillText("ঈদ মোবারক", 0, 0);
-        ctx.restore();
-      }
-    }
-    ctx.restore();
-
-    // Green rounded border
-    const borderRadius = 40;
-    const borderPad = 30;
-    ctx.strokeStyle = BORDER_GREEN;
-    ctx.lineWidth = 12;
-    roundRect(ctx, borderPad, borderPad, CARD_W - borderPad * 2, CARD_H - borderPad * 2, borderRadius);
-    ctx.stroke();
-
-    // Inner subtle border
-    ctx.strokeStyle = "rgba(46, 125, 50, 0.3)";
-    ctx.lineWidth = 3;
-    roundRect(ctx, borderPad + 16, borderPad + 16, CARD_W - (borderPad + 16) * 2, CARD_H - (borderPad + 16) * 2, borderRadius - 8);
-    ctx.stroke();
-
-    // Decorative corner elements
-    drawCornerDecor(ctx, borderPad + 30, borderPad + 30, 0);
-    drawCornerDecor(ctx, CARD_W - borderPad - 30, borderPad + 30, Math.PI / 2);
-    drawCornerDecor(ctx, CARD_W - borderPad - 30, CARD_H - borderPad - 30, Math.PI);
-    drawCornerDecor(ctx, borderPad + 30, CARD_H - borderPad - 30, -Math.PI / 2);
-
-    // Small crescent + star at top center
-    drawCrescent(ctx, CARD_W / 2, 180);
-
-    // Main text: ঈদ
-    ctx.textAlign = "center";
-    ctx.font = '800 160px "Noto Sans Bengali", sans-serif';
-    ctx.fillStyle = DARK_GREEN;
-    ctx.fillText("ঈদ", CARD_W / 2, 520);
-
-    // (মোবারক)
-    ctx.font = '700 90px "Noto Sans Bengali", sans-serif';
-    ctx.fillStyle = GREEN;
-    ctx.fillText("(মোবারক)", CARD_W / 2, 640);
-
-    // Decorative line
-    ctx.strokeStyle = GREEN;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(CARD_W / 2 - 180, 680);
-    ctx.lineTo(CARD_W / 2 + 180, 680);
-    ctx.stroke();
-
-    // Small diamond center
-    ctx.fillStyle = GREEN;
-    ctx.beginPath();
-    ctx.moveTo(CARD_W / 2, 675);
-    ctx.lineTo(CARD_W / 2 + 6, 680);
-    ctx.lineTo(CARD_W / 2, 685);
-    ctx.lineTo(CARD_W / 2 - 6, 680);
-    ctx.closePath();
-    ctx.fill();
-
-    // Wish text
-    ctx.font = '400 38px "Noto Sans Bengali", sans-serif';
-    ctx.fillStyle = "#3e3e3e";
-    ctx.textAlign = "center";
-    const wishLines = wrapText(
-      ctx,
-      "আপনার ও আপনার পরিবারের জন্য রইলো ঈদের অনেক অনেক শুভেচ্ছা ও ভালোবাসা!",
-      CARD_W - 200,
-    );
-    let wishY = 780;
-    wishLines.forEach((line) => {
-      ctx.fillText(line, CARD_W / 2, wishY);
-      wishY += 55;
-    });
-
-    // Bottom section
-    const bottomY = CARD_H - 280;
-
-    // Photo circle
-    if (photoImg) {
-      const circleR = 80;
-      const cx = 250;
-      const cy = bottomY + 60;
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx, cy, circleR, 0, Math.PI * 2);
-      ctx.closePath();
-      ctx.clip();
-
-      const imgSize = Math.min(photoImg.width, photoImg.height);
-      const sx = (photoImg.width - imgSize) / 2;
-      const sy = (photoImg.height - imgSize) / 2;
-      ctx.drawImage(photoImg, sx, sy, imgSize, imgSize, cx - circleR, cy - circleR, circleR * 2, circleR * 2);
-      ctx.restore();
-
-      // Circle border
-      ctx.strokeStyle = GREEN;
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.arc(cx, cy, circleR + 2, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-
-    // শুভেচ্ছাতে,
-    ctx.textAlign = "center";
-    ctx.font = '400 36px "Noto Sans Bengali", sans-serif';
-    ctx.fillStyle = "#555";
-    ctx.fillText("শুভেচ্ছাতে,", CARD_W / 2 + (photoImg ? 60 : 0), bottomY + 20);
-
-    // Name
-    const displayName = name || "JEEM";
-    ctx.font = '800 56px "Noto Sans Bengali", sans-serif';
-    ctx.fillStyle = GREEN;
-    ctx.fillText(displayName, CARD_W / 2 + (photoImg ? 60 : 0), bottomY + 90);
-
-    // Bottom decorative line
-    ctx.strokeStyle = "rgba(30, 120, 60, 0.3)";
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(borderPad + 60, CARD_H - borderPad - 60);
-    ctx.lineTo(CARD_W - borderPad - 60, CARD_H - borderPad - 60);
-    ctx.stroke();
-  }, [name, photoImg]);
+    const design = cardDesigns.find((d) => d.id === selectedDesign) || cardDesigns[0];
+    design.draw(ctx, canvas, name, photoImg);
+  }, [name, photoImg, selectedDesign]);
 
   useEffect(() => {
     drawCard();
@@ -254,20 +95,30 @@ const EidCard = () => {
   };
 
   const shareWhatsApp = () => {
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("ঈদ মোবারক! 🌙✨ Check out my Eid greeting card!")}`, "_blank");
+    window.open(
+      `https://api.whatsapp.com/send?text=${encodeURIComponent("ঈদ মোবারক! 🌙✨ Check out my Eid greeting card!")}`,
+      "_blank"
+    );
   };
 
   const shareFacebook = () => {
-    window.open(`https://www.facebook.com/sharer/sharer.php?quote=${encodeURIComponent("ঈদ মোবারক! 🌙✨")}`, "_blank");
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?quote=${encodeURIComponent("ঈদ মোবারক! 🌙✨")}`,
+      "_blank"
+    );
   };
 
+  const currentDesign = cardDesigns.find((d) => d.id === selectedDesign) || cardDesigns[0];
+
   return (
-    <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #e8f5e9 0%, #fdf6e3 50%, #e8f5e9 100%)" }}>
-      {/* Header */}
+    <div
+      className="min-h-screen"
+      style={{ background: "linear-gradient(135deg, #e8f5e9 0%, #fdf6e3 50%, #e8f5e9 100%)" }}
+    >
       <header className="text-center py-8 px-4">
         <h1
           className="text-4xl md:text-5xl font-bold tracking-tight"
-          style={{ color: DARK_GREEN, fontFamily: '"Noto Sans Bengali", sans-serif' }}
+          style={{ color: "#145a2c", fontFamily: '"Noto Sans Bengali", sans-serif' }}
         >
           🌙 ঈদ মোবারক Card Generator
         </h1>
@@ -279,7 +130,7 @@ const EidCard = () => {
       <div className="max-w-7xl mx-auto px-4 pb-16 flex flex-col lg:flex-row gap-8 items-start">
         {/* Form */}
         <div
-          className="w-full lg:w-[360px] shrink-0 rounded-2xl p-6 space-y-6"
+          className="w-full lg:w-[380px] shrink-0 rounded-2xl p-6 space-y-6"
           style={{
             background: "rgba(255,255,255,0.85)",
             backdropFilter: "blur(10px)",
@@ -287,9 +138,65 @@ const EidCard = () => {
             boxShadow: "0 8px 32px rgba(30,120,60,0.08)",
           }}
         >
+          {/* Design Selector */}
+          <div>
+            <label className="block text-sm font-semibold mb-3" style={{ color: "#145a2c" }}>
+              Choose Design
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              {cardDesigns.map((design) => (
+                <button
+                  key={design.id}
+                  onClick={() => setSelectedDesign(design.id)}
+                  className="relative rounded-xl p-3 text-left transition-all active:scale-[0.97]"
+                  style={{
+                    border:
+                      selectedDesign === design.id
+                        ? `2.5px solid ${design.previewColors[0]}`
+                        : "2px solid rgba(0,0,0,0.08)",
+                    background:
+                      selectedDesign === design.id
+                        ? `linear-gradient(135deg, ${design.previewColors[1]}, white)`
+                        : "white",
+                    boxShadow:
+                      selectedDesign === design.id
+                        ? `0 2px 12px ${design.previewColors[0]}25`
+                        : "0 1px 4px rgba(0,0,0,0.04)",
+                  }}
+                >
+                  {/* Color preview dots */}
+                  <div className="flex gap-1.5 mb-2">
+                    {design.previewColors.map((color, i) => (
+                      <div
+                        key={i}
+                        className="w-4 h-4 rounded-full"
+                        style={{
+                          background: color,
+                          boxShadow: "inset 0 1px 2px rgba(0,0,0,0.15)",
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <div className="text-xs font-semibold" style={{ color: design.previewColors[0] }}>
+                    {design.name}
+                  </div>
+                  <div className="text-[10px] text-gray-500">{design.nameEn}</div>
+                  {selectedDesign === design.id && (
+                    <div
+                      className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold"
+                      style={{ background: design.previewColors[0] }}
+                    >
+                      ✓
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Name input */}
           <div>
-            <label className="block text-sm font-semibold mb-2" style={{ color: DARK_GREEN }}>
+            <label className="block text-sm font-semibold mb-2" style={{ color: "#145a2c" }}>
               Your Name
             </label>
             <input
@@ -298,18 +205,15 @@ const EidCard = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-3 rounded-xl text-base outline-none transition-shadow"
-              style={{
-                border: `2px solid rgba(30,120,60,0.2)`,
-                background: "#fff",
-              }}
-              onFocus={(e) => (e.target.style.borderColor = GREEN)}
+              style={{ border: "2px solid rgba(30,120,60,0.2)", background: "#fff" }}
+              onFocus={(e) => (e.target.style.borderColor = currentDesign.previewColors[0])}
               onBlur={(e) => (e.target.style.borderColor = "rgba(30,120,60,0.2)")}
             />
           </div>
 
           {/* Photo upload */}
           <div>
-            <label className="block text-sm font-semibold mb-2" style={{ color: DARK_GREEN }}>
+            <label className="block text-sm font-semibold mb-2" style={{ color: "#145a2c" }}>
               Upload Your Photo
             </label>
             <input
@@ -323,8 +227,8 @@ const EidCard = () => {
               onClick={() => fileInputRef.current?.click()}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.97]"
               style={{
-                border: `2px dashed rgba(30,120,60,0.3)`,
-                color: GREEN,
+                border: "2px dashed rgba(30,120,60,0.3)",
+                color: currentDesign.previewColors[0],
                 background: "rgba(232,245,233,0.5)",
               }}
             >
@@ -337,7 +241,7 @@ const EidCard = () => {
                   src={photo}
                   alt="Preview"
                   className="w-16 h-16 rounded-full object-cover"
-                  style={{ border: `3px solid ${GREEN}` }}
+                  style={{ border: `3px solid ${currentDesign.previewColors[0]}` }}
                 />
               </div>
             )}
@@ -348,8 +252,8 @@ const EidCard = () => {
             onClick={handleGenerate}
             className="w-full flex items-center justify-center gap-2 py-4 rounded-xl text-white text-lg font-bold transition-all active:scale-[0.96]"
             style={{
-              background: `linear-gradient(135deg, ${GREEN}, ${DARK_GREEN})`,
-              boxShadow: "0 4px 16px rgba(26,122,58,0.35)",
+              background: `linear-gradient(135deg, ${currentDesign.previewColors[0]}, ${currentDesign.previewColors[2]})`,
+              boxShadow: `0 4px 16px ${currentDesign.previewColors[0]}55`,
             }}
           >
             <Sparkles size={20} />
@@ -363,14 +267,14 @@ const EidCard = () => {
                 <button
                   onClick={downloadPNG}
                   className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.97]"
-                  style={{ background: LIGHT_GREEN, color: DARK_GREEN }}
+                  style={{ background: "#e8f5e9", color: "#145a2c" }}
                 >
                   <Download size={16} /> PNG
                 </button>
                 <button
                   onClick={downloadPDF}
                   className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.97]"
-                  style={{ background: LIGHT_GREEN, color: DARK_GREEN }}
+                  style={{ background: "#e8f5e9", color: "#145a2c" }}
                 >
                   <Download size={16} /> PDF
                 </button>
@@ -408,7 +312,7 @@ const EidCard = () => {
             <canvas
               ref={canvasRef}
               className="w-full h-auto block"
-              style={{ background: CREAM }}
+              style={{ background: "#fdf6e3" }}
             />
           </div>
         </div>
@@ -416,88 +320,5 @@ const EidCard = () => {
     </div>
   );
 };
-
-// Helpers
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
-}
-
-function drawCornerDecor(ctx: CanvasRenderingContext2D, x: number, y: number, angle: number) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(angle);
-  ctx.strokeStyle = "rgba(46, 125, 50, 0.4)";
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(0, 0);
-  ctx.lineTo(30, 0);
-  ctx.moveTo(0, 0);
-  ctx.lineTo(0, 30);
-  ctx.stroke();
-
-  ctx.fillStyle = GREEN;
-  ctx.beginPath();
-  ctx.arc(0, 0, 4, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.restore();
-}
-
-function drawCrescent(ctx: CanvasRenderingContext2D, x: number, y: number) {
-  ctx.fillStyle = GREEN;
-  ctx.beginPath();
-  ctx.arc(x, y, 35, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = CREAM;
-  ctx.beginPath();
-  ctx.arc(x + 14, y - 6, 30, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Star
-  ctx.fillStyle = GREEN;
-  drawStar(ctx, x + 18, y + 2, 5, 10, 5);
-}
-
-function drawStar(ctx: CanvasRenderingContext2D, cx: number, cy: number, spikes: number, outerR: number, innerR: number) {
-  let rot = (Math.PI / 2) * 3;
-  const step = Math.PI / spikes;
-  ctx.beginPath();
-  ctx.moveTo(cx, cy - outerR);
-  for (let i = 0; i < spikes; i++) {
-    ctx.lineTo(cx + Math.cos(rot) * outerR, cy + Math.sin(rot) * outerR);
-    rot += step;
-    ctx.lineTo(cx + Math.cos(rot) * innerR, cy + Math.sin(rot) * innerR);
-    rot += step;
-  }
-  ctx.lineTo(cx, cy - outerR);
-  ctx.closePath();
-  ctx.fill();
-}
-
-function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
-  const words = text.split(" ");
-  const lines: string[] = [];
-  let currentLine = "";
-  for (const word of words) {
-    const testLine = currentLine ? currentLine + " " + word : word;
-    if (ctx.measureText(testLine).width > maxWidth && currentLine) {
-      lines.push(currentLine);
-      currentLine = word;
-    } else {
-      currentLine = testLine;
-    }
-  }
-  if (currentLine) lines.push(currentLine);
-  return lines;
-}
 
 export default EidCard;
