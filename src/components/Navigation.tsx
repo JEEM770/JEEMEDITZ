@@ -74,7 +74,7 @@ const Navigation = () => {
       <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-background/80 to-transparent pointer-events-none" />
       {/* Floating Pill Navigation */}
       <motion.div 
-        className="nav-pill flex items-center gap-1 px-2"
+        className="nav-pill flex items-center gap-1 px-2 pointer-events-auto"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ 
