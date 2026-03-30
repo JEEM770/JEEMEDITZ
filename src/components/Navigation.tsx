@@ -192,8 +192,7 @@ const Navigation = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            className="absolute top-full left-4 right-4 mt-2 p-3 md:hidden overflow-hidden z-50 rounded-2xl border border-border"
-            style={{ background: 'hsl(var(--card) / 0.95)', backdropFilter: 'blur(20px)' }}
+            className="absolute top-full left-4 right-4 mt-2 p-3 md:hidden overflow-hidden z-50 rounded-2xl border border-border/50 bg-background/95 backdrop-blur-xl shadow-xl"
             variants={menuVariants}
             initial="closed"
             animate="open"
