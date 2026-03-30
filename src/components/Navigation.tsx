@@ -181,7 +181,7 @@ const Navigation = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-40 md:hidden"
+            className="fixed inset-0 z-40 md:hidden pointer-events-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -194,7 +194,7 @@ const Navigation = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            className="absolute top-full left-4 right-4 mt-2 p-3 md:hidden overflow-hidden z-50 rounded-2xl border border-border/50 bg-background/95 backdrop-blur-xl shadow-xl"
+            className="absolute top-full left-4 right-4 mt-2 p-3 md:hidden overflow-hidden z-50 rounded-2xl border border-border/50 bg-background/95 backdrop-blur-xl shadow-xl pointer-events-auto"
             variants={menuVariants}
             initial="closed"
             animate="open"
