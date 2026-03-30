@@ -69,7 +69,9 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4 pointer-events-none">
+      {/* Gradient fade so scrolled content doesn't clash with the pill */}
+      <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-background/80 to-transparent pointer-events-none" />
       {/* Floating Pill Navigation */}
       <motion.div 
         className="nav-pill flex items-center gap-1 px-2"
