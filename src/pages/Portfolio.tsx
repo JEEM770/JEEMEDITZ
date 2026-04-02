@@ -185,6 +185,58 @@ const Portfolio = () => {
         </div>
       </section>
 
+      {/* SaaS Motion Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+        <div className="absolute inset-0 bg-card/30" />
+        <div className="relative max-w-7xl mx-auto">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+              <span className="text-foreground">SaaS</span>{" "}
+              <span className="text-gradient">Motion</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Engaging product animations and SaaS promotional videos that bring software to life.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: "SaaS Demo #1", fileId: "PLACEHOLDER_ID_1" },
+              { title: "SaaS Demo #2", fileId: "PLACEHOLDER_ID_2" },
+              { title: "SaaS Demo #3", fileId: "PLACEHOLDER_ID_3" },
+              { title: "SaaS Demo #4", fileId: "PLACEHOLDER_ID_4" },
+              { title: "SaaS Demo #5", fileId: "PLACEHOLDER_ID_5" },
+              { title: "SaaS Demo #6", fileId: "PLACEHOLDER_ID_6" },
+            ].map((item, index) => (
+              <motion.div
+                key={item.fileId}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+              >
+                <div className="relative aspect-video rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1">
+                  <iframe
+                    src={`https://drive.google.com/file/d/${item.fileId}/preview`}
+                    className="w-full h-full border-0"
+                    title={item.title}
+                    allow="autoplay"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Reels Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
         <div className="absolute inset-0 bg-card/30" />
