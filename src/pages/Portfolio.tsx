@@ -153,7 +153,9 @@ const Portfolio = () => {
             {[
               { title: "Motion Graphics #1", embedId: "DWLfjOPDQ1Y" },
               { title: "Motion Graphics #2", embedId: "DWI0BvijcPq" },
-              { title: "Motion Graphics #3", embedId: "DT_-c4NDOio" },
+              { title: "Motion Graphics #3", embedId: "DSfV9x3Dz8h" },
+              { title: "Motion Graphics #4", embedId: "DTeqvp_Di8s" },
+              { title: "Motion Graphics #5", embedId: "DT_-c4NDOio" },
               { title: "Motion Graphics #4", embedId: "DUcJg_EDLCd" },
               { title: "Motion Graphics #5", embedId: "DUW2xReDF9u" },
               { title: "Motion Graphics #6", embedId: "DUWxPzEjCp5" },
