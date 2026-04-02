@@ -156,12 +156,12 @@ const Portfolio = () => {
               { title: "Motion Graphics #3", embedId: "DSfV9x3Dz8h" },
               { title: "Motion Graphics #4", embedId: "DTeqvp_Di8s" },
               { title: "Motion Graphics #5", embedId: "DT_-c4NDOio" },
-              { title: "Motion Graphics #4", embedId: "DUcJg_EDLCd" },
-              { title: "Motion Graphics #5", embedId: "DUW2xReDF9u" },
-              { title: "Motion Graphics #6", embedId: "DUWxPzEjCp5" },
-              { title: "Motion Graphics #7", embedId: "DU4jSqfDHNQ" },
-              { title: "Motion Graphics #8", embedId: "DU7NXODjNCU" },
-              { title: "Motion Graphics #9", embedId: "DU-FWkUDVuy" },
+              { title: "Motion Graphics #6", embedId: "DUcJg_EDLCd" },
+              { title: "Motion Graphics #7", embedId: "DUW2xReDF9u" },
+              { title: "Motion Graphics #8", embedId: "DUWxPzEjCp5" },
+              { title: "Motion Graphics #9", embedId: "DU4jSqfDHNQ" },
+              { title: "Motion Graphics #10", embedId: "DU7NXODjNCU" },
+              { title: "Motion Graphics #11", embedId: "DU-FWkUDVuy" },
             ].map((item, index) => (
               <motion.div
                 key={item.embedId}
