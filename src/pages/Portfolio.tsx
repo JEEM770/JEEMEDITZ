@@ -151,8 +151,10 @@ const Portfolio = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { title: "Motion Graphics #1", embedId: "DT_-c4NDOio" },
-              { title: "Motion Graphics #2", embedId: "DUcJg_EDLCd" },
+              { title: "Motion Graphics #1", embedId: "DWLfjOPDQ1Y" },
+              { title: "Motion Graphics #2", embedId: "DWI0BvijcPq" },
+              { title: "Motion Graphics #3", embedId: "DT_-c4NDOio" },
+              { title: "Motion Graphics #4", embedId: "DUcJg_EDLCd" },
               { title: "Motion Graphics #3", embedId: "DUW2xReDF9u" },
               { title: "Motion Graphics #4", embedId: "DUWxPzEjCp5" },
               { title: "Motion Graphics #5", embedId: "DU4jSqfDHNQ" },
