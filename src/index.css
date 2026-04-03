@@ -648,15 +648,3 @@
     cursor: pointer;
   }
 }
-
-/* Cursor trail particle animation */
-@keyframes cursor-trail-fade {
-  0% {
-    opacity: 0.6;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.3);
-  }
-}
