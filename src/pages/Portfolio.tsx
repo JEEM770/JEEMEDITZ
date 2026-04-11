@@ -283,6 +283,61 @@ const Portfolio = () => {
         </div>
       </section>
 
+      {/* Motion Graphics Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+        <div className="relative max-w-7xl mx-auto">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+              <span className="text-foreground">Motion</span>{" "}
+              <span className="text-gradient">Graphics</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Animated graphics, text animations, and visual effects crafted with precision.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: "Motion Graphics #1", embedId: "DWLfjOPDQ1Y" },
+              { title: "Motion Graphics #2", embedId: "DWI0BvijcPq" },
+              { title: "Motion Graphics #3", embedId: "DSfV9x3Dz8h" },
+              { title: "Motion Graphics #4", embedId: "DTeqvp_Di8s" },
+              { title: "Motion Graphics #5", embedId: "DT_-c4NDOio" },
+              { title: "Motion Graphics #6", embedId: "DUcJg_EDLCd" },
+              { title: "Motion Graphics #7", embedId: "DUW2xReDF9u" },
+              { title: "Motion Graphics #8", embedId: "DUWxPzEjCp5" },
+              { title: "Motion Graphics #9", embedId: "DU4jSqfDHNQ" },
+              { title: "Motion Graphics #10", embedId: "DU7NXODjNCU" },
+              { title: "Motion Graphics #11", embedId: "DU-FWkUDVuy" },
+            ].map((item, index) => (
+              <motion.div
+                key={item.embedId}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+              >
+                <div className="relative aspect-square rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1">
+                  <iframe
+                    src={`https://www.instagram.com/reel/${item.embedId}/embed/`}
+                    className="w-full h-full border-0"
+                    title={item.title}
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
         <div className="absolute inset-0 bg-gradient-glow opacity-30" />
