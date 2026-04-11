@@ -1,4 +1,4 @@
-import { ArrowRight, Play, Camera, Video, Palette, Zap, Quote, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { ArrowRight, Play, Camera, Video, Palette, Zap, Quote, ChevronLeft, ChevronRight, Star, Music } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { GlowButton } from '@/components/ui/glow-button';
 import { Card, CardContent } from '@/components/ui/card';
