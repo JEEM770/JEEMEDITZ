@@ -40,7 +40,7 @@ const PageTransition = ({ children }: PageTransitionProps) => {
       exit="exit"
       variants={pageVariants}
       transition={pageTransition}
-      style={{ willChange: 'transform, opacity, filter' }}
+      style={{ willChange: 'transform, opacity' }}
     >
       {children}
     </motion.div>
