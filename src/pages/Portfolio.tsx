@@ -161,6 +161,8 @@ const Portfolio = () => {
         </motion.div>
       </section>
 
+      {/* Reels Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
         <div className="absolute inset-0 bg-card/30" />
         <div className="absolute inset-0 bg-gradient-glow opacity-30" />
         
