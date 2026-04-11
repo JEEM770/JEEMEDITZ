@@ -130,7 +130,37 @@ const Portfolio = () => {
         </motion.div>
       </section>
 
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+      {/* Lyrical Music Video CTA */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <motion.div
+          className="max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <a
+            href="https://www.jeemeditz.xyz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full p-8 md:p-12 rounded-2xl border border-primary/30 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 hover:border-primary/60 hover:shadow-[0_0_40px_hsl(var(--primary)/0.2)] transition-all duration-500 group text-center"
+          >
+            <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+              <span className="text-foreground">Need </span>
+              <span className="text-gradient">Lyrical Music Video</span>
+              <span className="text-foreground"> ?</span>
+            </h3>
+            <p className="text-lg text-muted-foreground mb-6">
+              Visit <span className="text-primary font-semibold">www.jeemeditz.xyz</span> to explore more
+            </p>
+            <span className="inline-flex items-center gap-2 text-primary font-semibold group-hover:gap-4 transition-all duration-300">
+              Visit Now
+              <ExternalLink className="w-5 h-5" />
+            </span>
+          </a>
+        </motion.div>
+      </section>
+
         <div className="absolute inset-0 bg-card/30" />
         <div className="absolute inset-0 bg-gradient-glow opacity-30" />
         
