@@ -30,7 +30,6 @@ const Navigation = () => {
       opacity: 0,
       y: -20,
       scale: 0.95,
-      filter: "blur(10px)",
       transition: {
         duration: 0.3,
         ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
@@ -40,7 +39,6 @@ const Navigation = () => {
       opacity: 1,
       y: 0,
       scale: 1,
-      filter: "blur(0px)",
       transition: {
         duration: 0.4,
         ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
@@ -54,12 +52,10 @@ const Navigation = () => {
     closed: { 
       opacity: 0, 
       x: -20,
-      filter: "blur(5px)",
     },
     open: { 
       opacity: 1, 
       x: 0,
-      filter: "blur(0px)",
       transition: {
         type: "spring" as const,
         stiffness: 300,
