@@ -126,25 +126,37 @@ const Home = () => {
               </motion.p>
             </div>
 
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <GlowButton asChild size="lg">
-                <Link to="/portfolio">
-                  <Play className="w-5 h-5 mr-2" />
-                  View My Work
-                </Link>
-              </GlowButton>
-              <GlowButton asChild variant="outline" size="lg">
-                <Link to="/about" className="group">
-                  Learn More
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
-              </GlowButton>
-            </motion.div>
+<motion.div 
+            className="flex flex-col sm:flex-row gap-4 flex-wrap"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <GlowButton asChild size="lg">
+              <Link to="/portfolio">
+                <Play className="w-5 h-5 mr-2" />
+                View My Work
+              </Link>
+            </GlowButton>
+            <GlowButton asChild variant="outline" size="lg">
+              <Link to="/about" className="group">
+                Learn More
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+              </Link>
+            </GlowButton>
+            <GlowButton asChild variant="outline" size="lg">
+              <a 
+                href="https://www.jeemeditz.xyz" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group"
+              >
+                <Music className="w-5 h-5 mr-2" />
+                Need Lyrical Music Video?
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+              </a>
+            </GlowButton>
+          </motion.div>
 
             {/* Quick Stats */}
             <motion.div 
