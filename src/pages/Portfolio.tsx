@@ -1,9 +1,6 @@
 import { useState, useRef } from 'react';
-import { ExternalLink, Play, Calendar, Eye, FolderOpen, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Facebook } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ExternalLink, Play, Eye, FolderOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { GlowButton } from '@/components/ui/glow-button';
-import { Badge } from '@/components/ui/badge';
 import ReelsViewer from '@/components/ReelsViewer';
 import { motion } from 'framer-motion';
 
