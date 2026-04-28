@@ -284,10 +284,10 @@ const Portfolio = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { id: 'lMedAkUXBS0', title: 'Cinematic Travel Edit' },
-              { id: 'TjtQZDC1py8', title: 'Brand Promo Video' },
-              { id: 'p1Etjs5At1w', title: 'Event Highlight Reel' },
-              { id: 'NrGgNPeE5I8', title: 'Music Video Edit' },
+              { id: 'lMedAkUXBS0', title: 'Hay Jhumka — Kamrul' },
+              { id: 'TjtQZDC1py8', title: 'Maula Ya Salli Wa Sallim — Kamrul' },
+              { id: 'p1Etjs5At1w', title: 'Sylheti Sundori — Kamrul' },
+              { id: 'NrGgNPeE5I8', title: 'Furi Goh Furi — Dil Khan' },
             ].map((video, index) => (
               <motion.div
                 key={video.id}
