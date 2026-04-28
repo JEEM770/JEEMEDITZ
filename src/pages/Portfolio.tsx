@@ -1,9 +1,6 @@
 import { useState, useRef } from 'react';
-import { ExternalLink, Play, Calendar, Eye, FolderOpen, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Facebook } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ExternalLink, Play, Eye, FolderOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { GlowButton } from '@/components/ui/glow-button';
-import { Badge } from '@/components/ui/badge';
 import ReelsViewer from '@/components/ReelsViewer';
 import { motion } from 'framer-motion';
 
@@ -50,7 +47,6 @@ const ReelCard = ({ reel, onPlay }: { reel: { id: number; thumbnail: string; vid
 );
 
 const Portfolio = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const [reelsViewerOpen, setReelsViewerOpen] = useState(false);
   const [selectedReelIndex, setSelectedReelIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -86,25 +82,6 @@ const Portfolio = () => {
     { id: 13, thumbnail: "https://img.youtube.com/vi/EElW9wBtseY/maxresdefault.jpg", videoUrl: "https://youtube.com/shorts/EElW9wBtseY", views: "5.0K", platform: "youtube", link: "https://youtube.com/shorts/EElW9wBtseY" },
     { id: 14, thumbnail: "https://img.youtube.com/vi/SzXwsBiivQw/hqdefault.jpg", videoUrl: "https://youtube.com/shorts/SzXwsBiivQw", views: "4.5K", platform: "youtube", link: "https://youtube.com/shorts/SzXwsBiivQw" }
   ];
-
-  const categories = [
-    { id: 'all', name: 'All Projects' },
-    { id: 'video', name: 'Video Editing' },
-    { id: 'cinema', name: 'Cinematography' },
-    { id: 'design', name: 'Graphic Design' },
-    { id: 'motion', name: 'Motion Graphics' }
-  ];
-
-  const projects = [
-    { id: 1, title: "Cinematic Short Film", category: 'cinema', type: "Cinematography & Editing", description: "A compelling narrative showcasing advanced camera work, color grading, and post-production techniques.", duration: "3:45", year: "2024", thumbnail: "https://i.postimg.cc/XvXK370G/retouch-2025072610485081.jpg", driveLink: "https://www.facebook.com/share/v/16WP8v61Wq/?mibextid=wwXIfr", tags: ["Cinematography", "Color Grading", "Storytelling"], views: "2.5K" },
-    { id: 2, title: "YouTube thumbnails", category: 'design', type: "Graphic Design", description: "Complete visual identity design including logo, color palette, and brand guidelines.", year: "2024", thumbnail: "https://i.postimg.cc/9fHXXDGr/Untitled21-20241226182119.jpg", driveLink: "https://i.postimg.cc/9fHXXDGr/Untitled21-20241226182119.jpg", tags: ["Branding", "Logo Design", "Visual Identity"], views: "1.8K" },
-    { id: 3, title: "Promotional Ads", category: 'video', type: "Video Editing", description: "Dynamic music video with synchronized editing, effects, and creative transitions.", duration: "4:12", year: "2024", thumbnail: "https://img.youtube.com/vi/5HxqRI2_Vnk/maxresdefault.jpg", youtubeId: "5HxqRI2_Vnk", tags: ["Music Video", "Sync Editing", "Effects"], views: "5.2K" },
-    { id: 4, title: "Motion Graphics Reel", category: 'motion', type: "Motion Graphics", description: "Showcase of animated graphics, text animations, and visual effects created in After Effects.", duration: "2:30", year: "2024", thumbnail: "https://img.youtube.com/vi/9fwTRlPbitc/maxresdefault.jpg", youtubeId: "9fwTRlPbitc", tags: ["After Effects", "Animation", "Typography"], views: "3.1K" },
-    { id: 5, title: "Documentary Style Edit", category: 'video', type: "Documentary Editing", description: "Professional documentary-style editing with interviews, b-roll, and narrative structure.", duration: "8:45", year: "2023", thumbnail: "https://img.youtube.com/vi/WmRhC3ufoN4/maxresdefault.jpg", youtubeId: "WmRhC3ufoN4", tags: ["Documentary", "Interview", "B-Roll"], views: "4.7K" },
-    { id: 6, title: "product manipulation", category: 'design', type: "Presentation Design", description: "Professional presentation design with custom graphics and cohesive visual theme.", year: "2023", thumbnail: "https://i.postimg.cc/CM2RTL6f/IMG-2834.jpg", driveLink: "https://i.postimg.cc/CM2RTL6f/IMG-2834.jpg", tags: ["Presentation", "Corporate", "Graphics"], views: "900" }
-  ];
-
-  const filteredProjects = selectedCategory === 'all' ? projects : projects.filter(project => project.category === selectedCategory);
 
   return (
     <div className="min-h-screen pt-24">
@@ -286,84 +263,48 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Category Filter */}
-      <section className="px-4 sm:px-6 lg:px-8 mb-16">
+      {/* Featured Videos */}
+      <section className="px-4 sm:px-6 lg:px-8 pb-24 pt-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-3">
-            {categories.map(category => (
-              <GlowButton 
-                key={category.id} 
-                variant={selectedCategory === category.id ? "default" : "outline"} 
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                {category.name}
-              </GlowButton>
-            ))}
-          </div>
-        </div>
-      </section>
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+              <span className="text-foreground">Featured</span>{" "}
+              <span className="text-gradient">Videos</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              A selection of recent video work.
+            </p>
+          </motion.div>
 
-      {/* Projects Grid */}
-      <section className="px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              { id: 'lMedAkUXBS0', title: 'Featured Video 1' },
+              { id: 'TjtQZDC1py8', title: 'Featured Video 2' },
+              { id: 'p1Etjs5At1w', title: 'Featured Video 3' },
+              { id: 'NrGgNPeE5I8', title: 'Featured Video 4' },
+            ].map((video, index) => (
               <motion.div
-                key={project.id}
+                key={video.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="relative aspect-video rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1"
               >
-                <Card className="card-glass overflow-hidden group hover:border-primary/30 transition-all duration-300">
-                  <div className="relative overflow-hidden">
-                    <img src={project.thumbnail} alt={project.title} className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      {project.youtubeId ? (
-                        <GlowButton size="sm" onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}>
-                          <Play className="w-4 h-4 mr-2" />
-                          Watch
-                        </GlowButton>
-                      ) : project.driveLink ? (
-                        <GlowButton size="sm" onClick={() => window.open(project.driveLink, '_blank')}>
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          View
-                        </GlowButton>
-                      ) : null}
-                    </div>
-                    <Badge className="absolute top-3 left-3 bg-primary/90 text-primary-foreground">
-                      {project.type}
-                    </Badge>
-                  </div>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center justify-between">
-                      <span className="text-lg">{project.title}</span>
-                      <div className="flex items-center gap-1 text-muted-foreground text-sm">
-                        <Eye className="w-4 h-4" />
-                        <span className="font-mono">{project.views}</span>
-                      </div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{project.description}</p>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        <span>{project.year}</span>
-                      </div>
-                      {project.duration && (
-                        <span className="font-mono">{project.duration}</span>
-                      )}
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 mt-4">
-                      {project.tags.map(tag => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                <iframe
+                  src={`https://www.youtube.com/embed/${video.id}`}
+                  title={video.title}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                />
               </motion.div>
             ))}
           </div>
