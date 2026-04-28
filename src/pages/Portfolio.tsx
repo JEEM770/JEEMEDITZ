@@ -83,25 +83,6 @@ const Portfolio = () => {
     { id: 14, thumbnail: "https://img.youtube.com/vi/SzXwsBiivQw/hqdefault.jpg", videoUrl: "https://youtube.com/shorts/SzXwsBiivQw", views: "4.5K", platform: "youtube", link: "https://youtube.com/shorts/SzXwsBiivQw" }
   ];
 
-  const categories = [
-    { id: 'all', name: 'All Projects' },
-    { id: 'video', name: 'Video Editing' },
-    { id: 'cinema', name: 'Cinematography' },
-    { id: 'design', name: 'Graphic Design' },
-    { id: 'motion', name: 'Motion Graphics' }
-  ];
-
-  const projects = [
-    { id: 1, title: "Cinematic Short Film", category: 'cinema', type: "Cinematography & Editing", description: "A compelling narrative showcasing advanced camera work, color grading, and post-production techniques.", duration: "3:45", year: "2024", thumbnail: "https://i.postimg.cc/XvXK370G/retouch-2025072610485081.jpg", driveLink: "https://www.facebook.com/share/v/16WP8v61Wq/?mibextid=wwXIfr", tags: ["Cinematography", "Color Grading", "Storytelling"], views: "2.5K" },
-    { id: 2, title: "YouTube thumbnails", category: 'design', type: "Graphic Design", description: "Complete visual identity design including logo, color palette, and brand guidelines.", year: "2024", thumbnail: "https://i.postimg.cc/9fHXXDGr/Untitled21-20241226182119.jpg", driveLink: "https://i.postimg.cc/9fHXXDGr/Untitled21-20241226182119.jpg", tags: ["Branding", "Logo Design", "Visual Identity"], views: "1.8K" },
-    { id: 3, title: "Promotional Ads", category: 'video', type: "Video Editing", description: "Dynamic music video with synchronized editing, effects, and creative transitions.", duration: "4:12", year: "2024", thumbnail: "https://img.youtube.com/vi/5HxqRI2_Vnk/maxresdefault.jpg", youtubeId: "5HxqRI2_Vnk", tags: ["Music Video", "Sync Editing", "Effects"], views: "5.2K" },
-    { id: 4, title: "Motion Graphics Reel", category: 'motion', type: "Motion Graphics", description: "Showcase of animated graphics, text animations, and visual effects created in After Effects.", duration: "2:30", year: "2024", thumbnail: "https://img.youtube.com/vi/9fwTRlPbitc/maxresdefault.jpg", youtubeId: "9fwTRlPbitc", tags: ["After Effects", "Animation", "Typography"], views: "3.1K" },
-    { id: 5, title: "Documentary Style Edit", category: 'video', type: "Documentary Editing", description: "Professional documentary-style editing with interviews, b-roll, and narrative structure.", duration: "8:45", year: "2023", thumbnail: "https://img.youtube.com/vi/WmRhC3ufoN4/maxresdefault.jpg", youtubeId: "WmRhC3ufoN4", tags: ["Documentary", "Interview", "B-Roll"], views: "4.7K" },
-    { id: 6, title: "product manipulation", category: 'design', type: "Presentation Design", description: "Professional presentation design with custom graphics and cohesive visual theme.", year: "2023", thumbnail: "https://i.postimg.cc/CM2RTL6f/IMG-2834.jpg", driveLink: "https://i.postimg.cc/CM2RTL6f/IMG-2834.jpg", tags: ["Presentation", "Corporate", "Graphics"], views: "900" }
-  ];
-
-  const filteredProjects = selectedCategory === 'all' ? projects : projects.filter(project => project.category === selectedCategory);
-
   return (
     <div className="min-h-screen pt-24">
       {/* Header */}
