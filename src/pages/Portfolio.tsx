@@ -284,10 +284,10 @@ const Portfolio = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { id: 'lMedAkUXBS0', title: 'Featured Video 1' },
-              { id: 'TjtQZDC1py8', title: 'Featured Video 2' },
-              { id: 'p1Etjs5At1w', title: 'Featured Video 3' },
-              { id: 'NrGgNPeE5I8', title: 'Featured Video 4' },
+              { id: 'lMedAkUXBS0', title: 'Hay Jhumka — Kamrul' },
+              { id: 'TjtQZDC1py8', title: 'Maula Ya Salli Wa Sallim — Kamrul' },
+              { id: 'p1Etjs5At1w', title: 'Sylheti Sundori — Kamrul' },
+              { id: 'NrGgNPeE5I8', title: 'Furi Goh Furi — Dil Khan' },
             ].map((video, index) => (
               <motion.div
                 key={video.id}
@@ -295,16 +295,21 @@ const Portfolio = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="relative aspect-video rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1"
+                className="group"
               >
-                <iframe
-                  src={`https://www.youtube.com/embed/${video.id}`}
-                  title={video.title}
-                  className="w-full h-full border-0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  loading="lazy"
-                />
+                <div className="relative aspect-video rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 group-hover:border-primary/50 group-hover:shadow-lg group-hover:-translate-y-1">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video.id}`}
+                    title={video.title}
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+                <h3 className="mt-4 text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                  {video.title}
+                </h3>
               </motion.div>
             ))}
           </div>
