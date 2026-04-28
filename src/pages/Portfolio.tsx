@@ -286,84 +286,48 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Category Filter */}
-      <section className="px-4 sm:px-6 lg:px-8 mb-16">
+      {/* Featured Videos */}
+      <section className="px-4 sm:px-6 lg:px-8 pb-24 pt-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-3">
-            {categories.map(category => (
-              <GlowButton 
-                key={category.id} 
-                variant={selectedCategory === category.id ? "default" : "outline"} 
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                {category.name}
-              </GlowButton>
-            ))}
-          </div>
-        </div>
-      </section>
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+              <span className="text-foreground">Featured</span>{" "}
+              <span className="text-gradient">Videos</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              A selection of recent video work.
+            </p>
+          </motion.div>
 
-      {/* Projects Grid */}
-      <section className="px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              { id: 'lMedAkUXBS0', title: 'Featured Video 1' },
+              { id: 'TjtQZDC1py8', title: 'Featured Video 2' },
+              { id: 'p1Etjs5At1w', title: 'Featured Video 3' },
+              { id: 'NrGgNPeE5I8', title: 'Featured Video 4' },
+            ].map((video, index) => (
               <motion.div
-                key={project.id}
+                key={video.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="relative aspect-video rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1"
               >
-                <Card className="card-glass overflow-hidden group hover:border-primary/30 transition-all duration-300">
-                  <div className="relative overflow-hidden">
-                    <img src={project.thumbnail} alt={project.title} className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      {project.youtubeId ? (
-                        <GlowButton size="sm" onClick={() => window.open(`https://youtube.com/watch?v=${project.youtubeId}`, '_blank')}>
-                          <Play className="w-4 h-4 mr-2" />
-                          Watch
-                        </GlowButton>
-                      ) : project.driveLink ? (
-                        <GlowButton size="sm" onClick={() => window.open(project.driveLink, '_blank')}>
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          View
-                        </GlowButton>
-                      ) : null}
-                    </div>
-                    <Badge className="absolute top-3 left-3 bg-primary/90 text-primary-foreground">
-                      {project.type}
-                    </Badge>
-                  </div>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center justify-between">
-                      <span className="text-lg">{project.title}</span>
-                      <div className="flex items-center gap-1 text-muted-foreground text-sm">
-                        <Eye className="w-4 h-4" />
-                        <span className="font-mono">{project.views}</span>
-                      </div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{project.description}</p>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        <span>{project.year}</span>
-                      </div>
-                      {project.duration && (
-                        <span className="font-mono">{project.duration}</span>
-                      )}
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 mt-4">
-                      {project.tags.map(tag => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                <iframe
+                  src={`https://www.youtube.com/embed/${video.id}`}
+                  title={video.title}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                />
               </motion.div>
             ))}
           </div>
