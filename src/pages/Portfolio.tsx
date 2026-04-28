@@ -47,7 +47,6 @@ const ReelCard = ({ reel, onPlay }: { reel: { id: number; thumbnail: string; vid
 );
 
 const Portfolio = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const [reelsViewerOpen, setReelsViewerOpen] = useState(false);
   const [selectedReelIndex, setSelectedReelIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
