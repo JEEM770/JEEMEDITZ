@@ -229,20 +229,17 @@ const Portfolio = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { title: "Motion Graphics #1", embedId: "DWLfjOPDQ1Y", type: "ig" as const },
-              { title: "Motion Graphics #2", embedId: "DWI0BvijcPq", type: "ig" as const },
-              { title: "Motion Graphics #3", embedId: "DSfV9x3Dz8h", type: "ig" as const },
-              { title: "Motion Graphics #4", embedId: "DTeqvp_Di8s", type: "ig" as const },
-              { title: "Motion Graphics #5", embedId: "DT_-c4NDOio", type: "ig" as const },
-              { title: "Motion Graphics #6", embedId: "DUcJg_EDLCd", type: "ig" as const },
-              { title: "Motion Graphics #7", embedId: "DUW2xReDF9u", type: "ig" as const },
-              { title: "Motion Graphics #8", embedId: "DUWxPzEjCp5", type: "ig" as const },
-              { title: "Motion Graphics #9", embedId: "DU4jSqfDHNQ", type: "ig" as const },
-              { title: "Motion Graphics #10", embedId: "DU7NXODjNCU", type: "ig" as const },
-              { title: "Motion Graphics #11", embedId: "DU-FWkUDVuy", type: "ig" as const },
-              { title: "Motion Graphics #12", embedId: "DXV07_gDt6d", type: "video" as const, src: "/videos/DXV07_gDt6d.mp4" },
-              { title: "Motion Graphics #13", embedId: "DXYP0M7jrAY", type: "video" as const, src: "/videos/DXYP0M7jrAY.mp4" },
-              { title: "Motion Graphics #14", embedId: "DXay_Vej4Ic", type: "video" as const, src: "/videos/DXay_Vej4Ic.mp4" },
+              { title: "Motion Graphics #1", embedId: "DWLfjOPDQ1Y" },
+              { title: "Motion Graphics #2", embedId: "DWI0BvijcPq" },
+              { title: "Motion Graphics #3", embedId: "DSfV9x3Dz8h" },
+              { title: "Motion Graphics #4", embedId: "DTeqvp_Di8s" },
+              { title: "Motion Graphics #5", embedId: "DT_-c4NDOio" },
+              { title: "Motion Graphics #6", embedId: "DUcJg_EDLCd" },
+              { title: "Motion Graphics #7", embedId: "DUW2xReDF9u" },
+              { title: "Motion Graphics #8", embedId: "DUWxPzEjCp5" },
+              { title: "Motion Graphics #9", embedId: "DU4jSqfDHNQ" },
+              { title: "Motion Graphics #10", embedId: "DU7NXODjNCU" },
+              { title: "Motion Graphics #11", embedId: "DU-FWkUDVuy" },
             ].map((item, index) => (
               <motion.div
                 key={item.embedId}
@@ -252,25 +249,13 @@ const Portfolio = () => {
                 transition={{ duration: 0.4, delay: index * 0.08 }}
               >
                 <div className="relative aspect-square rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1">
-                  {item.type === "video" ? (
-                    <video
-                      src={item.src}
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                    />
-                  ) : (
-                    <iframe
-                      src={`https://www.instagram.com/reel/${item.embedId}/embed/captioned/`}
-                      className="w-full h-full border-0"
-                      title={item.title}
-                      allowFullScreen
-                      loading="lazy"
-                    />
-                  )}
+                  <iframe
+                    src={`https://www.instagram.com/reel/${item.embedId}/embed/`}
+                    className="w-full h-full border-0"
+                    title={item.title}
+                    allowFullScreen
+                    loading="lazy"
+                  />
                 </div>
               </motion.div>
             ))}
