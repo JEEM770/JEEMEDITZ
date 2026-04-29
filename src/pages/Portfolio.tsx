@@ -240,6 +240,9 @@ const Portfolio = () => {
               { title: "Motion Graphics #9", embedId: "DU4jSqfDHNQ" },
               { title: "Motion Graphics #10", embedId: "DU7NXODjNCU" },
               { title: "Motion Graphics #11", embedId: "DU-FWkUDVuy" },
+              { title: "Motion Graphics #12", embedId: "DXV07_gDt6d" },
+              { title: "Motion Graphics #13", embedId: "DXYP0M7jrAY" },
+              { title: "Motion Graphics #14", embedId: "DXay_Vej4Ic" },
             ].map((item, index) => (
               <motion.div
                 key={item.embedId}
@@ -250,7 +253,7 @@ const Portfolio = () => {
               >
                 <div className="relative aspect-square rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1">
                   <iframe
-                    src={`https://www.instagram.com/reel/${item.embedId}/embed/`}
+                    src={`https://www.instagram.com/p/${item.embedId}/embed/`}
                     className="w-full h-full border-0"
                     title={item.title}
                     allowFullScreen
