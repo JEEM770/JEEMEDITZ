@@ -253,7 +253,7 @@ const Portfolio = () => {
               >
                 <div className="relative aspect-square rounded-2xl overflow-hidden border border-border bg-muted transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1">
                   <iframe
-                    src={`https://www.instagram.com/reel/${item.embedId}/embed/`}
+                    src={`https://www.instagram.com/p/${item.embedId}/embed/`}
                     className="w-full h-full border-0"
                     title={item.title}
                     allowFullScreen
