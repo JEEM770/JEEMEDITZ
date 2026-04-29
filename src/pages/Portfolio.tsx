@@ -240,6 +240,9 @@ const Portfolio = () => {
               { title: "Motion Graphics #9", embedId: "DU4jSqfDHNQ" },
               { title: "Motion Graphics #10", embedId: "DU7NXODjNCU" },
               { title: "Motion Graphics #11", embedId: "DU-FWkUDVuy" },
+              { title: "Motion Graphics #12", embedId: "DXV07_gDt6d" },
+              { title: "Motion Graphics #13", embedId: "DXYP0M7jrAY" },
+              { title: "Motion Graphics #14", embedId: "DXay_Vej4Ic" },
             ].map((item, index) => (
               <motion.div
                 key={item.embedId}
