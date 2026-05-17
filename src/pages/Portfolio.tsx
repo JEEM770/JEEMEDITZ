@@ -293,6 +293,7 @@ const Portfolio = () => {
               { id: 'TjtQZDC1py8', title: 'Maula Ya Salli Wa Sallim — Kamrul' },
               { id: 'p1Etjs5At1w', title: 'Sylheti Sundori — Kamrul' },
               { id: 'NrGgNPeE5I8', title: 'Furi Goh Furi — Dil Khan' },
+              { id: '93XFlCCFoRE', title: 'Featured Music Video' },
             ].map((video, index) => (
               <motion.div
                 key={video.id}
