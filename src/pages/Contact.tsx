@@ -128,6 +128,11 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen pt-24">
+      <SEO
+        title="Contact Jeem editz — Hire a Freelance Video Editor"
+        description="Get in touch with Jeem editz for video editing, motion graphics, and cinematography projects via email, WhatsApp, or the contact form."
+        path="/contact"
+      />
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute w-[350px] h-[350px] -top-20 -right-20 rounded-full bg-primary/20 blur-[100px]" />

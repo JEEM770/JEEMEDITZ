@@ -85,6 +85,11 @@ const Portfolio = () => {
 
   return (
     <div className="min-h-screen pt-24">
+      <SEO
+        title="Portfolio — Jeem editz Video Editing & Motion Graphics"
+        description="Browse featured reels, lyrical music videos, and motion graphics projects edited and designed by Jeem editz."
+        path="/portfolio"
+      />
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute w-[350px] h-[350px] -top-20 -left-20 rounded-full bg-primary/20 blur-[100px]" />

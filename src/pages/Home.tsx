@@ -92,6 +92,11 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Jeem editz — Creative Video Editor & Designer Portfolio"
+        description="Freelance video editor and motion designer crafting cinematic edits, lyrical music videos, reels, and bold motion graphics."
+        path="/"
+      />
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Simple background orbs - no animation */}
