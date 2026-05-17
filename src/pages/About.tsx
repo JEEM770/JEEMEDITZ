@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import SEO from '@/components/SEO';
 
 const About = () => {
   const [animatedValues, setAnimatedValues] = useState<{ [key: string]: number }>({});
@@ -73,6 +74,11 @@ const About = () => {
 
   return (
     <div className="min-h-screen pt-24">
+      <SEO
+        title="About Jeem editz — Video Editor & Motion Designer"
+        description="Learn about Jeem editz: 8+ years of video editing, cinematography, and motion design experience behind cinematic, story-driven visuals."
+        path="/about"
+      />
       {/* Hero Section */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute w-[400px] h-[400px] -top-40 -left-40 rounded-full bg-primary/20 blur-[100px]" />

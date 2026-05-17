@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GlowButton } from '@/components/ui/glow-button';
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
+import SEO from '@/components/SEO';
 
 const Services = () => {
   const services = [
@@ -123,6 +124,11 @@ const Services = () => {
 
   return (
     <div className="min-h-screen pt-24">
+      <SEO
+        title="Services — Video Editing, Cinematography & Motion Graphics"
+        description="Professional video editing, cinematography, motion graphics, and graphic design services with transparent packages by Jeem editz."
+        path="/services"
+      />
       {/* Header */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute w-[350px] h-[350px] -top-20 -right-20 rounded-full bg-primary/20 blur-[100px]" />
