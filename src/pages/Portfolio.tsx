@@ -240,6 +240,11 @@ const Portfolio = () => {
               { title: "Motion Graphics #9", embedId: "DU4jSqfDHNQ" },
               { title: "Motion Graphics #10", embedId: "DU7NXODjNCU" },
               { title: "Motion Graphics #11", embedId: "DU-FWkUDVuy" },
+              { title: "Motion Graphics #12", embedId: "DX8yvm7OkSi" },
+              { title: "Motion Graphics #13", embedId: "DYTZrrtuUbY" },
+              { title: "Motion Graphics #14", embedId: "DYFL7fDTPs7" },
+              { title: "Motion Graphics #15", embedId: "DXwaOcKNeeX" },
+              { title: "Motion Graphics #16", embedId: "DYKr1UFpeEr" },
             ].map((item, index) => (
               <motion.div
                 key={item.embedId}
@@ -288,6 +293,7 @@ const Portfolio = () => {
               { id: 'TjtQZDC1py8', title: 'Maula Ya Salli Wa Sallim — Kamrul' },
               { id: 'p1Etjs5At1w', title: 'Sylheti Sundori — Kamrul' },
               { id: 'NrGgNPeE5I8', title: 'Furi Goh Furi — Dil Khan' },
+              { id: '93XFlCCFoRE', title: 'Featured Music Video' },
             ].map((video, index) => (
               <motion.div
                 key={video.id}
