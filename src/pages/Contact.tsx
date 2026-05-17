@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
+import SEO from '@/components/SEO';
 
 const Contact = () => {
   const [formData, setFormData] = useState({

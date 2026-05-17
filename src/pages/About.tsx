@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import SEO from '@/components/SEO';
 
 const About = () => {
   const [animatedValues, setAnimatedValues] = useState<{ [key: string]: number }>({});

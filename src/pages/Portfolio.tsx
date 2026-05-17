@@ -3,6 +3,7 @@ import { ExternalLink, Play, Eye, FolderOpen, ChevronLeft, ChevronRight } from '
 import { GlowButton } from '@/components/ui/glow-button';
 import ReelsViewer from '@/components/ReelsViewer';
 import { motion } from 'framer-motion';
+import SEO from '@/components/SEO';
 
 // Custom TikTok Icon Component
 const TikTokIcon = ({ className }: { className?: string }) => (

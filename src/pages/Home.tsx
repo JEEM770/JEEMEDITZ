@@ -4,6 +4,7 @@ import { GlowButton } from '@/components/ui/glow-button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
+import SEO from '@/components/SEO';
 
 const Home = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);

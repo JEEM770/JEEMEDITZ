@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GlowButton } from '@/components/ui/glow-button';
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
+import SEO from '@/components/SEO';
 
 const Services = () => {
   const services = [
